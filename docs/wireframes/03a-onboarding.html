@@ -1,0 +1,62 @@
+<!-- docs/wireframes/03-onboarding-carousel.html -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Tzipur - Onboarding Carousel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind Config injected by Antigravity from 02-design-system.md -->
+</head>
+<body class="max-w-md mx-auto min-h-[100dvh] flex flex-col relative bg-[#FDFBF7] text-[#4A3F35] overflow-hidden">
+
+  <!-- Swiper Carousel Container (Takes up main screen space) -->
+  <main class="flex-1 relative flex flex-col">
+    
+    <!-- Slide 1 (Active) -->
+    <div class="flex-1 flex flex-col items-center justify-center p-8 text-center animate-fade-in">
+      <!-- Soft "In-Between" Image Placeholder -->
+      <div class="w-56 h-56 mb-10 bg-gradient-to-br from-[#D7E9F5] to-[#F4EBE1] rounded-[40px] shadow-inner border border-[#E8DED1] flex items-center justify-center p-6">
+        <span class="text-6xl opacity-80">🕊️</span>
+      </div>
+      
+      <h2 class="font-serif text-3xl font-bold text-[#5B93B5] mb-4">שיתוף בטוח</h2>
+      <p class="text-[#A39B90] text-lg leading-relaxed max-w-[280px]">
+        ברגעים מאתגרים, רגישים, ואפילו בשינויים כמו מעבר דירה - ציפור נותנת לך מרחב בטוח לשתף מה קורה. בלי שיפוטיות. בלי בושה. רק אתם.
+      </p>
+    </div>
+
+    <!-- Slide 2 (Hidden in HTML, Swiper will handle) 
+         Title: צִיפּוּר הופכת את זה לסיפור
+         Text: בעזרת AI, מה ששיתפת הופך לסיפור מטאפורי, מותאם בדיוק לגיל ולעולם הרגשי של הילד שלך.
+    -->
+
+    <!-- Slide 3 (Hidden in HTML, Swiper will handle)
+         Title: קוראים יחד ומתחברים בכל יום
+         Text: את.ה והילד קוראים את הסיפור ביחד - רגע של הבנה הדדית שמחזק את הקשר ביניכם.
+    -->
+
+  </main>
+
+  <!-- Bottom Controls (Fixed at bottom) -->
+  <footer class="p-6 pb-10 flex flex-col items-center gap-6">
+    
+    <!-- Pagination Dots -->
+    <div class="flex gap-2.5">
+      <div class="w-8 h-2.5 bg-[#5B93B5] rounded-full transition-all"></div>
+      <div class="w-2.5 h-2.5 bg-[#E8DED1] rounded-full transition-all"></div>
+      <div class="w-2.5 h-2.5 bg-[#E8DED1] rounded-full transition-all"></div>
+    </div>
+
+    <!-- Actions -->
+    <div class="w-full flex flex-col gap-3 mt-4">
+      <button class="w-full bg-[#5B93B5] text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:bg-opacity-90 transition">
+        הבא
+      </button>
+      <button class="w-full text-[#A39B90] py-3 rounded-2xl font-medium hover:bg-[#F4EBE1] transition">
+        דילוג
+      </button>
+    </div>
+  </footer>
+
+</body>
+</html>
