@@ -1,10 +1,14 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, redirect } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
 import WelcomePage from '../pages/Welcome';
 import ProfileSetupPage from '../pages/ProfileSetup';
 import CreationPage from '../pages/Creation';
 import ReadingPage from '../pages/Reading';
 import LibraryPage from '../pages/Library';
+import OnboardingScreen from '../pages/OnboardingScreen';
+
+let hasSeenOnboarding = localStorage.getItem('tzipur_has_seen_onboarding') === 'true';
+hasSeenOnboarding = false; // For testing purposes, always show onboarding
 
 export const router = createBrowserRouter([
   {
@@ -12,8 +16,18 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
+        path: 'onboarding',
+        element: <OnboardingScreen />,
+      },
+      {
         index: true,
         element: <WelcomePage />,
+        loader: () => {
+          if (!hasSeenOnboarding) {
+            return redirect('/onboarding');
+          }
+          return null;
+        },
       },
       {
         path: 'profile',
