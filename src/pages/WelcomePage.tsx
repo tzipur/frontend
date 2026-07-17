@@ -30,7 +30,7 @@ export default function WelcomePage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="flex flex-col items-center justify-center h-full p-6 text-center"
+      className="flex flex-col items-center justify-between h-full p-6 text-center pb-12 pt-8"
     >
       {/* Logo / Lottie placeholder */}
       <motion.div
@@ -69,7 +69,7 @@ export default function WelcomePage() {
       </motion.p>
 
       {/* Buttons */}
-      <motion.div variants={itemVariants} className="w-full max-w-sm space-y-4">
+      <motion.div variants={itemVariants} className="w-full max-w-sm space-y-4 mt-auto">
         <button
           onClick={() => navigate('/profile')}
           className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"

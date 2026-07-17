@@ -42,7 +42,7 @@ export default function CreationPage() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="h-full flex flex-col p-6"
+        className="page-container h-full flex flex-1 flex-col p-6"
       >
         {/* Header */}
         <header className="py-2 mb-6">
@@ -53,7 +53,7 @@ export default function CreationPage() {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 space-y-8 w-full overflow-y-auto">
+        <main className="flex flex-1 flex-col w-full min-h-0 space-y-4 pb-2">
           {/* Fast Tracks Grid */}
           <div className="grid grid-cols-2 gap-3">
             {fastTracks.map((track) => (
@@ -84,12 +84,12 @@ export default function CreationPage() {
           </div>
 
           {/* Text Input Area */}
-          <div className="relative">
+          <div className="relative flex-1 min-h-0">
             <textarea
               placeholder="אפשר גם לכתוב כאן בכמה מילים..."
               value={freeText}
               onChange={(e) => setFreeText(e.target.value)}
-              className="w-full bg-white border border-tzipur-border rounded-2xl p-4 min-h-[120px] focus:outline-none focus:border-tzipur-sky focus:ring-1 focus:ring-tzipur-sky transition resize-none text-tzipur-brown placeholder:text-tzipur-muted/60"
+              className="absolute inset-0 w-full h-full bg-white border border-tzipur-border rounded-2xl p-4 focus:outline-none focus:border-tzipur-sky focus:ring-1 focus:ring-tzipur-sky transition resize-none text-tzipur-brown placeholder:text-tzipur-muted/60"
             />
 
             {/* Mic button (disabled for MVP) */}

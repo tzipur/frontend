@@ -48,7 +48,7 @@ export default function ProfileSetupPage() {
       </header>
 
       {/* Form */}
-      <main className="flex-1 space-y-8 w-full overflow-y-auto">
+      <main className="flex-1 flex flex-col justify-between w-full min-h-0 py-2">
         {/* Nickname Input */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-tzipur-muted">
