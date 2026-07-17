@@ -36,16 +36,19 @@ export default function ReadingPage() {
 
   const pageVariants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? -80 : 80, // RTL: next slides from left, prev from right
+      x: dir > 0 ? '-100%' : '100%',
       opacity: 0,
+      scale: 0.98,
     }),
     center: {
-      x: 0,
+      x: '0%',
       opacity: 1,
+      scale: 1,
     },
     exit: (dir: number) => ({
-      x: dir > 0 ? 80 : -80,
+      x: dir > 0 ? '100%' : '-100%',
       opacity: 0,
+      scale: 0.98,
     }),
   };
 
@@ -66,9 +69,26 @@ export default function ReadingPage() {
       </div>
 
       {/* Second Panel: Raised Text Area */}
-      <main className="flex-1 bg-white rounded-[40px] mb-2 mx-2 shadow-[0_-12px_40px_-15px_rgba(74,63,53,0.15),0_12px_40px_-15px_rgba(74,63,53,0.15)] mt-[-32px] z-20 relative px-2 pt-4 pb-4 flex flex-col justify-between border border-tzipur-border">
-        {/* Navigation + Text Container */}
-        <div className="relative flex-1 flex flex-col w-full px-2 overflow-hidden pb-12">
+      <AnimatePresence mode="popLayout" custom={direction}>
+        <motion.main 
+          key={currentPageIndex}
+          custom={direction}
+          variants={pageVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={(_e, { offset, velocity }) => {
+            if (offset.x < -40 || velocity.x < -400) goNext();
+            else if (offset.x > 40 || velocity.x > 400) goPrev();
+          }}
+          className="flex-1 bg-white rounded-[40px] mb-2 mx-2 shadow-[0_-12px_40px_-15px_rgba(74,63,53,0.15),0_12px_40px_-15px_rgba(74,63,53,0.15)] mt-[-32px] z-20 relative px-2 pt-4 pb-4 flex flex-col justify-between border border-tzipur-border touch-pan-y cursor-grab active:cursor-grabbing"
+        >
+          {/* Navigation + Text Container */}
+          <div className="relative flex-1 flex flex-col w-full px-2 overflow-hidden pb-12">
           
           {/* INVISIBLE TAP ZONES for page turning */}
           {!isFirstPage && (
@@ -112,36 +132,16 @@ export default function ReadingPage() {
           </span>
 
           {/* Story Text */}
-          <div className="flex-1 w-full flex items-center justify-center text-center px-4 relative z-0 pointer-events-none">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={currentPageIndex}
-                custom={direction}
-                variants={pageVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.2}
-                onDragEnd={(_e, { offset, velocity }) => {
-                  if (offset.x < -40 || velocity.x < -400) goNext();
-                  else if (offset.x > 40 || velocity.x > 400) goPrev();
-                }}
-                className="w-full flex flex-col items-center justify-center touch-pan-y cursor-grab active:cursor-grabbing max-h-full pb-4"
-              >
-                {currentPage?.isTitlePage ? (
-                  <h2 className="font-serif text-4xl font-bold text-tzipur-sky leading-[1.8]">
-                    {currentPage.text}
-                  </h2>
-                ) : (
-                  <p className={`font-serif font-medium w-full ${getFontSizeClass(currentPage?.text || '')}`}>
-                    {currentPage?.text}
-                  </p>
-                )}
-              </motion.div>
-            </AnimatePresence>
+          <div className="flex-1 w-full flex items-center justify-center text-center px-4 relative z-0 pointer-events-none [perspective:1200px]">
+            {currentPage?.isTitlePage ? (
+              <h2 className="font-serif text-4xl font-bold text-tzipur-sky leading-[1.8]">
+                {currentPage.text}
+              </h2>
+            ) : (
+              <p className={`font-serif font-medium w-full ${getFontSizeClass(currentPage?.text || '')}`}>
+                {currentPage?.text}
+              </p>
+            )}
           </div>
         </div>
 
@@ -164,7 +164,8 @@ export default function ReadingPage() {
             </motion.div>
           )}
         </AnimatePresence>
-      </main>
+      </motion.main>
+      </AnimatePresence>
     </motion.div>
   );
 }
