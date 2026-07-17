@@ -26,15 +26,13 @@ export default function TopBar() {
       <header className="w-full bg-tzipur-cream text-tzipur-brown h-16 px-4 flex items-center justify-between z-40 relative shadow-sm border-b border-tzipur-border shrink-0">
         {/* Right side (RTL Start) */}
         <div className="flex items-center z-10 w-12">
-          {showBack && (
-            <button
-              onClick={() => navigate(-1)}
-              className="p-2 -m-2 text-tzipur-muted hover:text-tzipur-brown transition-colors"
-              aria-label="Back"
-            >
-              <ArrowRight size={24} />
-            </button>
-          )}
+          <button
+            onClick={toggleMenu}
+            className="p-2 -m-2 text-tzipur-muted hover:text-tzipur-brown transition-colors"
+            aria-label="Menu"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
 
         {/* Center */}
@@ -49,13 +47,15 @@ export default function TopBar() {
 
         {/* Left side (RTL End) */}
         <div className="flex items-center justify-end z-10 w-12">
-          <button
-            onClick={toggleMenu}
-            className="p-2 -m-2 text-tzipur-muted hover:text-tzipur-brown transition-colors"
-            aria-label="Menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {showBack && (
+            <button
+              onClick={() => navigate(-1)}
+              className="p-2 -m-2 text-tzipur-muted hover:text-tzipur-brown transition-colors"
+              aria-label="Back"
+            >
+              <ArrowRight size={24} />
+            </button>
+          )}
         </div>
       </header>
 
