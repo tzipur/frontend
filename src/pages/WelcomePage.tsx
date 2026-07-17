@@ -30,7 +30,7 @@ export default function WelcomePage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="flex flex-col items-center justify-center min-h-[100dvh] p-6 text-center"
+      className="flex flex-col items-center justify-center h-full p-6 text-center"
     >
       {/* Logo / Lottie placeholder */}
       <motion.div

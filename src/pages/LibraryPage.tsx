@@ -52,7 +52,7 @@ export default function LibraryPage() {
 
   if (stories.length === 0) {
     return (
-      <div className="min-h-[100dvh] flex flex-col">
+      <div className="h-full flex flex-col">
         <header className="flex items-center justify-between p-6 pb-4 bg-white shadow-sm border-b border-tzipur-border sticky top-0 z-10">
           <h1 className="font-serif text-2xl font-bold">הספרייה שלנו</h1>
         </header>
@@ -71,7 +71,7 @@ export default function LibraryPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] flex flex-col">
+    <div className="h-full flex flex-col">
       {/* Sticky Header */}
       <header className="flex items-center justify-between p-6 pb-4 bg-white shadow-sm border-b border-tzipur-border sticky top-0 z-10">
         <h1 className="font-serif text-2xl font-bold">הספרייה שלנו</h1>

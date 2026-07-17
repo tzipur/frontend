@@ -34,7 +34,7 @@ export default function ProfileSetupPage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="min-h-[100dvh] flex flex-col p-6"
+      className="h-full flex flex-col p-6"
     >
       {/* Header */}
       <header className="flex items-center justify-between py-4 mb-6">
