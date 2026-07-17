@@ -126,10 +126,12 @@ export default function ReadingPage() {
             <ChevronLeft size={28} strokeWidth={2} />
           </button>
 
-          {/* Page Number (Centered bottom) */}
+            {/* Page Number (Centered bottom) */}
+            {!isLastPage && (
           <span className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 text-tzipur-muted/60 font-sans font-medium text-sm">
             {currentPageIndex + 1}
-          </span>
+            </span>
+            )}
 
           {/* Story Text */}
           <div className="flex-1 w-full flex items-center justify-center text-center px-4 relative z-0 pointer-events-none [perspective:1200px]">
@@ -145,7 +147,7 @@ export default function ReadingPage() {
           </div>
         </div>
 
-        {/* Footer — Actions (Only on last page) */}
+        {/* Actions (Only on last page) */}
         <AnimatePresence>
           {isLastPage && (
             <motion.div 
@@ -154,6 +156,7 @@ export default function ReadingPage() {
               exit={{ opacity: 0, height: 0, marginTop: 0 }}
               className="flex flex-col items-center gap-3 overflow-hidden shrink-0 pb-12 z-20 relative"
             >
+              <p className="text-tzipur-sky font-medium">הסוף...</p>
               <p className="text-tzipur-sky font-medium">מקווים שנהניתם מהסיפור!</p>
               <button
                 onClick={() => navigate('/library')}
