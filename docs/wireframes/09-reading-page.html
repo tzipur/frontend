@@ -1,0 +1,74 @@
+<!-- docs/wireframes/09-reading-page.html -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tzipur - Reading Screen Blueprint</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Assume Tailwind config from 02-design-system-tokens.html is applied here -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Heebo:wght@400;500;600&display=swap');
+    body { background-color: #FDFBF7; font-family: 'Heebo', sans-serif; color: #4A3F35; }
+    .font-serif { font-family: 'Frank Ruhl Libre', serif; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-hidden">
+  
+  <!-- Top: Title Area -->
+  <header class="w-full text-center py-5 z-10 shrink-0">
+    <h1 class="font-serif text-3xl font-bold tracking-tight">הַסִּפּוּר שֶׁל דֹּב</h1>
+  </header>
+
+  <!-- Middle: Horizontal Image Container -->
+  <!-- Negative margin pulls it up slightly under the title, z-0 pushes it behind the bottom panel -->
+  <div class="w-full h-56 md:h-72 px-4 z-0 -mt-2 shrink-0">
+    <div class="w-full h-full bg-[#F4EBE1] rounded-2xl shadow-inner border border-[#E8DED1] flex items-center justify-center overflow-hidden">
+      <span class="text-[#A39B90] text-sm font-medium">Illustration Placeholder</span>
+    </div>
+  </div>
+
+  <!-- Bottom: Raised Text Panel -->
+  <!-- Extends to bottom, overlaps the image with a negative top margin -->
+  <main class="flex-1 bg-white rounded-t-[36px] shadow-[0_-12px_40px_-15px_rgba(74,63,53,0.15)] mt-[-24px] z-20 relative px-4 pt-10 pb-8 flex flex-col justify-between border-t border-[#E8DED1]">
+    
+    <!-- Page Navigation & Text -->
+    <div class="flex items-center justify-between flex-1">
+      
+      <!-- Right Arrow (Next page in RTL) -->
+      <button class="w-12 h-12 shrink-0 flex items-center justify-center rounded-full bg-[#FDFBF7] text-[#4A3F35] shadow-sm border border-[#E8DED1] hover:bg-[#F4EBE1] transition">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </button>
+
+      <!-- The Story Page Text -->
+      <div class="flex-1 px-4 text-center">
+        <p class="font-serif text-2xl md:text-3xl leading-loose font-medium">
+          תֹּם, נִכָּר שֶׁדֹּב אַבָּא אוֹהֵב אוֹתְךָ הֲמוֹן.<br>
+          דֹּב אַבָּא סִפֵּר שֶׁהַלֵּב שֶׁלּוֹ דָּפַק חָזָק כְּשֶׁהָיָה קָשֶׁה לוֹ לִנְשֹׁם.
+        </p>
+      </div>
+
+      <!-- Left Arrow (Previous page in RTL) -->
+      <!-- Opacity-50 implies disabled on the first page -->
+      <button class="w-12 h-12 shrink-0 flex items-center justify-center rounded-full bg-[#FDFBF7] text-[#4A3F35] shadow-sm border border-[#E8DED1] hover:bg-[#F4EBE1] transition opacity-50 cursor-not-allowed">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+      </button>
+      
+    </div>
+
+    <!-- Footer: Actions & Page Counter -->
+    <div class="mt-8 px-2 flex justify-between items-end shrink-0">
+      <button class="text-sm font-medium text-[#5B93B5] hover:underline bg-transparent border-0 p-0 cursor-pointer">
+        שמירת הסיפור לאוסף
+      </button>
+      
+      <span class="text-[#A39B90] font-medium text-lg font-sans" dir="ltr">
+        1 / 6
+      </span>
+    </div>
+    
+  </main>
+</body>
+</html>
+
+<!-- Further instructions: Explicitly swap the arrow SVG directions in the HTML so the Left Arrow triggers Next, and the Right Arrow triggers Previous. -->

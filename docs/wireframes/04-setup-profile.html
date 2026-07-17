@@ -1,0 +1,58 @@
+<!-- docs/wireframes/04-setup-profile.html -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Tzipur - Setup Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Same Tailwind config & fonts applied -->
+</head>
+<body class="min-h-screen flex flex-col p-6 bg-[#FDFBF7] text-[#4A3F35]">
+
+  <header class="flex items-center justify-between py-4 mb-6">
+    <h1 class="font-serif text-2xl font-bold">הפרופיל שלנו</h1>
+    <button class="text-[#A39B90] hover:text-[#4A3F35]">✕</button>
+  </header>
+
+  <main class="flex-1 space-y-8 max-w-md mx-auto w-full">
+    
+    <!-- Name Input -->
+    <div class="space-y-2">
+      <label class="text-sm font-medium text-[#A39B90]">כינוי עבור הילד/ה</label>
+      <input type="text" placeholder="לדוגמה: רוני או רונרון" class="w-full bg-white border border-[#E8DED1] rounded-xl px-4 py-3 focus:outline-none focus:border-[#5B93B5] focus:ring-1 focus:ring-[#5B93B5] transition">
+    </div>
+
+    <!-- Age Selector -->
+    <div class="space-y-2">
+      <label class="text-sm font-medium text-[#A39B90]">גיל</label>
+      <div class="flex flex-wrap gap-3">
+        <!-- Selected state example -->
+        <button class="w-12 h-12 rounded-full border-2 border-[#5B93B5] bg-[#D7E9F5] text-[#5B93B5] font-medium text-lg flex items-center justify-center">3</button>
+        <!-- Unselected state example -->
+        <button class="w-12 h-12 rounded-full border-2 border-[#E8DED1] bg-white text-[#A39B90] font-medium text-lg flex items-center justify-center hover:border-[#5B93B5] transition">4</button>
+        <button class="w-12 h-12 rounded-full border-2 border-[#E8DED1] bg-white text-[#A39B90] font-medium text-lg flex items-center justify-center hover:border-[#5B93B5] transition">5</button>
+      </div>
+    </div>
+
+    <!-- Animal Selector -->
+    <div class="space-y-2">
+      <label class="text-sm font-medium text-[#A39B90]">חיה אהובה (תלווה את הסיפור)</label>
+      <div class="grid grid-cols-5 gap-2">
+        <button class="aspect-square rounded-xl border-2 border-[#5B93B5] bg-[#D7E9F5] text-2xl flex items-center justify-center">🐻</button>
+        <button class="aspect-square rounded-xl border-2 border-[#E8DED1] bg-white text-2xl flex items-center justify-center hover:border-[#5B93B5] transition">🦊</button>
+        <button class="aspect-square rounded-xl border-2 border-[#E8DED1] bg-white text-2xl flex items-center justify-center hover:border-[#5B93B5] transition">🐰</button>
+        <button class="aspect-square rounded-xl border-2 border-[#E8DED1] bg-white text-2xl flex items-center justify-center hover:border-[#5B93B5] transition">🐦</button>
+        <button class="aspect-square rounded-xl border-2 border-[#E8DED1] bg-white text-2xl flex items-center justify-center hover:border-[#5B93B5] transition">🐢</button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="pt-6 pb-4 mt-auto">
+    <button class="w-full bg-[#5B93B5] text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:bg-opacity-90 transition">
+      שמירה והמשך
+    </button>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!-- docs/wireframes/06-loader-screen.html -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tzipur - Grounding Loader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&display=swap');
+    body { background-color: #FDFBF7; font-family: 'Heebo', sans-serif; color: #4A3F35; }
+    
+    /* 10-second breathing cycle: 4s expand, 6s contract */
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.8); opacity: 0.6; }
+      40% { transform: scale(1.2); opacity: 1; }
+    }
+    .animate-breathe {
+      animation: breathe 10s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden text-center">
+
+  <!-- Notification Status (Optional top banner) -->
+  <div class="absolute top-8 w-full px-6 flex justify-center">
+    <button class="bg-[#F4EBE1] text-[#5B93B5] text-sm px-4 py-2 rounded-full shadow-sm border border-[#E8DED1] flex items-center gap-2">
+      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>
+      נודיע לך כשהסיפור מוכן
+    </button>
+  </div>
+
+  <!-- The Breathing Element -->
+  <div class="relative w-48 h-48 flex items-center justify-center mb-12">
+    <!-- Outer glow -->
+    <div class="absolute inset-0 bg-[#D7E9F5] rounded-full animate-breathe blur-xl"></div>
+    <!-- Inner core -->
+    <div class="relative z-10 w-24 h-24 bg-[#5B93B5] rounded-full shadow-lg flex items-center justify-center animate-breathe">
+      <span class="text-white text-3xl">🐦</span>
+    </div>
+  </div>
+
+  <!-- Calming Copy -->
+  <h2 class="text-2xl font-medium mb-3">צִיפּוּר אוספת את המילים...</h2>
+  <p class="text-[#A39B90] text-lg max-w-[250px] leading-relaxed">
+    קחו נשימה עמוקה פנימה.<br>
+    הסיפור שלכם נכתב ברגעים אלו.
+  </p>
+
+  <!-- Progress indication (fake, but psychologically helpful) -->
+  <div class="w-48 h-1.5 bg-[#E8DED1] rounded-full mt-10 overflow-hidden">
+    <div class="h-full bg-[#5B93B5] rounded-full transition-all duration-1000 ease-linear" style="width: 30%"></div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!-- docs/wireframes/03-welcome-onboarding.html -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Tzipur - Welcome</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700&family=Heebo:wght@400;500;600&display=swap');
+    body { background-color: #FDFBF7; font-family: 'Heebo', sans-serif; color: #4A3F35; }
+    .font-serif { font-family: 'Frank Ruhl Libre', serif; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+
+  <!-- Lottie Animation / Logo Placeholder -->
+  <div class="w-40 h-40 mb-8 bg-[#F4EBE1] rounded-full flex items-center justify-center shadow-inner border border-[#E8DED1]">
+    <span class="text-[#A39B90] text-sm">Lottie Animation</span>
+  </div>
+
+  <h1 class="font-serif text-4xl font-bold mb-4 text-[#5B93B5]">צִיפּוּר</h1>
+  <p class="text-lg text-[#A39B90] mb-12 max-w-xs leading-relaxed">
+    הופכים רגעים קשים לסיפורים של חיבור. בואו נתחיל בסיפור אחד.
+  </p>
+
+  <div class="w-full max-w-sm space-y-4">
+    <!-- Primary: Go to Setup -->
+    <button class="w-full bg-[#5B93B5] text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:bg-opacity-90 transition">
+      התאמה אישית של הסיפור
+    </button>
+    
+    <!-- Secondary: Skip to Creation -->
+    <button class="w-full bg-transparent border-2 border-[#5B93B5] text-[#5B93B5] py-4 rounded-2xl font-medium text-lg hover:bg-[#F4EBE1] transition">
+      המשך כאורח/ת
+    </button>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!-- docs/wireframes/05-creation-input.html -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Tzipur - Creation Input</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex flex-col p-6 bg-[#FDFBF7] text-[#4A3F35]">
+
+  <header class="py-2 mb-6">
+    <h1 class="font-serif text-3xl font-bold">מה קרה היום?</h1>
+    <p class="text-[#A39B90] mt-1">בחרו אפשרות או ספרו במילים שלכם.</p>
+  </header>
+
+  <main class="flex-1 space-y-8 max-w-md mx-auto w-full">
+    
+    <!-- Fast Tracks Grid -->
+    <div class="grid grid-cols-2 gap-3">
+      <!-- Selected -->
+      <button class="bg-[#D7E9F5] border-2 border-[#5B93B5] text-[#5B93B5] rounded-2xl p-4 text-right flex flex-col gap-2 transition">
+        <span class="text-2xl">🌩️</span>
+        <span class="font-medium">כעס וצעקות</span>
+      </button>
+      <!-- Default -->
+      <button class="bg-white border-2 border-[#E8DED1] text-[#4A3F35] rounded-2xl p-4 text-right flex flex-col gap-2 hover:border-[#5B93B5] transition">
+        <span class="text-2xl">🌀</span>
+        <span class="font-medium">עומס חושי</span>
+      </button>
+      <button class="bg-white border-2 border-[#E8DED1] text-[#4A3F35] rounded-2xl p-4 text-right flex flex-col gap-2 hover:border-[#5B93B5] transition">
+        <span class="text-2xl">🌙</span>
+        <span class="font-medium">עייפות גדולה</span>
+      </button>
+      <button class="bg-white border-2 border-[#E8DED1] text-[#4A3F35] rounded-2xl p-4 text-right flex flex-col gap-2 hover:border-[#5B93B5] transition">
+        <span class="text-2xl">🍃</span>
+        <span class="font-medium">קושי בפרידה</span>
+      </button>
+    </div>
+
+    <div class="flex items-center gap-4 text-[#A39B90] text-sm">
+      <div class="flex-1 h-px bg-[#E8DED1]"></div>
+      <span>או</span>
+      <div class="flex-1 h-px bg-[#E8DED1]"></div>
+    </div>
+
+    <!-- Manual Input Area -->
+    <div class="relative">
+      <textarea 
+        placeholder="אפשר גם לכתוב כאן בכמה מילים..." 
+        class="w-full bg-white border border-[#E8DED1] rounded-2xl p-4 min-h-[120px] focus:outline-none focus:border-[#5B93B5] focus:ring-1 focus:ring-[#5B93B5] transition resize-none"></textarea>
+      
+      <!-- Voice Record Button (Disabled state for MVP) -->
+      <button class="absolute bottom-3 left-3 w-10 h-10 bg-[#F4EBE1] rounded-full flex items-center justify-center text-[#A39B90] opacity-50 cursor-not-allowed border border-[#E8DED1]">
+        🎤
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="pt-6 pb-4 mt-auto">
+    <button class="w-full bg-[#5B93B5] text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:bg-opacity-90 transition">
+      יצירת סיפור
+    </button>
+  </footer>
+
+</body>
+</html>
+
+<!-- Further instructions: Center the entire layout. Place a massive, prominent "Speak" button (microphone icon) above a clear "OR" divider, followed by the text input. -->

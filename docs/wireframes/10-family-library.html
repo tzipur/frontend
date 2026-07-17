@@ -1,0 +1,45 @@
+<!-- docs/wireframes/10-family-library.html -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Tzipur - Family Library</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex flex-col bg-[#FDFBF7] text-[#4A3F35]">
+
+  <header class="flex items-center justify-between p-6 pb-4 bg-white shadow-sm border-b border-[#E8DED1] sticky top-0 z-10">
+    <h1 class="font-serif text-2xl font-bold">הספרייה שלנו</h1>
+    <button class="w-10 h-10 bg-[#F4EBE1] rounded-full flex items-center justify-center text-[#5B93B5] font-bold text-xl">+</button>
+  </header>
+
+  <main class="flex-1 p-6">
+    <div class="grid grid-cols-2 gap-4">
+      
+      <!-- Story Card -->
+      <div class="flex flex-col gap-2 cursor-pointer group">
+        <div class="aspect-[3/4] bg-gradient-to-br from-[#D7E9F5] to-[#F4EBE1] rounded-2xl shadow-md border border-[#E8DED1] flex items-center justify-center p-4 text-center group-hover:shadow-lg transition">
+          <h3 class="font-serif font-bold text-lg text-[#5B93B5]">הַסִּפּוּר שֶׁל דֹּב</h3>
+        </div>
+        <div class="px-1">
+          <p class="font-medium text-sm">אתמול</p>
+          <p class="text-xs text-[#A39B90]">עבור תום • כעס וצעקות</p>
+        </div>
+      </div>
+
+      <!-- Story Card -->
+      <div class="flex flex-col gap-2 cursor-pointer group">
+        <div class="aspect-[3/4] bg-gradient-to-br from-[#F4EBE1] to-[#E8DED1] rounded-2xl shadow-md border border-[#E8DED1] flex items-center justify-center p-4 text-center group-hover:shadow-lg transition">
+          <h3 class="font-serif font-bold text-lg text-[#4A3F35]">הַשֶּׁקֶט שֶׁל הַלַּיְלָה</h3>
+        </div>
+        <div class="px-1">
+          <p class="font-medium text-sm">15.07.2026</p>
+          <p class="text-xs text-[#A39B90]">עבור יעל • עייפות גדולה</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</body>
+</html>
