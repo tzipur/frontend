@@ -70,6 +70,15 @@ export default function ReadingPage() {
     }
   };
 
+  const getFontSizeClass = (text: string) => {
+    const len = text.length;
+    if (len < 25) return 'text-4xl';
+    if (len < 50) return 'text-3xl leading-relaxed';
+    if (len < 80) return 'text-2xl leading-relaxed';
+    if (len < 120) return 'text-xl leading-loose';
+    return 'text-lg leading-loose';
+  };
+
   const pageVariants = {
     enter: (dir: number) => ({
       x: dir > 0 ? -80 : 80, // RTL: next slides from left, prev from right
@@ -89,7 +98,7 @@ export default function ReadingPage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-[100dvh] flex flex-col relative overflow-hidden"
+      className="h-full flex flex-col relative overflow-hidden overflow-y-auto pb-4"
     >
       {/* Header — Story Title */}
       <header className="w-full text-center py-5 z-10 shrink-0">
@@ -111,39 +120,10 @@ export default function ReadingPage() {
       </div>
 
       {/* Raised Text Panel */}
-      <main className="flex-1 bg-white rounded-t-[36px] shadow-[0_-12px_40px_-15px_rgba(74,63,53,0.15)] mt-[-24px] z-20 relative px-4 pt-10 pb-8 flex flex-col justify-between border-t border-tzipur-border">
+      <main className="flex-1 bg-white rounded-[36px] mb-2 mx-2 shadow-[0_12px_40px_-15px_rgba(74,63,53,0.15)] mt-[-24px] z-20 relative px-4 pt-10 pb-8 flex flex-col justify-between border border-tzipur-border">
         {/* Navigation + Text */}
         <div className="flex items-center justify-between flex-1">
-          {/* LEFT arrow = NEXT page (RTL) */}
-          <button
-            onClick={goNext}
-            disabled={isLastPage}
-            className={`w-12 h-12 shrink-0 flex items-center justify-center rounded-full bg-tzipur-cream text-tzipur-brown shadow-sm border border-tzipur-border hover:bg-tzipur-sand transition ${
-              isLastPage ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-          >
-            <ChevronLeft size={24} />
-          </button>
-
-          {/* Story Text */}
-          <div className="flex-1 px-4 text-center overflow-hidden min-h-[120px] flex items-center justify-center">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.p
-                key={currentPageIndex}
-                custom={direction}
-                variants={pageVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="font-serif text-xl leading-loose font-medium"
-              >
-                {currentPage?.text}
-              </motion.p>
-            </AnimatePresence>
-          </div>
-
-          {/* RIGHT arrow = PREVIOUS page (RTL) */}
+          {/* RIGHT arrow = PREVIOUS page (RTL) - First in DOM goes to Right */}
           <button
             onClick={goPrev}
             disabled={isFirstPage}
@@ -153,23 +133,63 @@ export default function ReadingPage() {
           >
             <ChevronRight size={24} />
           </button>
+
+          {/* Story Text */}
+          <div className="flex-1 px-4 text-center overflow-hidden min-h-[160px] flex items-center justify-center">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.p
+                key={currentPageIndex}
+                custom={direction}
+                variants={pageVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className={`font-serif font-medium ${getFontSizeClass(currentPage?.text || '')}`}
+              >
+                {currentPage?.text}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          {/* LEFT arrow = NEXT page (RTL) - Last in DOM goes to Left */}
+          <button
+            onClick={goNext}
+            disabled={isLastPage}
+            className={`w-12 h-12 shrink-0 flex items-center justify-center rounded-full bg-tzipur-cream text-tzipur-brown shadow-sm border border-tzipur-border hover:bg-tzipur-sand transition ${
+              isLastPage ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+          >
+            <ChevronLeft size={24} />
+          </button>
         </div>
 
         {/* Footer — Actions & Page Counter */}
-        <div className="mt-8 px-2 flex justify-between items-end shrink-0">
-          <button
-            onClick={() => navigate('/library')}
-            className="text-sm font-medium text-tzipur-sky hover:underline bg-transparent border-0 p-0 cursor-pointer min-h-0"
-          >
-            שמירת הסיפור לאוסף
-          </button>
-
+        <div className="mt-8 flex flex-col items-center shrink-0 gap-4">
           <span
-            className="text-tzipur-muted font-medium text-lg font-sans"
-            dir="ltr"
+            className="text-tzipur-muted font-medium text-lg"
           >
-            {currentPageIndex + 1} / {totalPages}
+            עמוד {currentPageIndex + 1} מתוך {totalPages}
           </span>
+          
+          <AnimatePresence>
+            {isLastPage && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="flex flex-col items-center gap-3 overflow-hidden"
+              >
+                <p className="text-tzipur-sky font-medium">מקווים שנהניתם מהסיפור!</p>
+                <button
+                  onClick={() => navigate('/library')}
+                  className="bg-tzipur-sky text-white py-3 px-8 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"
+                >
+                  שמירת הסיפור לאוסף
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
     </motion.div>
