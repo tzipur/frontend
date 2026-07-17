@@ -11,53 +11,34 @@
  */
 export function paginateChapterText(
   content: string,
-  maxChars: number = 120
+  maxWords: number = 20
 ): string[] {
-  const trimmed = content.trim();
-  if (trimmed.length === 0) return [];
-  if (trimmed.length <= maxChars) return [trimmed];
+  const words = content.trim().split(/\s+/);
+  if (words.length === 0) return [];
 
   const pages: string[] = [];
-  let remaining = trimmed;
+  let currentIndex = 0;
 
-  while (remaining.length > 0) {
-    if (remaining.length <= maxChars) {
-      pages.push(remaining.trim());
+  while (currentIndex < words.length) {
+    let endIndex = currentIndex + maxWords;
+
+    if (endIndex >= words.length) {
+      pages.push(words.slice(currentIndex).join(' '));
       break;
     }
 
-    const window = remaining.slice(0, maxChars);
-
-    // Try to find the last sentence boundary within the window
-    const sentenceBoundaries = /[.,?!׃،؛]/g;
-    let lastBoundaryIndex = -1;
-    let match: RegExpExecArray | null;
-
-    while ((match = sentenceBoundaries.exec(window)) !== null) {
-      lastBoundaryIndex = match.index;
-    }
-
-    let splitIndex: number;
-
-    if (lastBoundaryIndex > 0) {
-      // Split after the sentence boundary character
-      splitIndex = lastBoundaryIndex + 1;
-    } else {
-      // No sentence boundary found — split at the last space
-      const lastSpaceIndex = window.lastIndexOf(' ');
-      if (lastSpaceIndex > 0) {
-        splitIndex = lastSpaceIndex;
-      } else {
-        // No space found at all — force split at maxChars (shouldn't happen with real text)
-        splitIndex = maxChars;
+    // Try to find a sentence boundary within the last 15 words of this chunk
+    let splitIndex = endIndex;
+    for (let i = endIndex - 1; i >= currentIndex + 15; i--) {
+      const word = words[i];
+      if (/[.,?!׃،؛]$/.test(word)) {
+        splitIndex = i + 1;
+        break;
       }
     }
 
-    const page = remaining.slice(0, splitIndex).trim();
-    if (page.length > 0) {
-      pages.push(page);
-    }
-    remaining = remaining.slice(splitIndex).trim();
+    pages.push(words.slice(currentIndex, splitIndex).join(' '));
+    currentIndex = splitIndex;
   }
 
   return pages;

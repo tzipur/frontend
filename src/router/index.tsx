@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
-import WelcomePage from '../pages/WelcomePage';
-import ProfileSetupPage from '../pages/ProfileSetupPage';
-import CreationPage from '../pages/CreationPage';
-import ReadingPage from '../pages/ReadingPage';
-import LibraryPage from '../pages/LibraryPage';
+import WelcomePage from '../pages/Welcome';
+import ProfileSetupPage from '../pages/ProfileSetup';
+import CreationPage from '../pages/Creation';
+import ReadingPage from '../pages/Reading';
+import LibraryPage from '../pages/Library';
 
 export const router = createBrowserRouter([
   {

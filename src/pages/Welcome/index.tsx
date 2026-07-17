@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import logoSrc from '../assets/tzipur_logo.png';
+import logoSrc from '../../assets/tzipur_logo.png';
 
 const containerVariants = {
   hidden: { opacity: 0 },

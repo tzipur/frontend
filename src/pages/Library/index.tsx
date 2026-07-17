@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Plus, BookOpen } from 'lucide-react';
-import { mockStories, mockChildProfiles } from '../lib/mockData';
+import { mockStories, mockChildProfiles } from '../../lib/mockData';
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);

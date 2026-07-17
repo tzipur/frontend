@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Mic } from 'lucide-react';
-import LoaderScreen from '../components/LoaderScreen';
+import LoaderScreen from './components/LoaderScreen';
 
 const fastTracks = [
   { id: 'anger', emoji: '🌩️', label: 'כעס וצעקות' },
