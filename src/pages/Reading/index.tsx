@@ -70,6 +70,20 @@ export default function ReadingPage() {
         {/* Navigation + Text Container */}
         <div className="relative flex-1 flex flex-col w-full px-2 overflow-hidden pb-12">
           
+          {/* INVISIBLE TAP ZONES for page turning */}
+          {!isFirstPage && (
+            <div 
+              className="absolute inset-y-0 start-0 w-1/3 z-30 cursor-pointer" 
+              onClick={goPrev} 
+            />
+          )}
+          {!isLastPage && (
+            <div 
+              className="absolute inset-y-0 end-0 w-1/3 z-30 cursor-pointer" 
+              onClick={goNext} 
+            />
+          )}
+
           {/* RIGHT arrow = PREVIOUS page (RTL Start edge, bottom) */}
           <button
             onClick={goPrev}
@@ -98,7 +112,7 @@ export default function ReadingPage() {
           </span>
 
           {/* Story Text */}
-          <div className="flex-1 w-full flex items-center justify-center text-center px-4 relative z-0">
+          <div className="flex-1 w-full flex items-center justify-center text-center px-4 relative z-0 pointer-events-none">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentPageIndex}

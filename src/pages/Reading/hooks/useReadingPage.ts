@@ -80,11 +80,11 @@ export function useReadingPage(): UseReadingPageResult {
 
   const getFontSizeClass = (text: string) => {
     const len = text.length;
-    if (len < 25) return 'text-5xl leading-relaxed';
-    if (len < 50) return 'text-4xl leading-relaxed';
-    if (len < 80) return 'text-3xl leading-relaxed';
-    if (len < 120) return 'text-2xl leading-[1.8]';
-    return 'text-2xl leading-[1.8]';
+    if (len < 25) return 'text-6xl leading-relaxed';
+    if (len < 50) return 'text-5xl leading-relaxed';
+    if (len < 80) return 'text-4xl leading-relaxed';
+    if (len < 120) return 'text-3xl leading-relaxed';
+    return 'text-3xl leading-relaxed';
   };
 
   return {
