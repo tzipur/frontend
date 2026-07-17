@@ -92,7 +92,9 @@ export default function OnboardingScreen() {
           </button>
           <button
             onClick={handleFinish}
-            className="w-full text-[#A39B90] py-3 rounded-2xl font-medium hover:bg-[#F4EBE1] transition"
+            className={`w-full text-[#A39B90] py-3 rounded-2xl font-medium hover:bg-[#F4EBE1] transition ${
+              activeIndex === slides.length - 1 ? 'invisible pointer-events-none' : ''
+            }`}
           >
             דילוג
           </button>
