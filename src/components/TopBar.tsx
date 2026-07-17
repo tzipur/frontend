@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { ArrowRight, Menu, X, Home, PlusCircle, BookOpen } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Menu, X, Home, PlusCircle, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoSrc from '../assets/tzipur_logo.png';
 
@@ -53,7 +53,8 @@ export default function TopBar() {
               className="p-2 -m-2 text-tzipur-muted hover:text-tzipur-brown transition-colors"
               aria-label="Back"
             >
-              <ArrowRight size={24} />
+              <ArrowLeft size={24} className="hidden rtl:block" />
+              <ArrowRight size={24} className="hidden ltr:block" />
             </button>
           )}
         </div>
