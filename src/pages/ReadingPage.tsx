@@ -4,10 +4,12 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { mockStories } from '../lib/mockData';
 import { paginateChapterText } from '../lib/paginateChapterText';
+import heroSrc from '../assets/bears-story-hero.jpeg';
 
 interface PageInfo {
   text: string;
   chapterTitle: string;
+  isTitlePage?: boolean;
 }
 
 export default function ReadingPage() {
@@ -23,6 +25,12 @@ export default function ReadingPage() {
     if (!story) return [];
     const result: PageInfo[] = [];
     for (const chapter of story.chapters) {
+      result.push({
+        text: chapter.title,
+        chapterTitle: chapter.title,
+        isTitlePage: true,
+      });
+
       const pageTexts = paginateChapterText(chapter.content);
       for (const text of pageTexts) {
         result.push({
@@ -98,29 +106,20 @@ export default function ReadingPage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="h-full flex flex-col relative overflow-hidden overflow-y-auto pb-4"
+      className="h-full flex flex-1 flex-col relative overflow-hidden overflow-y-auto pb-4 bg-tzipur-cream"
     >
-      {/* Header — Story Title */}
-      <header className="w-full text-center py-5 z-10 shrink-0">
-        <h1 className="font-serif text-3xl font-bold tracking-tight leading-relaxed">
+      {/* First Panel: Title and Image */}
+      <div className="bg-tzipur-sand rounded-b-[40px] pb-10 pt-4 px-6 shadow-sm relative z-10 flex flex-col items-center shrink-0">
+        <h1 className="font-serif text-3xl font-bold tracking-tight leading-relaxed mb-4 text-tzipur-brown text-center">
           {story.title}
         </h1>
-        <p className="text-sm text-tzipur-muted mt-1">
-          {currentPage?.chapterTitle}
-        </p>
-      </header>
-
-      {/* Illustration Placeholder */}
-      <div className="w-full h-56 px-4 z-0 -mt-2 shrink-0">
-        <div className="w-full h-full bg-tzipur-sand rounded-2xl shadow-inner border border-tzipur-border flex items-center justify-center overflow-hidden">
-          <span className="text-tzipur-muted text-sm font-medium">
-            איור הסיפור
-          </span>
+        <div className="w-full h-56 rounded-2xl overflow-hidden shadow-inner border border-tzipur-border">
+          <img src={heroSrc} className="w-full h-full object-cover" alt="Story Illustration" />
         </div>
       </div>
 
-      {/* Raised Text Panel */}
-      <main className="flex-1 bg-white rounded-[36px] mb-2 mx-2 shadow-[0_12px_40px_-15px_rgba(74,63,53,0.15)] mt-[-24px] z-20 relative px-4 pt-10 pb-8 flex flex-col justify-between border border-tzipur-border">
+      {/* Second Panel: Raised Text Area */}
+      <main className="flex-1 bg-white rounded-[40px] mb-2 mx-2 shadow-[0_-12px_40px_-15px_rgba(74,63,53,0.15),0_12px_40px_-15px_rgba(74,63,53,0.15)] mt-[-32px] z-20 relative px-4 pt-10 pb-8 flex flex-col justify-between border border-tzipur-border">
         {/* Navigation + Text */}
         <div className="flex items-center justify-between flex-1">
           {/* RIGHT arrow = PREVIOUS page (RTL) - First in DOM goes to Right */}
@@ -137,7 +136,7 @@ export default function ReadingPage() {
           {/* Story Text */}
           <div className="flex-1 px-4 text-center overflow-hidden min-h-[160px] flex items-center justify-center">
             <AnimatePresence mode="wait" custom={direction}>
-              <motion.p
+              <motion.div
                 key={currentPageIndex}
                 custom={direction}
                 variants={pageVariants}
@@ -145,10 +144,18 @@ export default function ReadingPage() {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className={`font-serif font-medium ${getFontSizeClass(currentPage?.text || '')}`}
+                className="w-full h-full flex flex-col items-center justify-center"
               >
-                {currentPage?.text}
-              </motion.p>
+                {currentPage?.isTitlePage ? (
+                  <h2 className="font-serif text-3xl font-bold text-tzipur-sky">
+                    {currentPage.text}
+                  </h2>
+                ) : (
+                  <p className={`font-serif font-medium ${getFontSizeClass(currentPage?.text || '')}`}>
+                    {currentPage?.text}
+                  </p>
+                )}
+              </motion.div>
             </AnimatePresence>
           </div>
 
@@ -165,11 +172,10 @@ export default function ReadingPage() {
         </div>
 
         {/* Footer — Actions & Page Counter */}
-        <div className="mt-8 flex flex-col items-center shrink-0 gap-4">
-          <span
-            className="text-tzipur-muted font-medium text-lg"
-          >
-            עמוד {currentPageIndex + 1} מתוך {totalPages}
+        <div className="mt-8 flex flex-col items-center shrink-0 min-h-[48px] justify-end">
+          {/* Page Number (RTL: Bottom Right, LTR: Bottom Left) */}
+          <span className="absolute bottom-6 start-8 text-tzipur-muted font-sans font-medium text-lg">
+            {currentPageIndex + 1}
           </span>
           
           <AnimatePresence>
