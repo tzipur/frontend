@@ -1,17 +1,88 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' as const },
+  },
+};
 
 export default function WelcomePage() {
+  const navigate = useNavigate();
+
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="flex flex-col items-center justify-center min-h-[100dvh] p-8 text-center"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col items-center justify-center min-h-[100dvh] p-6 text-center"
     >
-      <h1 className="font-serif text-4xl text-tzipur-brown mb-4">ציפור</h1>
-      <p className="text-tzipur-muted text-lg">
-        ברוכים הבאים
-      </p>
+      {/* Logo / Lottie placeholder */}
+      <motion.div
+        variants={itemVariants}
+        animate={{
+          y: [0, -8, 0],
+        }}
+        transition={{
+          y: {
+            duration: 3,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          },
+        }}
+        className="w-40 h-40 mb-8 bg-tzipur-sand rounded-full flex items-center justify-center shadow-inner border border-tzipur-border"
+      >
+        <span className="text-5xl">🐦</span>
+      </motion.div>
+
+      {/* Title */}
+      <motion.h1
+        variants={itemVariants}
+        className="font-serif text-4xl font-bold mb-4 text-tzipur-sky leading-relaxed"
+      >
+        צִיפּוּר
+      </motion.h1>
+
+      {/* Subtitle */}
+      <motion.p
+        variants={itemVariants}
+        className="text-lg text-tzipur-muted mb-12 max-w-xs leading-relaxed"
+      >
+        הופכים רגעים קשים לסיפורים של חיבור.
+        <br />
+        בואו נתחיל בסיפור אחד.
+      </motion.p>
+
+      {/* Buttons */}
+      <motion.div variants={itemVariants} className="w-full max-w-sm space-y-4">
+        <button
+          onClick={() => navigate('/profile')}
+          className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"
+        >
+          התאמה אישית של הסיפור
+        </button>
+
+        <button
+          onClick={() => navigate('/create')}
+          className="w-full bg-transparent border-2 border-tzipur-sky text-tzipur-sky py-4 rounded-2xl font-medium text-lg hover:bg-tzipur-sand transition-colors active:scale-[0.98] transition-transform"
+        >
+          המשך כאורח/ת
+        </button>
+      </motion.div>
     </motion.div>
   );
 }
