@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { ArrowRight, Menu, X, Home, PlusCircle, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import logoSrc from '../assets/tzipur_logo.png';
 
 export default function TopBar() {
   const navigate = useNavigate();
@@ -22,9 +23,10 @@ export default function TopBar() {
 
   return (
     <>
-      <header className="w-full bg-tzipur-cream text-tzipur-brown p-4 flex items-center justify-between z-40 relative shadow-sm border-b border-tzipur-border shrink-0">
-        <div className="flex items-center gap-4">
-          {showBack ? (
+      <header className="w-full bg-tzipur-cream text-tzipur-brown h-16 px-4 flex items-center justify-between z-40 relative shadow-sm border-b border-tzipur-border shrink-0">
+        {/* Right side (RTL Start) */}
+        <div className="flex items-center z-10 w-12">
+          {showBack && (
             <button
               onClick={() => navigate(-1)}
               className="p-2 -m-2 text-tzipur-muted hover:text-tzipur-brown transition-colors"
@@ -32,24 +34,29 @@ export default function TopBar() {
             >
               <ArrowRight size={24} />
             </button>
-          ) : (
-            <div className="w-6" /> // Spacer
           )}
-          <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
-            <span className="text-2xl">🐦</span>
-            <span className="font-serif font-bold text-xl text-tzipur-sky">
+        </div>
+
+        {/* Center */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <Link to="/" className="flex items-center gap-2 pointer-events-auto" onClick={closeMenu}>
+            <img src={logoSrc} alt="Tzipur Logo" className="w-8 h-8 object-contain" />
+            <span className="font-serif font-bold text-2xl text-tzipur-sky">
               ציפור
             </span>
           </Link>
         </div>
 
-        <button
-          onClick={toggleMenu}
-          className="p-2 -m-2 text-tzipur-muted hover:text-tzipur-brown transition-colors"
-          aria-label="Menu"
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Left side (RTL End) */}
+        <div className="flex items-center justify-end z-10 w-12">
+          <button
+            onClick={toggleMenu}
+            className="p-2 -m-2 text-tzipur-muted hover:text-tzipur-brown transition-colors"
+            aria-label="Menu"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </header>
 
       {/* Dropdown Menu */}

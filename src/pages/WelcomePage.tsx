@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import logoSrc from '../assets/tzipur_logo.png';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -44,9 +45,9 @@ export default function WelcomePage() {
             ease: 'easeInOut',
           },
         }}
-        className="w-40 h-40 mb-8 bg-tzipur-sand rounded-full flex items-center justify-center shadow-inner border border-tzipur-border"
+        className="w-40 h-40 mb-8 bg-tzipur-sand rounded-full flex items-center justify-center shadow-inner border border-tzipur-border p-4"
       >
-        <span className="text-5xl">🐦</span>
+        <img src={logoSrc} alt="Tzipur Logo" className="w-full h-full object-contain" />
       </motion.div>
 
       {/* Title */}
