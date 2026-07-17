@@ -7,8 +7,7 @@ import ReadingPage from '../pages/Reading';
 import LibraryPage from '../pages/Library';
 import OnboardingScreen from '../pages/OnboardingScreen';
 
-let hasSeenOnboarding = localStorage.getItem('tzipur_has_seen_onboarding') === 'true';
-hasSeenOnboarding = false; // For testing purposes, always show onboarding
+const hasSeenOnboarding = localStorage.getItem('tzipur_has_seen_onboarding') === 'true';
 
 export const router = createBrowserRouter([
   {
