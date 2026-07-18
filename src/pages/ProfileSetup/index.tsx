@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
 const ages = [2, 3, 4, 5, 6, 7, 8];
@@ -24,6 +25,7 @@ const containerVariants = {
 
 export default function ProfileSetupPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [nickname, setNickname] = useState('');
   const [selectedAge, setSelectedAge] = useState<number | null>(null);
   const [selectedAnimal, setSelectedAnimal] = useState<string | null>(null);
@@ -38,7 +40,7 @@ export default function ProfileSetupPage() {
     >
       {/* Header */}
       <header className="flex items-center justify-between py-4 mb-6">
-        <h1 className="font-serif text-2xl font-bold">הפרופיל שלנו</h1>
+        <h1 className="font-serif text-2xl font-bold">{t('profile.title')}</h1>
         <button
           onClick={() => navigate('/')}
           className="w-10 h-10 flex items-center justify-center rounded-full text-tzipur-muted hover:text-tzipur-brown hover:bg-tzipur-sand transition-colors"
@@ -52,11 +54,11 @@ export default function ProfileSetupPage() {
         {/* Nickname Input */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-tzipur-muted">
-            כינוי עבור הילד/ה
+            {t('profile.nickname.label')}
           </label>
           <input
             type="text"
-            placeholder="לדוגמה: רוני או רונרון"
+            placeholder={t('profile.nickname.placeholder')}
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             className="w-full bg-white border border-tzipur-border rounded-xl px-4 py-3 focus:outline-none focus:border-tzipur-sky focus:ring-1 focus:ring-tzipur-sky transition text-tzipur-brown placeholder:text-tzipur-muted/60"
@@ -65,7 +67,7 @@ export default function ProfileSetupPage() {
 
         {/* Age Selector */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-tzipur-muted">גיל</label>
+          <label className="text-sm font-medium text-tzipur-muted">{t('profile.age.label')}</label>
           <div className="flex flex-wrap gap-3">
             {ages.map((age) => (
               <button
@@ -86,7 +88,7 @@ export default function ProfileSetupPage() {
         {/* Animal Selector */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-tzipur-muted">
-            חיה אהובה (תלווה את הסיפור)
+            {t('profile.animal.label')}
           </label>
           <div className="grid grid-cols-5 gap-2">
             {animals.map((animal) => (
@@ -108,11 +110,11 @@ export default function ProfileSetupPage() {
         {/* Hobby Input */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-tzipur-muted">
-            תחביב
+            {t('profile.hobby.label')}
           </label>
           <input
             type="text"
-            placeholder="לדוגמה: ציור, כדורגל, ריקוד"
+            placeholder={t('profile.hobby.placeholder')}
             value={hobby}
             onChange={(e) => setHobby(e.target.value)}
             className="w-full bg-white border border-tzipur-border rounded-xl px-4 py-3 focus:outline-none focus:border-tzipur-sky focus:ring-1 focus:ring-tzipur-sky transition text-tzipur-brown placeholder:text-tzipur-muted/60"
@@ -126,7 +128,7 @@ export default function ProfileSetupPage() {
           onClick={() => navigate('/create')}
           className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"
         >
-          שמירה והמשך
+          {t('profile.save')}
         </button>
       </footer>
     </motion.div>

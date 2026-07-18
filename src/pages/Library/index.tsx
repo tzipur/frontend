@@ -1,29 +1,9 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Plus, BookOpen } from 'lucide-react';
 import { mockStories, mockChildProfiles } from '../../lib/mockData';
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) return 'היום';
-  if (diffDays === 1) return 'אתמול';
-  if (diffDays < 7) return `לפני ${diffDays} ימים`;
-
-  return date.toLocaleDateString('he-IL', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
-}
-
-function getChildNickname(childProfileId: string): string {
-  const child = mockChildProfiles.find((c) => c.id === childProfileId);
-  return child?.nickname ?? 'ילד/ה';
-}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -48,22 +28,46 @@ const cardVariants = {
 
 export default function LibraryPage() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const stories = mockStories;
+
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return t('library.dates.today');
+    if (diffDays === 1) return t('library.dates.yesterday');
+    if (diffDays < 7) return t('library.dates.daysAgo', { count: diffDays });
+
+    const localeStr = i18n.language === 'he' ? 'he-IL' : 'en-US';
+    return date.toLocaleDateString(localeStr, {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  }
+
+  function getChildNickname(childProfileId: string): string {
+    const child = mockChildProfiles.find((c) => c.id === childProfileId);
+    return child?.nickname ?? t('library.defaultChild');
+  }
 
   if (stories.length === 0) {
     return (
       <div className="h-full flex flex-col">
         <header className="flex items-center justify-between p-6 pb-4 bg-white shadow-sm border-b border-tzipur-border sticky top-0 z-10">
-          <h1 className="font-serif text-2xl font-bold">הספרייה שלנו</h1>
+          <h1 className="font-serif text-2xl font-bold">{t('library.title')}</h1>
         </header>
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center gap-4">
           <BookOpen size={64} className="text-tzipur-muted" />
-          <p className="text-xl text-tzipur-muted">עדיין אין סיפורים</p>
+          <p className="text-xl text-tzipur-muted">{t('library.empty.text')}</p>
           <button
             onClick={() => navigate('/create')}
             className="bg-tzipur-sky text-white py-3 px-8 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow"
           >
-            יצירת סיפור ראשון
+            {t('library.empty.create')}
           </button>
         </div>
       </div>
@@ -74,7 +78,7 @@ export default function LibraryPage() {
     <div className="h-full flex flex-col">
       {/* Sticky Header */}
       <header className="flex items-center justify-between p-6 pb-4 bg-white shadow-sm border-b border-tzipur-border sticky top-0 z-10">
-        <h1 className="font-serif text-2xl font-bold">הספרייה שלנו</h1>
+        <h1 className="font-serif text-2xl font-bold">{t('library.title')}</h1>
         <button
           onClick={() => navigate('/create')}
           className="w-10 h-10 bg-tzipur-sand rounded-full flex items-center justify-center text-tzipur-sky hover:bg-tzipur-border transition-colors"
@@ -117,8 +121,8 @@ export default function LibraryPage() {
                   {formatDate(story.createdAt)}
                 </p>
                 <p className="text-xs text-tzipur-muted">
-                  עבור {getChildNickname(story.childProfileId)} •{' '}
-                  {story.inputMethod === 'speak' ? 'דיבור' : 'כתיבה'}
+                  {t('library.meta.for')} {getChildNickname(story.childProfileId)} •{' '}
+                  {story.inputMethod === 'speak' ? t('library.meta.speak') : t('library.meta.write')}
                 </p>
               </div>
             </motion.div>

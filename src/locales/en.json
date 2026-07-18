@@ -1,0 +1,102 @@
+{
+  "welcome": {
+    "slides": [
+      {
+        "title": "Safe Sharing",
+        "text": "In challenging, sensitive moments, and even changes like moving house - Tzipur gives you a safe space to share what's happening. No judgment. No shame. Just you."
+      },
+      {
+        "title": "Tzipur turns it into a story",
+        "text": "With the help of AI, your sharing turns into a metaphorical story, tailored exactly to your child's age and emotional world."
+      },
+      {
+        "title": "Read together and connect",
+        "text": "You and your child read the story together - a moment of mutual understanding that strengthens the bond between you."
+      }
+    ],
+    "start": "Start",
+    "next": "Next",
+    "landing": {
+      "title": "Tzipur",
+      "subtitle": "Turning difficult moments into stories of connection.\nLet's start with one story.",
+      "personalize": "Personalize the story",
+      "guest": "Continue as guest"
+    }
+  },
+  "profile": {
+    "title": "Our Profile",
+    "nickname": {
+      "label": "Child's nickname",
+      "placeholder": "For example: Ronnie"
+    },
+    "age": {
+      "label": "Age"
+    },
+    "animal": {
+      "label": "Favorite animal (will join the story)"
+    },
+    "hobby": {
+      "label": "Hobby",
+      "placeholder": "For example: Drawing, football, dancing"
+    },
+    "save": "Save & Continue"
+  },
+  "creation": {
+    "title": "What happened today?",
+    "subtitle": "Choose an option or tell in your own words.",
+    "tracks": {
+      "anger": "Anger & yelling",
+      "sensory": "Sensory overload",
+      "fatigue": "Extreme fatigue",
+      "separation": "Separation difficulty"
+    },
+    "or": "OR",
+    "freeText": "You can also write here in a few words...",
+    "submit": "Create story",
+    "loader": {
+      "notification": "We will let you know when the story is ready",
+      "title": "Tzipur is gathering the words...",
+      "subtitle": "Take a deep breath in.\nYour story is being written right now."
+    }
+  },
+  "reading": {
+    "notFound": "Story not found",
+    "backHome": "Back to Home",
+    "end": {
+      "title": "The End...",
+      "subtitle": "We hope you enjoyed the story!",
+      "save": "Save story to library"
+    }
+  },
+  "library": {
+    "title": "Our Library",
+    "empty": {
+      "text": "No stories yet",
+      "create": "Create first story"
+    },
+    "meta": {
+      "for": "For",
+      "speak": "Speaking",
+      "write": "Writing"
+    },
+    "dates": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo": "{{count}} days ago"
+    },
+    "defaultChild": "Child"
+  },
+  "components": {
+    "topBar": {
+      "home": "Home",
+      "create": "Create Story",
+      "library": "Our Library"
+    },
+    "error": {
+      "title": "Oops, something went wrong...",
+      "message": "It seems an unexpected error occurred. We apologize for the inconvenience.",
+      "retry": "Try again",
+      "home": "Back to Home"
+    }
+  }
+}

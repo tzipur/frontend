@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import heroSrc from '../../assets/bears-story-hero.jpeg';
 import { useReadingPage } from './hooks/useReadingPage';
 
@@ -17,18 +18,19 @@ export default function ReadingPage() {
     getFontSizeClass,
     navigate,
   } = useReadingPage();
+  const { t } = useTranslation();
 
   if (!story) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[100dvh] p-8 text-center">
         <h1 className="font-serif text-2xl text-tzipur-brown mb-4">
-          הסיפור לא נמצא
+          {t('reading.notFound')}
         </h1>
         <Link
           to="/"
           className="text-tzipur-sky font-medium hover:underline"
         >
-          חזרה לדף הבית
+          {t('reading.backHome')}
         </Link>
       </div>
     );
@@ -156,13 +158,13 @@ export default function ReadingPage() {
               exit={{ opacity: 0, height: 0, marginTop: 0 }}
               className="flex flex-col items-center gap-3 overflow-hidden shrink-0 pb-12 z-20 relative"
             >
-              <p className="text-tzipur-sky font-medium">הסוף...</p>
-              <p className="text-tzipur-sky font-medium">מקווים שנהניתם מהסיפור!</p>
+              <p className="text-tzipur-sky font-medium">{t('reading.end.title')}</p>
+              <p className="text-tzipur-sky font-medium">{t('reading.end.subtitle')}</p>
               <button
                 onClick={() => navigate('/library')}
                 className="bg-tzipur-sky text-white py-3 px-8 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"
               >
-                שמירת הסיפור לאוסף
+                {t('reading.end.save')}
               </button>
             </motion.div>
           )}

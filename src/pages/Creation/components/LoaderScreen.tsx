@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Bell } from 'lucide-react';
 
 interface LoaderScreenProps {
@@ -6,6 +7,7 @@ interface LoaderScreenProps {
 }
 
 export default function LoaderScreen({ isVisible }: LoaderScreenProps) {
+  const { t } = useTranslation();
   return (
     <AnimatePresence>
       {isVisible && (
@@ -20,7 +22,7 @@ export default function LoaderScreen({ isVisible }: LoaderScreenProps) {
           <div className="absolute top-8 w-full px-6 flex justify-center">
             <div className="bg-tzipur-sand text-tzipur-sky text-sm px-4 py-2 rounded-full shadow-sm border border-tzipur-border flex items-center gap-2">
               <Bell size={16} />
-              <span>נודיע לך כשהסיפור מוכן</span>
+              <span>{t('creation.loader.notification')}</span>
             </div>
           </div>
 
@@ -52,12 +54,10 @@ export default function LoaderScreen({ isVisible }: LoaderScreenProps) {
 
           {/* Calming copy */}
           <h2 className="text-2xl font-medium mb-3">
-            צִיפּוּר אוספת את המילים...
+            {t('creation.loader.title')}
           </h2>
-          <p className="text-tzipur-muted text-lg max-w-[250px] leading-relaxed">
-            קחו נשימה עמוקה פנימה.
-            <br />
-            הסיפור שלכם נכתב ברגעים אלו.
+          <p className="text-tzipur-muted text-lg max-w-[250px] leading-relaxed whitespace-pre-line">
+            {t('creation.loader.subtitle')}
           </p>
 
           {/* Progress bar */}

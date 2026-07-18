@@ -1,9 +1,11 @@
 import { useRouteError, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
 
 export default function GlobalError() {
   const error = useRouteError() as Error;
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="max-w-md mx-auto min-h-[100dvh] flex flex-col items-center justify-center bg-[#FDFBF7] text-[#4A3F35] p-6 text-center" dir="rtl">
@@ -12,11 +14,11 @@ export default function GlobalError() {
       </div>
       
       <h1 className="font-serif text-3xl font-bold text-[#5B93B5] mb-4">
-        אופס, משהו השתבש...
+        {t('components.error.title')}
       </h1>
       
       <p className="text-[#A39B90] text-lg mb-8 max-w-[300px]">
-        {error?.message || "נראה שקרתה תקלה לא צפויה. אנחנו מצטערים על חוסר הנוחות."}
+        {error?.message || t('components.error.message')}
       </p>
 
       <div className="flex flex-col gap-4 w-full max-w-[280px]">
@@ -25,7 +27,7 @@ export default function GlobalError() {
           className="flex items-center justify-center gap-2 w-full bg-[#5B93B5] text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:bg-opacity-90 transition"
         >
           <RefreshCw size={20} />
-          <span>לנסות שוב</span>
+          <span>{t('components.error.retry')}</span>
         </button>
         
         <button
@@ -33,7 +35,7 @@ export default function GlobalError() {
           className="flex items-center justify-center gap-2 w-full bg-white text-[#5B93B5] border-2 border-[#5B93B5] py-4 rounded-2xl font-medium text-lg shadow-sm hover:bg-gray-50 transition"
         >
           <Home size={20} />
-          <span>חזרה לדף הבית</span>
+          <span>{t('components.error.home')}</span>
         </button>
       </div>
     </div>

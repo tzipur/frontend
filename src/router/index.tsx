@@ -6,7 +6,7 @@ import ProfileSetupPage from '../pages/ProfileSetup';
 import CreationPage from '../pages/Creation';
 import ReadingPage from '../pages/Reading';
 import LibraryPage from '../pages/Library';
-import Welcome from '../pages/Welcome';
+import HomePage from '../pages/HomePage';
 
 const getHasSeenOnboarding = () => {
   try {
@@ -24,18 +24,18 @@ export const router = createBrowserRouter([
     errorElement: <GlobalError />,
     children: [
       {
-        path: 'welcome',
-        element: <Welcome />,
-      },
-      {
         index: true,
-        element: <WelcomePage />,
+        element: <HomePage />,
         loader: () => {
           if (!getHasSeenOnboarding()) {
             return redirect('/welcome');
           }
           return null;
         },
+      },
+      {
+        path: 'welcome',
+        element: <WelcomePage />,
       },
       {
         path: 'profile',

@@ -1,89 +1,105 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logoSrc from '../../assets/tzipur_logo.png';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import type { Swiper as SwiperType } from 'swiper';
+import 'swiper/css';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-};
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: 'easeOut' as const },
-  },
-};
+import img1 from '../../assets/onboarding/1.jpeg';
+import img2 from '../../assets/onboarding/2.jpeg';
+import img3 from '../../assets/onboarding/3.jpeg';
 
-export default function WelcomePage() {
+const AUTOPLAY_DELAY_MS = 5000;
+
+const slideImages = [img1, img2, img3];
+
+import { useTranslation } from 'react-i18next';
+
+export default function Welcome() {
+  const { t } = useTranslation();
+  const tSlides = t('welcome.slides', { returnObjects: true }) as Array<{title: string, text: string}>;
+  const slides = tSlides.map((slide, i) => ({ ...slide, image: slideImages[i] }));
+
   const navigate = useNavigate();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [swiper, setSwiper] = useState<SwiperType | null>(null);
+
+  useEffect(() => {
+    let timeoutId: number;
+    if (swiper && activeIndex < slides.length - 1) {
+      timeoutId = window.setTimeout(() => {
+        swiper.slideNext();
+      }, AUTOPLAY_DELAY_MS);
+    }
+    return () => {
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [swiper, activeIndex]);
+
+  const handleFinish = () => {
+    try {
+      localStorage.setItem('tzipur_has_seen_onboarding', 'true');
+    } catch (e) {
+      console.warn('Failed to save onboarding state', e);
+    }
+    navigate('/', { replace: true });
+  };
+
+  const handleNext = () => {
+    if (activeIndex === slides.length - 1) {
+      handleFinish();
+    } else {
+      swiper?.slideNext();
+    }
+  };
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="flex flex-col items-center justify-between h-full p-6 text-center pb-12 pt-8"
-    >
-      {/* Logo / Lottie placeholder */}
-      <motion.div
-        variants={itemVariants}
-        animate={{
-          y: [0, -8, 0],
-        }}
-        transition={{
-          y: {
-            duration: 3,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          },
-        }}
-        className="w-40 h-40 mb-8 bg-tzipur-sand rounded-full flex items-center justify-center shadow-inner border border-tzipur-border p-4"
-      >
-        <img src={logoSrc} alt="Tzipur Logo" className="w-full h-full object-contain" />
-      </motion.div>
-
-      {/* Title */}
-      <motion.h1
-        variants={itemVariants}
-        className="font-serif text-4xl font-bold mb-4 text-tzipur-sky leading-relaxed"
-      >
-        צִיפּוּר
-      </motion.h1>
-
-      {/* Subtitle */}
-      <motion.p
-        variants={itemVariants}
-        className="text-lg text-tzipur-muted mb-12 max-w-xs leading-relaxed"
-      >
-        הופכים רגעים קשים לסיפורים של חיבור.
-        <br />
-        בואו נתחיל בסיפור אחד.
-      </motion.p>
-
-      {/* Buttons */}
-      <motion.div variants={itemVariants} className="w-full max-w-sm space-y-4 mt-auto">
-        <button
-          onClick={() => navigate('/profile')}
-          className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"
+    <div className="flex-1 flex flex-col relative bg-[#FDFBF7] text-[#4A3F35] overflow-hidden w-full h-full">
+      <main className="flex-1 relative flex flex-col mt-6">
+        <Swiper
+          className="w-full flex-1 flex"
+          onSwiper={setSwiper}
+          onSlideChange={(s) => setActiveIndex(s.activeIndex)}
+          dir="rtl"
         >
-          התאמה אישית של הסיפור
-        </button>
+          {slides.map((slide, index) => (
+            <SwiperSlide key={index} className="flex flex-col">
+              <div className="flex-1 flex flex-col items-center justify-center p-6 pt-2 text-center animate-fade-in">
+                <div className="w-64 h-64 sm:w-72 sm:h-72 mb-8 rounded-[40px] shadow-lg border border-[#E8DED1] flex items-center justify-center overflow-hidden bg-[#F4EBE1]">
+                  <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
+                </div>
+                
+                <h2 className="font-serif text-4xl font-bold text-[#5B93B5] mb-4">{slide.title}</h2>
+                <p className="text-[#A39B90] text-2xl leading-relaxed max-w-[320px]">
+                  {slide.text}
+                </p>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </main>
 
-        <button
-          onClick={() => navigate('/create')}
-          className="w-full bg-transparent border-2 border-tzipur-sky text-tzipur-sky py-4 rounded-2xl font-medium text-lg hover:bg-tzipur-sand transition-colors active:scale-[0.98] transition-transform"
-        >
-          המשך כאורח/ת
-        </button>
-      </motion.div>
-    </motion.div>
+      <footer className="p-6 pb-10 flex flex-col items-center gap-6">
+        <div className="flex gap-2.5">
+          {slides.map((_, index) => (
+            <div
+              key={index}
+              className={`h-2.5 rounded-full transition-all ${
+                activeIndex === index ? 'w-8 bg-[#5B93B5]' : 'w-2.5 bg-[#E8DED1]'
+              }`}
+            />
+          ))}
+        </div>
+
+        <div className="w-full flex flex-col gap-3 mt-4">
+          <button
+            onClick={handleNext}
+            className="w-full bg-[#5B93B5] text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:bg-opacity-90 transition"
+          >
+            {activeIndex === slides.length - 1 ? t('welcome.start') : t('welcome.next')}
+          </button>
+        </div>
+      </footer>
+    </div>
   );
 }

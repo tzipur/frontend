@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Menu, X, Home, PlusCircle, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import logoSrc from '../assets/tzipur_logo.png';
 
 export default function TopBar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Hide back button on the root page
@@ -16,9 +18,9 @@ export default function TopBar() {
   const closeMenu = () => setIsMenuOpen(false);
 
   const navItems = [
-    { path: '/', label: 'דף הבית', icon: Home },
-    { path: '/create', label: 'יצירת סיפור', icon: PlusCircle },
-    { path: '/library', label: 'הספרייה שלנו', icon: BookOpen },
+    { path: '/', label: t('components.topBar.home'), icon: Home },
+    { path: '/create', label: t('components.topBar.create'), icon: PlusCircle },
+    { path: '/library', label: t('components.topBar.library'), icon: BookOpen },
   ];
 
   return (
