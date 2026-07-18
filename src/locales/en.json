@@ -19,9 +19,18 @@
     "landing": {
       "title": "Turning moments of difficulty",
       "subtitle": "Into a connecting family story.\nReady to discover your story?",
-      "personalize": "Personalize the story",
+      "auth": "Login / Register",
       "guest": "Continue as guest"
     }
+  },
+  "auth": {
+    "title": "Login & Registration",
+    "explainer": "A personal account allows you to save your stories and read them again whenever you want. Additionally, you can enter general details about your children and receive richer, more personalized stories.",
+    "nicknameLabel": "Family Name or Nickname",
+    "nicknamePlaceholder": "e.g., The Cohens",
+    "pinLabel": "Your secret code (4 digits)",
+    "error": "Incorrect code, try again",
+    "submit": "Continue"
   },
   "profile": {
     "title": "Our Profile",
@@ -73,6 +82,10 @@
     "empty": {
       "text": "No stories yet",
       "create": "Create first story"
+    },
+    "shareBanner": {
+      "title": "Came to share an experience?",
+      "subtitle": "Click here to create a shared story"
     },
     "meta": {
       "for": "For",

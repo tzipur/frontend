@@ -87,6 +87,22 @@ export default function LibraryPage() {
         </button>
       </header>
 
+      {/* Share Banner */}
+      <div className="px-6 pt-6">
+        <button
+          onClick={() => navigate('/create')}
+          className="w-full bg-[#E8F4FA] border border-[#BDE0F5] text-tzipur-sky py-4 px-6 rounded-2xl flex items-center justify-between shadow-sm active:scale-[0.98] transition-transform"
+        >
+          <div className="flex flex-col items-start text-right">
+            <span className="font-serif font-bold text-lg mb-1">{t('library.shareBanner.title')}</span>
+            <span className="text-sm text-tzipur-sky/80">{t('library.shareBanner.subtitle')}</span>
+          </div>
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0 mr-4">
+            <Plus size={20} className="text-tzipur-sky" />
+          </div>
+        </button>
+      </div>
+
       {/* Stories Grid */}
       <motion.main
         variants={containerVariants}

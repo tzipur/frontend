@@ -72,15 +72,15 @@ export default function HomePage() {
       {/* Buttons */}
       <motion.div variants={itemVariants} className="w-full max-w-sm space-y-4 mt-auto">
         <button
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/auth')}
           className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"
         >
-          {t('welcome.landing.personalize')}
+          {t('welcome.landing.auth')}
         </button>
 
         <button
           onClick={() => navigate('/create')}
-          className="w-full bg-transparent border-2 border-tzipur-sky text-tzipur-sky py-4 rounded-2xl font-medium text-lg hover:bg-tzipur-sand transition-colors active:scale-[0.98] transition-transform"
+          className="w-full bg-transparent text-tzipur-muted py-2 rounded-2xl font-medium hover:text-tzipur-brown transition-colors"
         >
           {t('welcome.landing.guest')}
         </button>

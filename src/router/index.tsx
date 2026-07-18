@@ -4,6 +4,7 @@ import GlobalError from '../components/GlobalError';
 import WelcomePage from '../pages/Welcome';
 import ProfileSetupPage from '../pages/ProfileSetup';
 import CreationPage from '../pages/Creation';
+import AuthPage from '../pages/Auth';
 import ReadingPage from '../pages/Reading';
 import LibraryPage from '../pages/Library';
 import HomePage from '../pages/HomePage';
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: 'welcome',
         element: <WelcomePage />,
+      },
+      {
+        path: 'auth',
+        element: <AuthPage />,
       },
       {
         path: 'profile',
