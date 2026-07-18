@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperType } from 'swiper';
@@ -8,6 +8,8 @@ import 'swiper/css';
 import img1 from '../assets/onboarding/1.jpeg';
 import img2 from '../assets/onboarding/2.jpeg';
 import img3 from '../assets/onboarding/3.jpeg';
+
+const AUTOPLAY_DELAY_MS = 5000;
 
 const slides = [
   {
@@ -22,18 +24,34 @@ const slides = [
   },
   {
     image: img3,
-    title: 'קוראים יחד ומתחברים בכל יום',
-    text: 'את.ה והילד קוראים את הסיפור ביחד - רגע של הבנה הדדית שמחזק את הקשר ביניכם.',
+    title: 'קוראים יחד ומתחברים',
+    text: 'אתם והילד יחד קוראים את הסיפור - רגע של הבנה הדדית שמחזק את הקשר ביניכם.',
   },
 ];
 
-export default function OnboardingScreen() {
+export default function Welcome() {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
 
+  useEffect(() => {
+    let timeoutId: number;
+    if (swiper && activeIndex < slides.length - 1) {
+      timeoutId = window.setTimeout(() => {
+        swiper.slideNext();
+      }, AUTOPLAY_DELAY_MS);
+    }
+    return () => {
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [swiper, activeIndex]);
+
   const handleFinish = () => {
-    localStorage.setItem('tzipur_has_seen_onboarding', 'true');
+    try {
+      localStorage.setItem('tzipur_has_seen_onboarding', 'true');
+    } catch (e) {
+      console.warn('Failed to save onboarding state', e);
+    }
     navigate('/', { replace: true });
   };
 
@@ -89,14 +107,6 @@ export default function OnboardingScreen() {
             className="w-full bg-[#5B93B5] text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:bg-opacity-90 transition"
           >
             {activeIndex === slides.length - 1 ? 'התחלה' : 'הבא'}
-          </button>
-          <button
-            onClick={handleFinish}
-            className={`w-full text-[#A39B90] py-3 rounded-2xl font-medium hover:bg-[#F4EBE1] transition ${
-              activeIndex === slides.length - 1 ? 'invisible pointer-events-none' : ''
-            }`}
-          >
-            דילוג
           </button>
         </div>
       </footer>
