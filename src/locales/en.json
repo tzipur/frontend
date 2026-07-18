@@ -63,10 +63,37 @@
     "freeText": "You can also write here in a few words...",
     "submit": "Create story",
     "loader": {
-      "notification": "We will let you know when the story is ready",
-      "title": "Tzipur is gathering the words...",
-      "subtitle": "Take a deep breath in.\nYour story is being written right now."
+      "notification": "Your story is ready! Click here to review",
+      "sentences": [
+        "We sent a dove with your message... it's already returning",
+        "Searching for the right words",
+        "Matching the metaphors",
+        "Brewing a world of imagination",
+        "Gathering moments of magic",
+        "Just a moment more..."
+      ]
     }
+  },
+  "preview": {
+    "title": "Story Review",
+    "summaryTitle": "Review All Edit Requests",
+    "instruction": "Please review each chapter and request edits if necessary",
+    "chapterCount": "Chapter {{current}}/{{total}}",
+    "chapter": "Chapter",
+    "showChapter": "Show content",
+    "hideChapter": "Hide content",
+    "editLabel": "Something in the chapter feels off? Request edits",
+    "editPlaceholder": "For example, soften the tone, or use our nicknames for the characters",
+    "nextChapter": "Continue to next chapter",
+    "prevChapter": "Back",
+    "reviewAll": "Review all edit requests",
+    "sendEdits": "Send edit requests",
+    "generate": "Generate story",
+    "noEdits": "No edit requests were made.",
+    "warningTitle": "Wait, you wrote notes!",
+    "warningMessage": "We noticed you wrote edit requests. If you continue to story generation now, the notes will not be sent.",
+    "warningCancel": "Go back",
+    "warningConfirm": "Continue and generate"
   },
   "reading": {
     "notFound": "Story not found",

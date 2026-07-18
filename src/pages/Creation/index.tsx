@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mic } from 'lucide-react';
@@ -28,17 +28,38 @@ export default function CreationPage() {
   const [freeText, setFreeText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     setIsLoading(true);
-    // Simulate generation time, then navigate to the first mock story
+
+    if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+      try {
+        await Notification.requestPermission();
+      } catch (e) {
+        console.warn("Notification permission error", e);
+      }
+    }
+
+    // Simulate generation time
     setTimeout(() => {
-      navigate('/read/story-001');
-    }, 4000);
+      setIsLoading(false);
+      navigate('/preview/story-001');
+      
+      // Always send a push notification when generation is complete
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const notif = new Notification(t('creation.loader.notification'));
+        notif.onclick = () => {
+          window.focus();
+          notif.close();
+        };
+      }
+    }, 4500);
   };
 
   return (
     <>
-      <LoaderScreen isVisible={isLoading} />
+      <LoaderScreen 
+        isVisible={isLoading} 
+      />
 
       <motion.div
         variants={containerVariants}

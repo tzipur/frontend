@@ -6,6 +6,7 @@ import ProfileSetupPage from '../pages/ProfileSetup';
 import CreationPage from '../pages/Creation';
 import AuthPage from '../pages/Auth';
 import ReadingPage from '../pages/Reading';
+import PreviewPage from '../pages/Preview';
 import LibraryPage from '../pages/Library';
 import HomePage from '../pages/HomePage';
 
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
       {
         path: 'create',
         element: <CreationPage />,
+      },
+      {
+        path: 'preview/:storyId',
+        element: <PreviewPage />,
       },
       {
         path: 'read/:storyId',
