@@ -35,6 +35,14 @@ export default function HomePage() {
       animate="visible"
       className="flex flex-col items-center justify-between h-full p-6 text-center pb-12 pt-8"
     >
+      {/* Title */}
+      <motion.h1
+        variants={itemVariants}
+        className="font-serif text-4xl font-bold mb-6 text-tzipur-sky leading-relaxed"
+      >
+        {t('welcome.landing.title')}
+      </motion.h1>
+
       {/* Logo / Lottie placeholder */}
       <motion.div
         variants={itemVariants}
@@ -48,23 +56,15 @@ export default function HomePage() {
             ease: 'easeInOut',
           },
         }}
-        className="w-40 h-40 mb-8 bg-tzipur-sand rounded-full flex items-center justify-center shadow-inner border border-tzipur-border p-4"
+        className="w-48 h-48 mb-6 flex items-center justify-center"
       >
         <img src={logoSrc} alt="Tzipur Logo" className="w-full h-full object-contain" />
       </motion.div>
 
-      {/* Title */}
-      <motion.h1
-        variants={itemVariants}
-        className="font-serif text-4xl font-bold mb-4 text-tzipur-sky leading-relaxed"
-      >
-        {t('welcome.landing.title')}
-      </motion.h1>
-
       {/* Subtitle */}
       <motion.p
         variants={itemVariants}
-        className="text-lg text-tzipur-muted mb-12 max-w-xs leading-relaxed whitespace-pre-line"
+        className="text-lg text-tzipur-muted mb-8 max-w-xs leading-relaxed whitespace-pre-line"
       >
         {t('welcome.landing.subtitle')}
       </motion.p>
