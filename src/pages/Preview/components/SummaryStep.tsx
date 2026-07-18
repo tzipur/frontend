@@ -31,7 +31,7 @@ export default function SummaryStep({ chapters, edits, onEditChange }: SummarySt
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="flex flex-col h-full min-h-0 overflow-y-auto gap-6 pr-2 custom-scrollbar pb-6"
+      className="flex flex-col gap-6"
     >
       {chapters.map((chapter, index) => {
         const isExpanded = expandedIndex === index;

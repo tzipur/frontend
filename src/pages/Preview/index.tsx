@@ -80,7 +80,7 @@ export default function PreviewPage() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto px-6 pt-6 pb-6 relative z-0">
+      <main className="flex-1 overflow-y-auto px-6 pt-6 pb-6 relative z-0 custom-scrollbar">
         <AnimatePresence mode="wait">
           {!isSummaryStep && currentChapter ? (
             <ChapterStep

@@ -24,7 +24,7 @@ export default function PreviewFooter({
   const { t } = useTranslation();
 
   return (
-    <footer className="absolute bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-tzipur-border p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-20">
+    <footer className="shrink-0 w-full bg-white/80 backdrop-blur-md border-t border-tzipur-border p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-20">
       <div className="flex flex-col gap-3">
         {!isSummaryStep ? (
           <div className="flex gap-3">
