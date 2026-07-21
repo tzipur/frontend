@@ -55,23 +55,23 @@ export default function Welcome() {
 
   return (
     <div className="flex-1 flex flex-col relative bg-white text-tzipur-brown overflow-hidden w-full h-full">
-      <main className="flex-1 relative flex flex-col mt-6">
+      <main className="flex-1 relative flex flex-col mt-2 sm:mt-6 overflow-hidden">
         <Swiper
-          className="w-full flex-1 flex"
+          className="w-full h-full flex"
           onSwiper={setSwiper}
           onSlideChange={(s) => setActiveIndex(s.activeIndex)}
           dir="rtl"
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index} className="flex flex-col">
-              <div className="flex-1 flex flex-col items-center justify-center p-6 pt-2 text-center animate-fade-in">
-                <div className="w-full max-w-[340px] sm:max-w-[420px] aspect-square mb-10 sm:mb-14 rounded-[32px] shadow-xl shadow-tzipur-sky/10 border-4 border-white bg-white p-2 flex items-center justify-center overflow-hidden shrink-0">
+              <div className="h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center animate-fade-in overflow-y-auto overflow-x-hidden custom-scrollbar">
+                <div className="w-[clamp(12rem,40dvh,21rem)] aspect-square mb-[clamp(1rem,4dvh,3.5rem)] rounded-[32px] shadow-xl shadow-tzipur-sky/10 border-4 border-white bg-white p-2 flex items-center justify-center overflow-hidden shrink-0 mx-auto">
                   <img src={slide.image} alt={slide.title} className="w-full h-full object-cover rounded-[24px]" />
                 </div>
                 
-                <div className="shrink-0 w-full px-4">
-                  <h2 className="text-3xl sm:text-4xl font-black text-tzipur-sky mb-4 drop-shadow-sm">{slide.title}</h2>
-                  <p className="text-tzipur-brown/80 text-2xl sm:text-3xl leading-[1.6] max-w-[420px] mx-auto font-medium">
+                <div className="shrink-0 w-full px-2 sm:px-4">
+                  <h2 className="text-[clamp(1.5rem,3.5dvh,2.25rem)] sm:text-4xl font-black text-tzipur-sky mb-[clamp(0.5rem,2dvh,1rem)] drop-shadow-sm leading-tight">{slide.title}</h2>
+                  <p className="text-tzipur-brown/80 text-[clamp(1.1rem,2.8dvh,1.5rem)] sm:text-3xl leading-[1.3] sm:leading-[1.6] max-w-[420px] mx-auto font-medium">
                     {slide.text}
                   </p>
                 </div>
@@ -81,7 +81,7 @@ export default function Welcome() {
         </Swiper>
       </main>
 
-      <footer className="p-6 pb-10 flex flex-col items-center gap-6">
+      <footer className="px-6 pt-2 pb-[clamp(1.5rem,4dvh,2.5rem)] shrink-0 flex flex-col items-center gap-[clamp(1rem,3dvh,1.5rem)] z-10">
         <div className="flex gap-2.5">
           {slides.map((_, index) => (
             <div
@@ -93,10 +93,10 @@ export default function Welcome() {
           ))}
         </div>
 
-        <div className="w-full flex flex-col gap-3 mt-4">
+        <div className="w-full flex flex-col gap-3 mt-1 sm:mt-4">
           <button
             onClick={handleNext}
-            className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-medium text-base shadow-md hover:bg-tzipur-sky/90 transition"
+            className="w-full bg-tzipur-sky text-white py-[clamp(0.8rem,2dvh,1rem)] rounded-2xl font-medium text-[clamp(1.125rem,2.5dvh,1.25rem)] shadow-md hover:bg-tzipur-sky/90 transition"
           >
             {activeIndex === slides.length - 1 ? t('welcome.start') : t('welcome.next')}
           </button>
