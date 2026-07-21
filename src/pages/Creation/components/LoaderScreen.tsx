@@ -38,26 +38,31 @@ export default function LoaderScreen({ isVisible, isReady, onContinue, mode = 'g
           {!isReady ? (
             <>
               {/* Flying Bird Progress Bar */}
-              <div className="w-full max-w-xs h-16 bg-tzipur-sky/20 rounded-full relative mb-12 overflow-hidden">
+              <div className="w-full max-w-xs h-16 bg-tzipur-sky/10 rounded-full relative mb-12 overflow-hidden shadow-lg shadow-tzipur-sky/20 border border-tzipur-sky/20">
                 {/* The filling bar */}
                 <motion.div
-                  className="absolute top-0 bottom-0 left-0 bg-tzipur-sky rounded-full"
+                  className="absolute top-0 bottom-0 left-0 bg-gradient-to-r from-tzipur-sky/40 to-tzipur-sky rounded-full"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
                   transition={{ duration: 4.5, ease: "linear" }}
                 />
                 {/* The flying bird */}
                 <motion.div
-                  className="absolute top-1/2 text-2xl"
-                  initial={{ left: "0%", y: "-50%", x: "-50%" }}
-                  animate={{ left: "100%", y: ["-50%", "-80%", "-50%", "-20%", "-50%"] }}
+                  className="absolute top-1/2 text-2xl drop-shadow-md z-10"
+                  initial={{ left: "0%", y: "-50%", x: "-50%", rotate: 0 }}
+                  animate={{ 
+                    left: "100%", 
+                    y: ["-50%", "-85%", "-50%", "-15%", "-50%"],
+                    rotate: [0, -15, 0, 15, 0]
+                  }}
                   transition={{ 
                     left: { duration: 4.5, ease: "linear" },
-                    y: { duration: 0.8, repeat: Infinity, ease: "easeInOut" }
+                    y: { duration: 1.2, repeat: Infinity, ease: "easeInOut" },
+                    rotate: { duration: 1.2, repeat: Infinity, ease: "easeInOut" }
                   }}
                   style={{ transformOrigin: "center" }}
                 >
-                  <img src={logoSrc} alt="Loading" className="w-10 h-10 object-contain" />
+                  <img src={logoSrc} alt="Loading" className="w-12 h-12 object-contain" />
                 </motion.div>
               </div>
 

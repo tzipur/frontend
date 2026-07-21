@@ -32,6 +32,7 @@ export default function ProfileSetupPage() {
   const [childrenList, setChildrenList] = useState<ChildProfile[]>(mockChildProfiles);
   const [expandedChildId, setExpandedChildId] = useState<string | null>(null);
   const [childToDelete, setChildToDelete] = useState<string | null>(null);
+  const [showDeleteProfileModal, setShowDeleteProfileModal] = useState(false);
 
   useEffect(() => {
     if (childrenList.length === 0) {
@@ -112,10 +113,11 @@ export default function ProfileSetupPage() {
           <p className="text-tzipur-brown/70 font-medium mt-1">{t('profile.subtitle', 'בואו נכיר את הילד/ה')}</p>
         </div>
         <button
-          onClick={() => navigate('/')}
-          className="w-10 h-10 flex items-center justify-center rounded-full text-tzipur-brown/50 hover:text-tzipur-sky hover:bg-white shadow-sm border border-transparent hover:border-tzipur-sky/20 transition-all bg-white shrink-0"
+          onClick={() => setShowDeleteProfileModal(true)}
+          className="flex items-center justify-center w-10 h-10 rounded-full text-red-500/80 bg-red-50 hover:text-red-500 hover:bg-red-100 shadow-sm border border-red-100 transition-all shrink-0"
+          title={t('profile.deleteProfile', 'מחיקת פרופיל')}
         >
-          <X size={20} />
+          <Trash2 size={20} strokeWidth={2.5} />
         </button>
       </header>
 
@@ -299,17 +301,49 @@ export default function ProfileSetupPage() {
         >
           {t('profile.goToLibrary')}
         </button>
-        <button
-          onClick={() => {
-            if (window.confirm(t('profile.deleteProfileConfirm', 'האם אתה בטוח שברצונך למחוק את הפרופיל?'))) {
-              navigate('/');
-            }
-          }}
-          className="w-full text-red-500/80 hover:text-red-500 hover:bg-red-50 py-3 mt-2 rounded-2xl font-bold text-base transition-colors"
-        >
-          {t('profile.deleteProfile', 'מחיקת פרופיל')}
-        </button>
       </footer>
+
+      {/* Delete Profile Confirmation Modal */}
+      <AnimatePresence>
+        {showDeleteProfileModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-tzipur-brown/20 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white w-full max-w-sm rounded-[32px] p-6 shadow-xl space-y-6"
+            >
+              <div className="text-center space-y-2">
+                <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+                  <Trash2 size={28} strokeWidth={2.5} />
+                </div>
+                <h3 className="font-bold text-xl text-tzipur-brown">{t('profile.deleteProfileConfirmTitle', 'מחיקת פרופיל')}</h3>
+                <p className="text-tzipur-brown/70 leading-relaxed font-medium">
+                  {t('profile.deleteProfileConfirm', 'האם אתה בטוח שברצונך למחוק את הפרופיל?')}
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteProfileModal(false)}
+                  className="flex-1 py-3.5 rounded-2xl font-bold text-tzipur-brown/70 bg-tzipur-cream hover:bg-tzipur-border/50 transition-colors"
+                >
+                  {t('profile.cancel')}
+                </button>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('tzipur_pin');
+                    window.dispatchEvent(new Event('tzipur_auth_changed'));
+                    navigate('/');
+                  }}
+                  className="flex-1 py-3.5 rounded-2xl font-bold text-white bg-red-500 hover:bg-red-600 shadow-md shadow-red-500/20 transition-colors"
+                >
+                  {t('profile.confirmDelete')}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Delete Confirmation Modal */}
       <AnimatePresence>

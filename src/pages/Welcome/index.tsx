@@ -54,7 +54,7 @@ export default function Welcome() {
   };
 
   return (
-    <div className="flex-1 flex flex-col relative bg-tzipur-cream text-tzipur-brown overflow-hidden w-full h-full">
+    <div className="flex-1 flex flex-col relative bg-white text-tzipur-brown overflow-hidden w-full h-full">
       <main className="flex-1 relative flex flex-col mt-6">
         <Swiper
           className="w-full flex-1 flex"
@@ -65,14 +65,16 @@ export default function Welcome() {
           {slides.map((slide, index) => (
             <SwiperSlide key={index} className="flex flex-col">
               <div className="flex-1 flex flex-col items-center justify-center p-6 pt-2 text-center animate-fade-in">
-                <div className="w-64 h-64 sm:w-72 sm:h-72 mb-8 rounded-2xl shadow-lg border border-tzipur-border flex items-center justify-center overflow-hidden bg-tzipur-sand">
-                  <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
+                <div className="w-full max-w-[340px] sm:max-w-[420px] aspect-square mb-10 sm:mb-14 rounded-[32px] shadow-xl shadow-tzipur-sky/10 border-4 border-white bg-white p-2 flex items-center justify-center overflow-hidden shrink-0">
+                  <img src={slide.image} alt={slide.title} className="w-full h-full object-cover rounded-[24px]" />
                 </div>
                 
-                <h2 className="font-serif text-2xl font-bold text-tzipur-sky mb-4">{slide.title}</h2>
-                <p className="text-tzipur-brown/70 text-base leading-relaxed max-w-[320px]">
-                  {slide.text}
-                </p>
+                <div className="shrink-0 w-full px-4">
+                  <h2 className="text-3xl sm:text-4xl font-black text-tzipur-sky mb-4 drop-shadow-sm">{slide.title}</h2>
+                  <p className="text-tzipur-brown/80 text-2xl sm:text-3xl leading-[1.6] max-w-[420px] mx-auto font-medium">
+                    {slide.text}
+                  </p>
+                </div>
               </div>
             </SwiperSlide>
           ))}

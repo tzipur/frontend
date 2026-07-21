@@ -128,7 +128,8 @@ export default function PreviewPage() {
           </div>
           <button
             onClick={handleSendEdits}
-            className="flex-1 bg-white border border-tzipur-sky text-tzipur-sky py-3 rounded-2xl font-medium shadow-sm hover:bg-tzipur-cream transition-colors active:scale-[0.98]"
+            disabled={!hasEdits}
+            className="flex-1 bg-white border border-tzipur-sky text-tzipur-sky py-3 rounded-2xl font-medium shadow-sm hover:bg-tzipur-cream transition-colors active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-white"
           >
             {t('preview.sendEdits')}
           </button>

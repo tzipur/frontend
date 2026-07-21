@@ -23,11 +23,10 @@ interface UseReadingPageResult {
   wordsPerPage: number;
   goNext: () => void;
   goPrev: () => void;
-  getFontSizeClass: (text: string) => string;
   navigate: ReturnType<typeof useNavigate>;
 }
 
-const wordsPerPage: number = 30
+const wordsPerPage: number = 20;
 
 export function useReadingPage(): UseReadingPageResult {
   const { storyId } = useParams<{ storyId: string }>();
@@ -86,10 +85,6 @@ export function useReadingPage(): UseReadingPageResult {
     }
   };
 
-  const getFontSizeClass = (_text: string) => {
-    return 'text-2xl leading-relaxed';
-  };
-
   return {
     story,
     pages,
@@ -102,7 +97,6 @@ export function useReadingPage(): UseReadingPageResult {
     wordsPerPage,
     goNext,
     goPrev,
-    getFontSizeClass,
     navigate,
   };
 }

@@ -33,62 +33,66 @@ export default function HomePage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="flex flex-col items-center justify-between h-full p-6 text-center pb-12 pt-8"
+      className="flex flex-col absolute inset-0 overflow-hidden bg-tzipur-cream"
     >
-      {/* Title */}
-      <motion.h1
-        variants={itemVariants}
-        className="font-serif text-6xl font-bold mb-6 text-tzipur-sky leading-relaxed"
-      >
-        {t('welcome.landing.title')}
-      </motion.h1>
+      <div className="flex-1 flex flex-col justify-center items-center w-full overflow-y-auto overflow-x-hidden custom-scrollbar p-6 text-center pb-4 pt-8">
+        {/* Title */}
+        <motion.h1
+          variants={itemVariants}
+          className="text-8xl sm:text-8xl font-black mb-6 text-[#5B93B5] tracking-tight drop-shadow-sm leading-tight mt-4"
+        >
+          {t('welcome.landing.title')}
+        </motion.h1>
 
-      {/* Logo / Lottie placeholder */}
-      <motion.div
-        variants={itemVariants}
-        animate={{
-          y: [0, -8, 0],
-        }}
-        transition={{
-          y: {
-            duration: 3,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          },
-        }}
-        className="w-48 h-48 mb-6 flex items-center justify-center"
-      >
-        <img src={logoSrc} alt="Tzipur Logo" className="w-full h-full object-contain" />
-      </motion.div>
+        {/* Logo / Lottie placeholder */}
+        <motion.div
+          variants={itemVariants}
+          animate={{
+            y: [0, -8, 0],
+          }}
+          transition={{
+            y: {
+              duration: 3,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            },
+          }}
+          className="w-64 h-64 sm:w-80 sm:h-80 mb-10 flex items-center justify-center shrink-0 drop-shadow-xl"
+        >
+          <img src={logoSrc} alt="Tzipur Logo" className="w-full h-full object-contain" />
+        </motion.div>
 
-      {/* Subtitle */}
-      <motion.p
-        variants={itemVariants}
-        className="text-2xl text-tzipur-brown/70 mb-8 max-w-xs leading-relaxed whitespace-pre-line mt-6"
-      >
+        {/* Subtitle */}
+        <motion.p
+          variants={itemVariants}
+          className="text-2xl sm:text-3xl text-tzipur-brown/80 mb-12 max-w-[450px] leading-[1.6] font-medium whitespace-pre-line px-4 mx-auto"
+        >
         {t('welcome.landing.subtitle')}
       </motion.p>
+      </div>
 
-      {/* Buttons */}
-      <motion.div variants={itemVariants} className="w-full max-w-sm space-y-4  mt-12">
-        <button
-          onClick={() => navigate('/auth')}
-          className="w-full bg-tzipur-sky text-white py-4 rounded-2xl text-xl font-medium shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"
-        >
-          {t('welcome.landing.auth')}
-        </button>
+      {/* Footer Buttons (Pinned to Bottom) */}
+      <footer className="w-full shrink-0 px-6 pt-4 pb-12 flex flex-col items-center bg-gradient-to-t from-tzipur-cream via-tzipur-cream to-transparent z-10">
+        <div className="w-full max-w-sm space-y-4">
+          <button
+            onClick={() => navigate('/auth')}
+            className="w-full bg-[#5B93B5] text-white py-4 rounded-2xl text-xl font-medium shadow-md hover:bg-[#4A7A9A] active:scale-[0.98] transition-all"
+          >
+            {t('welcome.landing.auth')}
+          </button>
 
-        <button
-          onClick={() => {
-            localStorage.removeItem('tzipur_pin');
-            window.dispatchEvent(new Event('tzipur_auth_changed'));
-            navigate('/create');
-          }}
-          className="w-full bg-transparent text-tzipur-brown/70 py-2 rounded-2xl text-xl font-medium hover:text-tzipur-brown transition-colors"
-        >
-          {t('welcome.landing.guest')}
-        </button>
-      </motion.div>
+          <button
+            onClick={() => {
+              localStorage.removeItem('tzipur_pin');
+              window.dispatchEvent(new Event('tzipur_auth_changed'));
+              navigate('/create');
+            }}
+            className="w-full bg-transparent text-tzipur-brown/70 py-2 rounded-2xl text-xl font-medium hover:text-tzipur-brown transition-colors"
+          >
+            {t('welcome.landing.guest')}
+          </button>
+        </div>
+      </footer>
     </motion.div>
   );
 }
