@@ -10,7 +10,7 @@ export default function TopBar() {
   const { t } = useTranslation();
 
   const { user } = useAuth();
-  const isGuest = user?.is_anonymous === true;
+  const isGuest = user?.is_anonymous === true || (user as any)?.role === 'anon';
 
   // Hide back button on the root page
   const showBack = location.pathname !== '/';

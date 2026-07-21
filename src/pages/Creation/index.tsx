@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Zap, Flame, ShieldOff, CloudLightning, Hand, Eye, Waves, Cloud, ChevronDown, type LucideIcon } from 'lucide-react';
@@ -37,6 +37,19 @@ export default function CreationPage() {
   const [freeText, setFreeText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedChild, setSelectedChild] = useState<string>(mockChildProfiles[0]?.id || '');
+  const [showAllTracks, setShowAllTracks] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleCreate = async () => {
     setIsLoading(true);
@@ -78,8 +91,8 @@ export default function CreationPage() {
         className="page-container h-full flex flex-1 flex-col p-6"
       >
         {/* Header */}
-        <header className="py-2 mb-6">
-          <h1 className="font-serif text-2xl font-bold text-tzipur-sky">{t('creation.title')}</h1>
+        <header className="py-[clamp(0.25rem,1dvh,0.5rem)] mb-[clamp(0.5rem,2dvh,1.5rem)] shrink-0">
+          <h1 className="font-serif text-[clamp(1.25rem,3dvh,1.5rem)] font-bold text-tzipur-sky">{t('creation.title')}</h1>
           <p className="text-tzipur-brown/70 mt-1 text-base">
             {t('creation.subtitle')}
           </p>
@@ -96,10 +109,63 @@ export default function CreationPage() {
         </header>
 
         {/* Main Content */}
-        <main className="flex flex-1 flex-col w-full min-h-0 space-y-4 pb-2">
-          {/* Fast Tracks Grid */}
-          <div className="grid grid-cols-2 gap-2.5">
-            {fastTracks.map((track) => {
+        <main className="flex flex-1 flex-col w-full min-h-0 space-y-[clamp(0.5rem,2dvh,1rem)] pb-2">
+          {/* Fast Tracks Select (Small Screens) */}
+          <div className="block sm:hidden relative z-20" ref={dropdownRef}>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-full bg-white border-2 border-tzipur-border rounded-2xl px-5 py-[clamp(0.75rem,2dvh,1rem)] flex items-center justify-between text-tzipur-brown font-bold text-sm shadow-sm"
+            >
+              <div className="flex items-center gap-3">
+                 {selectedTrack ? (
+                   <>
+                     {(() => {
+                       const track = fastTracks.find(t => t.id === selectedTrack);
+                       const Icon = track?.icon || Zap;
+                       return <Icon size={18} className="text-tzipur-sky shrink-0" />;
+                     })()}
+                     <span>{t(fastTracks.find(t => t.id === selectedTrack)?.labelKey || '')}</span>
+                   </>
+                 ) : (
+                   <span>{t('creation.selectTrackPlaceholder', 'בחירת רגש (אופציונלי)')}</span>
+                 )}
+              </div>
+              <ChevronDown size={18} className={`text-tzipur-sky transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} strokeWidth={2.5} />
+            </button>
+            
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-0 right-0 mt-2 bg-white border border-tzipur-border rounded-2xl shadow-lg overflow-hidden flex flex-col z-30 max-h-[300px] overflow-y-auto custom-scrollbar"
+                >
+                  {fastTracks.map((track) => {
+                     const Icon = track.icon;
+                     return (
+                       <button
+                         key={track.id}
+                         onClick={() => {
+                           setSelectedTrack(selectedTrack === track.id ? null : track.id);
+                           setIsDropdownOpen(false);
+                         }}
+                         className={`flex items-center gap-3 px-5 py-3 text-right transition-colors ${selectedTrack === track.id ? 'bg-tzipur-sky/10 text-tzipur-sky' : 'text-tzipur-brown hover:bg-tzipur-cream'}`}
+                       >
+                         <Icon size={18} className="shrink-0" />
+                         <span className="font-medium text-sm">{t(track.labelKey)}</span>
+                       </button>
+                     );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Fast Tracks Grid (Large Screens) */}
+          <div className="hidden sm:grid grid-cols-2 gap-[clamp(0.5rem,1.5dvh,0.625rem)]">
+            {(showAllTracks ? fastTracks : fastTracks.slice(0, 4)).map((track) => {
               const Icon = track.icon;
               return (
                 <motion.button
@@ -111,7 +177,7 @@ export default function CreationPage() {
                       selectedTrack === track.id ? null : track.id
                     )
                   }
-                  className={`rounded-2xl p-3 text-right flex items-center gap-3 transition-all border-2 ${
+                  className={`rounded-2xl p-[clamp(0.5rem,1.5dvh,0.75rem)] text-right flex items-center gap-[clamp(0.25rem,1dvh,0.75rem)] transition-all border-2 ${
                     selectedTrack === track.id
                       ? 'bg-tzipur-sky/20 border-tzipur-sky text-tzipur-sky'
                       : 'bg-white border-tzipur-border text-tzipur-brown hover:border-tzipur-sky'
@@ -123,9 +189,18 @@ export default function CreationPage() {
               );
             })}
           </div>
+          
+          {!showAllTracks && (
+            <button 
+              onClick={() => setShowAllTracks(true)}
+              className="hidden sm:block text-tzipur-sky text-sm font-bold hover:underline mx-auto shrink-0 mt-1"
+            >
+              {t('creation.showMore', 'הצג עוד')}
+            </button>
+          )}
 
           {/* Divider */}
-          <div className="flex items-center gap-4 text-tzipur-brown/70 text-base">
+          <div className="flex items-center gap-[clamp(0.5rem,2dvh,1rem)] text-tzipur-brown/70 text-[clamp(0.875rem,2dvh,1rem)] shrink-0">
             <div className="flex-1 h-px bg-tzipur-border" />
             <span>{t('creation.or')}</span>
             <div className="flex-1 h-px bg-tzipur-border" />
@@ -143,10 +218,10 @@ export default function CreationPage() {
         </main>
 
         {/* Footer CTA */}
-        <footer className="pt-4 pb-4 mt-auto space-y-3">
+        <footer className="pt-[clamp(0.5rem,2dvh,1rem)] pb-[clamp(0.25rem,1dvh,1rem)] mt-auto space-y-[clamp(0.5rem,1.5dvh,0.75rem)] shrink-0">
           {/* Child Selection */}
           {!isGuest && mockChildProfiles.length > 0 && (
-            <div className="mb-4">
+            <div className="mb-[clamp(0.5rem,1.5dvh,1rem)]">
               <label htmlFor="child-select" className="block font-bold text-tzipur-sky mb-2 text-base">
                 {t('creation.forWhom')}
               </label>
@@ -155,7 +230,7 @@ export default function CreationPage() {
                   id="child-select"
                   value={selectedChild}
                   onChange={(e) => setSelectedChild(e.target.value)}
-                  className="w-full bg-white border border-tzipur-border rounded-2xl px-5 py-4 focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-bold text-base appearance-none cursor-pointer shadow-sm"
+                  className="w-full bg-white border border-tzipur-border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-bold text-base appearance-none cursor-pointer shadow-sm"
                 >
                   {mockChildProfiles.map((child) => (
                     <option key={child.id} value={child.id}>
@@ -173,7 +248,7 @@ export default function CreationPage() {
           <button
             onClick={handleCreate}
             disabled={!selectedTrack && !freeText.trim()}
-            className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-medium text-base shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-tzipur-sky text-white py-[clamp(0.75rem,2dvh,1rem)] rounded-2xl font-medium text-base shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {t('creation.submit')}
           </button>

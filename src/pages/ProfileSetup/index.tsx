@@ -107,7 +107,7 @@ export default function ProfileSetupPage() {
       animate="visible"
       className="h-full flex flex-col p-6 bg-tzipur-cream/30"
     >
-      <header className="flex items-center justify-between pb-6">
+      <header className="flex items-center justify-between pb-[clamp(0.5rem,2dvh,1.5rem)] shrink-0">
         <div>
           <h1 className="font-serif text-3xl font-bold text-tzipur-sky leading-tight">{t('profile.title')}</h1>
           <p className="text-tzipur-brown/70 font-medium mt-1">{t('profile.subtitle', 'בואו נכיר את הילד/ה')}</p>
@@ -122,7 +122,7 @@ export default function ProfileSetupPage() {
       </header>
 
       <main className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4">
-        <div className="space-y-4">
+        <div className="space-y-[clamp(0.5rem,2dvh,1rem)]">
           {childrenList.map(child => {
             const isExpanded = expandedChildId === child.id;
             const childAnimal = animals.find(a => a.id === child.favoriteAnimal || a.name === child.favoriteAnimal) || animals[0];
@@ -133,7 +133,7 @@ export default function ProfileSetupPage() {
                 {/* Accordion Header */}
                 <button 
                   onClick={() => setExpandedChildId(isExpanded ? null : child.id)}
-                  className="w-full p-5 flex items-center justify-between text-right"
+                  className="w-full p-[clamp(0.75rem,2dvh,1.25rem)] flex items-center justify-between text-right"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 bg-tzipur-sky/5 rounded-2xl flex items-center justify-center shrink-0 border border-tzipur-sky/10">
@@ -164,7 +164,7 @@ export default function ProfileSetupPage() {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="p-6 pt-2 border-t border-tzipur-border/30 space-y-8">
+                      <div className="p-[clamp(1rem,3dvh,1.5rem)] pt-2 border-t border-tzipur-border/30 space-y-[clamp(1rem,3dvh,2rem)]">
                         {/* Nickname Input */}
                         <div className="space-y-3 mt-2">
                           <label className="flex items-center gap-2 text-base font-bold text-tzipur-sky">
@@ -176,7 +176,7 @@ export default function ProfileSetupPage() {
                             placeholder={t('profile.nickname.placeholder')}
                             value={child.nickname}
                             onChange={(e) => updateChild(child.id, 'nickname', e.target.value)}
-                            className={`w-full bg-tzipur-cream/50 border rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 transition text-tzipur-brown font-medium placeholder:text-tzipur-brown/50 placeholder:font-normal ${
+                            className={`w-full bg-tzipur-cream/50 border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] focus:outline-none focus:ring-2 transition text-tzipur-brown font-medium placeholder:text-tzipur-brown/50 placeholder:font-normal ${
                               isDuplicateName 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
                                 : 'border-tzipur-border focus:border-tzipur-sky focus:ring-tzipur-sky/20'
@@ -244,7 +244,7 @@ export default function ProfileSetupPage() {
                             placeholder={t('profile.hobby.placeholder')}
                             value={child.hobby}
                             onChange={(e) => updateChild(child.id, 'hobby', e.target.value)}
-                            className="w-full bg-tzipur-cream/50 border border-tzipur-border rounded-2xl px-5 py-4 focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-medium placeholder:text-tzipur-brown/50 placeholder:font-normal"
+                            className="w-full bg-tzipur-cream/50 border border-tzipur-border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-medium placeholder:text-tzipur-brown/50 placeholder:font-normal"
                           />
                         </div>
 
@@ -277,7 +277,7 @@ export default function ProfileSetupPage() {
 
           <button
             onClick={handleAddChild}
-            className="w-full bg-transparent border-2 border-dashed border-tzipur-border hover:border-tzipur-sky/50 hover:bg-tzipur-sky/5 rounded-[32px] p-6 flex flex-col items-center justify-center gap-3 text-tzipur-brown/60 hover:text-tzipur-sky font-bold transition-all mt-6"
+            className="w-full bg-transparent border-2 border-dashed border-tzipur-border hover:border-tzipur-sky/50 hover:bg-tzipur-sky/5 rounded-[32px] p-[clamp(1rem,3dvh,1.5rem)] flex flex-col items-center justify-center gap-[clamp(0.5rem,1.5dvh,0.75rem)] text-tzipur-brown/60 hover:text-tzipur-sky font-bold transition-all mt-[clamp(0.75rem,2dvh,1.5rem)]"
           >
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-tzipur-border/50">
               <Plus size={24} strokeWidth={3} />
@@ -287,17 +287,17 @@ export default function ProfileSetupPage() {
         </div>
       </main>
 
-      <footer className="pt-6 pb-2 mt-auto shrink-0 z-10 flex flex-col gap-3">
+      <footer className="pt-[clamp(0.75rem,2dvh,1.5rem)] pb-2 mt-auto shrink-0 z-10 flex flex-col gap-[clamp(0.5rem,1.5dvh,0.75rem)]">
         <button
           onClick={() => navigate('/create')}
-          className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-bold text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform disabled:opacity-50 disabled:active:scale-100 disabled:cursor-not-allowed"
+          className="w-full bg-tzipur-sky text-white py-[clamp(0.75rem,2dvh,1rem)] rounded-2xl font-bold text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform disabled:opacity-50 disabled:active:scale-100 disabled:cursor-not-allowed"
           disabled={!isAllValid}
         >
           {t('profile.startCreating')}
         </button>
         <button
           onClick={() => navigate('/library')}
-          className="w-full bg-white text-tzipur-sky py-4 rounded-2xl font-bold text-lg border-2 border-tzipur-sky/20 hover:bg-tzipur-sky/5 transition-colors active:scale-[0.98] transition-transform"
+          className="w-full bg-white text-tzipur-sky py-[clamp(0.75rem,2dvh,1rem)] rounded-2xl font-bold text-lg border-2 border-tzipur-sky/20 hover:bg-tzipur-sky/5 transition-colors active:scale-[0.98] transition-transform"
         >
           {t('profile.goToLibrary')}
         </button>
