@@ -37,14 +37,18 @@ export default function CreationPage() {
   const [freeText, setFreeText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedChild, setSelectedChild] = useState<string>(mockChildProfiles[0]?.id || '');
-  const [showAllTracks, setShowAllTracks] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isChildDropdownOpen, setIsChildDropdownOpen] = useState(false);
+  const childDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
+      }
+      if (childDropdownRef.current && !childDropdownRef.current.contains(event.target as Node)) {
+        setIsChildDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -110,8 +114,8 @@ export default function CreationPage() {
 
         {/* Main Content */}
         <main className="flex flex-1 flex-col w-full min-h-0 space-y-[clamp(0.5rem,2dvh,1rem)] pb-2">
-          {/* Fast Tracks Select (Small Screens) */}
-          <div className="block sm:hidden relative z-20" ref={dropdownRef}>
+          {/* Fast Tracks Select (Small Screens / Short Screens) */}
+          <div className="block sm:hidden [@media(min-height:800px)]:hidden relative z-20" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="w-full bg-white border-2 border-tzipur-border rounded-2xl px-5 py-[clamp(0.75rem,2dvh,1rem)] flex items-center justify-between text-tzipur-brown font-bold text-sm shadow-sm"
@@ -163,9 +167,9 @@ export default function CreationPage() {
             </AnimatePresence>
           </div>
 
-          {/* Fast Tracks Grid (Large Screens) */}
-          <div className="hidden sm:grid grid-cols-2 gap-[clamp(0.5rem,1.5dvh,0.625rem)]">
-            {(showAllTracks ? fastTracks : fastTracks.slice(0, 4)).map((track) => {
+          {/* Fast Tracks Grid (Large Screens / Tall Screens) */}
+          <div className="hidden sm:grid [@media(min-height:800px)]:grid grid-cols-2 gap-[clamp(0.5rem,1.5dvh,0.625rem)]">
+            {fastTracks.map((track) => {
               const Icon = track.icon;
               return (
                 <motion.button
@@ -189,15 +193,6 @@ export default function CreationPage() {
               );
             })}
           </div>
-          
-          {!showAllTracks && (
-            <button 
-              onClick={() => setShowAllTracks(true)}
-              className="hidden sm:block text-tzipur-sky text-sm font-bold hover:underline mx-auto shrink-0 mt-1"
-            >
-              {t('creation.showMore', 'הצג עוד')}
-            </button>
-          )}
 
           {/* Divider */}
           <div className="flex items-center gap-[clamp(0.5rem,2dvh,1rem)] text-tzipur-brown/70 text-[clamp(0.875rem,2dvh,1rem)] shrink-0">
@@ -222,25 +217,52 @@ export default function CreationPage() {
           {/* Child Selection */}
           {!isGuest && mockChildProfiles.length > 0 && (
             <div className="mb-[clamp(0.5rem,1.5dvh,1rem)]">
-              <label htmlFor="child-select" className="block font-bold text-tzipur-sky mb-2 text-base">
+              <label className="block font-bold text-tzipur-sky mb-2 text-base">
                 {t('creation.forWhom')}
               </label>
-              <div className="relative">
-                <select
-                  id="child-select"
-                  value={selectedChild}
-                  onChange={(e) => setSelectedChild(e.target.value)}
-                  className="w-full bg-white border border-tzipur-border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-bold text-base appearance-none cursor-pointer shadow-sm"
+              <div className="relative z-20" ref={childDropdownRef}>
+                <button
+                  onClick={() => setIsChildDropdownOpen(!isChildDropdownOpen)}
+                  className="w-full bg-white border border-tzipur-border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] flex items-center justify-between focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-bold text-base shadow-sm"
                 >
-                  {mockChildProfiles.map((child) => (
-                    <option key={child.id} value={child.id}>
-                      {child.nickname}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center px-5 text-tzipur-sky">
-                  <ChevronDown size={20} strokeWidth={2.5} />
-                </div>
+                  <span>
+                    {mockChildProfiles.find(c => c.id === selectedChild)?.nickname || ''}
+                  </span>
+                  <ChevronDown 
+                    size={20} 
+                    className={`text-tzipur-sky transition-transform ${isChildDropdownOpen ? 'rotate-180' : ''}`} 
+                    strokeWidth={2.5} 
+                  />
+                </button>
+                
+                <AnimatePresence>
+                  {isChildDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-tzipur-border rounded-2xl shadow-lg overflow-hidden flex flex-col z-30 max-h-[200px] overflow-y-auto custom-scrollbar"
+                    >
+                      {mockChildProfiles.map((child) => (
+                        <button
+                          key={child.id}
+                          onClick={() => {
+                            setSelectedChild(child.id);
+                            setIsChildDropdownOpen(false);
+                          }}
+                          className={`px-5 py-3 text-right transition-colors ${
+                            selectedChild === child.id 
+                              ? 'bg-tzipur-sky/10 text-tzipur-sky font-bold' 
+                              : 'text-tzipur-brown hover:bg-tzipur-cream font-medium'
+                          }`}
+                        >
+                          {child.nickname}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           )}
