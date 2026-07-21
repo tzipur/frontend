@@ -16,6 +16,7 @@ export interface Story {
   inputMethod: 'speak' | 'write';
   parentInput: string;
   chapters: Chapter[];
+  coachingTip?: string;
 }
 
 export interface ChildProfile {

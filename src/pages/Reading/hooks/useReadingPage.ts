@@ -8,6 +8,7 @@ export interface PageInfo {
   text: string;
   chapterTitle: string;
   isTitlePage?: boolean;
+  isEndPage?: boolean;
 }
 
 interface UseReadingPageResult {
@@ -55,6 +56,13 @@ export function useReadingPage(): UseReadingPageResult {
         });
       }
     }
+    
+    result.push({
+      text: '', // Text handled by translation in component
+      chapterTitle: 'end',
+      isEndPage: true,
+    });
+
     return result;
   }, [story, wordsPerPage]);
 
@@ -78,13 +86,8 @@ export function useReadingPage(): UseReadingPageResult {
     }
   };
 
-  const getFontSizeClass = (text: string) => {
-    const len = text.length;
-    if (len < 25) return 'text-6xl leading-relaxed';
-    if (len < 50) return 'text-5xl leading-relaxed';
-    if (len < 80) return 'text-4xl leading-relaxed';
-    if (len < 120) return 'text-3xl leading-relaxed';
-    return 'text-3xl leading-relaxed';
+  const getFontSizeClass = (_text: string) => {
+    return 'text-2xl leading-relaxed';
   };
 
   return {

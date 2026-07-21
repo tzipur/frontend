@@ -38,7 +38,7 @@ export default function HomePage() {
       {/* Title */}
       <motion.h1
         variants={itemVariants}
-        className="font-serif text-4xl font-bold mb-6 text-tzipur-sky leading-relaxed"
+        className="font-serif text-6xl font-bold mb-6 text-tzipur-sky leading-relaxed"
       >
         {t('welcome.landing.title')}
       </motion.h1>
@@ -64,23 +64,27 @@ export default function HomePage() {
       {/* Subtitle */}
       <motion.p
         variants={itemVariants}
-        className="text-lg text-tzipur-muted mb-8 max-w-xs leading-relaxed whitespace-pre-line"
+        className="text-2xl text-tzipur-brown/70 mb-8 max-w-xs leading-relaxed whitespace-pre-line mt-6"
       >
         {t('welcome.landing.subtitle')}
       </motion.p>
 
       {/* Buttons */}
-      <motion.div variants={itemVariants} className="w-full max-w-sm space-y-4 mt-auto">
+      <motion.div variants={itemVariants} className="w-full max-w-sm space-y-4  mt-12">
         <button
           onClick={() => navigate('/auth')}
-          className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"
+          className="w-full bg-tzipur-sky text-white py-4 rounded-2xl text-xl font-medium shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform"
         >
           {t('welcome.landing.auth')}
         </button>
 
         <button
-          onClick={() => navigate('/create')}
-          className="w-full bg-transparent text-tzipur-muted py-2 rounded-2xl font-medium hover:text-tzipur-brown transition-colors"
+          onClick={() => {
+            localStorage.removeItem('tzipur_pin');
+            window.dispatchEvent(new Event('tzipur_auth_changed'));
+            navigate('/create');
+          }}
+          className="w-full bg-transparent text-tzipur-brown/70 py-2 rounded-2xl text-xl font-medium hover:text-tzipur-brown transition-colors"
         >
           {t('welcome.landing.guest')}
         </button>

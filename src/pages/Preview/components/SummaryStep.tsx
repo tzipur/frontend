@@ -43,11 +43,11 @@ export default function SummaryStep({ chapters, edits, onEditChange }: SummarySt
               className="flex items-center justify-between px-6 cursor-pointer group"
               onClick={() => toggleExpand(index)}
             >
-              <h3 className="font-serif text-lg font-bold text-tzipur-sky group-hover:text-[#4A7A9A] transition-colors">
+              <h3 className="font-serif text-2xl font-bold text-tzipur-sky group-hover:text-tzipur-sky-dark transition-colors">
                 {t('preview.chapterCount', { current: index + 1, total: chapters.length })}: {getCleanTitle(chapter.title)}
               </h3>
               <div className="flex items-center gap-2 text-tzipur-sky opacity-80 group-hover:opacity-100 transition-opacity">
-                <span className="text-sm font-medium">
+                <span className="text-base font-medium">
                   {isExpanded ? t('preview.hideChapter') : t('preview.showChapter')}
                 </span>
                 <motion.div
@@ -73,7 +73,7 @@ export default function SummaryStep({ chapters, edits, onEditChange }: SummarySt
                     className="overflow-y-auto px-6 custom-scrollbar mt-4 mb-4"
                     style={{ maxHeight: MAX_CHAPTER_HEIGHT }} 
                   >
-                    <p className="text-tzipur-brown leading-relaxed whitespace-pre-line text-md opacity-80">
+                    <p className="text-tzipur-brown leading-relaxed whitespace-pre-line text-2xl opacity-80">
                       {chapter.content}
                     </p>
                   </div>
@@ -83,13 +83,13 @@ export default function SummaryStep({ chapters, edits, onEditChange }: SummarySt
 
             {/* Edit Box */}
             <div className="px-6 mt-4">
-              <label className="block text-[15px] font-medium text-tzipur-brown mb-2 px-1">
+              <label className="block text-base font-medium text-tzipur-brown mb-2 px-1">
                 {t('preview.editLabel')}
               </label>
               <textarea
                 value={edits[index] || ''}
                 onChange={(e) => onEditChange(index, e.target.value)}
-                className="w-full resize-none bg-[#FDFBF7] rounded-xl p-3 border border-tzipur-border focus:outline-none focus:border-tzipur-sky text-tzipur-brown custom-scrollbar"
+                className="w-full resize-none bg-tzipur-cream rounded-xl p-3 border border-tzipur-border focus:outline-none focus:border-tzipur-sky text-tzipur-brown custom-scrollbar"
                 style={{ height: EDIT_BOX_HEIGHT }}
               />
             </div>

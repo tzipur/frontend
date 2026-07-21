@@ -9,7 +9,7 @@ import img1 from '../../assets/onboarding/1.jpeg';
 import img2 from '../../assets/onboarding/2.jpeg';
 import img3 from '../../assets/onboarding/3.jpeg';
 
-const AUTOPLAY_DELAY_MS = 5000;
+const AUTOPLAY_DELAY_MS = 10000;
 
 const slideImages = [img1, img2, img3];
 
@@ -54,7 +54,7 @@ export default function Welcome() {
   };
 
   return (
-    <div className="flex-1 flex flex-col relative bg-[#FDFBF7] text-[#4A3F35] overflow-hidden w-full h-full">
+    <div className="flex-1 flex flex-col relative bg-tzipur-cream text-tzipur-brown overflow-hidden w-full h-full">
       <main className="flex-1 relative flex flex-col mt-6">
         <Swiper
           className="w-full flex-1 flex"
@@ -65,12 +65,12 @@ export default function Welcome() {
           {slides.map((slide, index) => (
             <SwiperSlide key={index} className="flex flex-col">
               <div className="flex-1 flex flex-col items-center justify-center p-6 pt-2 text-center animate-fade-in">
-                <div className="w-64 h-64 sm:w-72 sm:h-72 mb-8 rounded-[40px] shadow-lg border border-[#E8DED1] flex items-center justify-center overflow-hidden bg-[#F4EBE1]">
+                <div className="w-64 h-64 sm:w-72 sm:h-72 mb-8 rounded-2xl shadow-lg border border-tzipur-border flex items-center justify-center overflow-hidden bg-tzipur-sand">
                   <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
                 </div>
                 
-                <h2 className="font-serif text-4xl font-bold text-[#5B93B5] mb-4">{slide.title}</h2>
-                <p className="text-[#A39B90] text-2xl leading-relaxed max-w-[320px]">
+                <h2 className="font-serif text-2xl font-bold text-tzipur-sky mb-4">{slide.title}</h2>
+                <p className="text-tzipur-brown/70 text-base leading-relaxed max-w-[320px]">
                   {slide.text}
                 </p>
               </div>
@@ -85,7 +85,7 @@ export default function Welcome() {
             <div
               key={index}
               className={`h-2.5 rounded-full transition-all ${
-                activeIndex === index ? 'w-8 bg-[#5B93B5]' : 'w-2.5 bg-[#E8DED1]'
+                activeIndex === index ? 'w-8 bg-tzipur-sky' : 'w-2.5 bg-tzipur-border'
               }`}
             />
           ))}
@@ -94,7 +94,7 @@ export default function Welcome() {
         <div className="w-full flex flex-col gap-3 mt-4">
           <button
             onClick={handleNext}
-            className="w-full bg-[#5B93B5] text-white py-4 rounded-2xl font-medium text-lg shadow-md hover:bg-opacity-90 transition"
+            className="w-full bg-tzipur-sky text-white py-4 rounded-2xl font-medium text-base shadow-md hover:bg-tzipur-sky/90 transition"
           >
             {activeIndex === slides.length - 1 ? t('welcome.start') : t('welcome.next')}
           </button>

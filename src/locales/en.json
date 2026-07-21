@@ -25,7 +25,7 @@
   },
   "auth": {
     "title": "Login & Registration",
-    "explainer": "A personal account allows you to save your stories and read them again whenever you want. Additionally, you can enter general details about your children and receive richer, more personalized stories.",
+    "explainer": "A personal account allows you to save stories and get a personalized experience.",
     "nicknameLabel": "Family Name or Nickname",
     "nicknamePlaceholder": "e.g., The Cohens",
     "pinLabel": "Your secret code (4 digits)",
@@ -48,22 +48,39 @@
       "label": "Hobby",
       "placeholder": "For example: Drawing, football, dancing"
     },
-    "save": "Save & Continue"
+    "save": "Save & Continue",
+    "addChild": "Add Child",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "noChildren": "No profiles yet.",
+    "startCreating": "Create a Story",
+    "goToLibrary": "Go to Library",
+    "deleteConfirmTitle": "Delete Profile?",
+    "deleteConfirmMessage": "Are you sure you want to delete this profile? This action cannot be undone.",
+    "confirmDelete": "Yes, Delete"
   },
   "creation": {
     "title": "What happened today?",
     "subtitle": "Choose an option or tell in your own words.",
     "tracks": {
-      "anger": "Anger & yelling",
-      "sensory": "Sensory overload",
-      "fatigue": "Extreme fatigue",
-      "separation": "Separation difficulty"
+      "startle": "Startle",
+      "anger": "Anger",
+      "withdrawal": "Withdrawal",
+      "anxiety": "Anxiety",
+      "touch_aversion": "Touch Aversion",
+      "hypervigilance": "Hypervigilance",
+      "emotional_overflow": "Emotional Overflow",
+      "dissociation": "Dissociation"
     },
+    "forWhom": "For whom is the story?",
     "or": "OR",
     "freeText": "You can also write here in a few words...",
     "submit": "Create story",
+    "signupHintPrefix": "Want a more personalized experience? ",
+    "signupHintAction": "Register",
     "loader": {
       "notification": "Your story is ready! Click here to review",
+      "notificationBody": "Your story is ready! Return to the app to read it",
       "sentences": [
         "We sent a dove with your message... it's already returning",
         "Searching for the right words",
@@ -71,24 +88,32 @@
         "Brewing a world of imagination",
         "Gathering moments of magic",
         "Just a moment more..."
+      ],
+      "editSentences": [
+        "Updating the story...",
+        "Adjusting to your requests",
+        "Refining the details",
+        "Just a moment more..."
       ]
     }
   },
   "preview": {
     "title": "Story Review",
     "summaryTitle": "Review All Edit Requests",
-    "instruction": "Please review each chapter and request edits if necessary",
+    "instruction": "Please review the story and request edits if necessary",
     "chapterCount": "Chapter {{current}}/{{total}}",
     "chapter": "Chapter",
     "showChapter": "Show content",
     "hideChapter": "Hide content",
-    "editLabel": "Something in the chapter feels off? Request edits",
+    "editLabel": "Something in the story feels off? Request edits",
     "editPlaceholder": "For example, soften the tone, or use our nicknames for the characters",
     "nextChapter": "Continue to next chapter",
     "prevChapter": "Back",
     "reviewAll": "Review all edit requests",
     "sendEdits": "Send edit requests",
-    "generate": "Generate story",
+    "generate": "To reading",
+    "editBoxNotEmpty": "The edit box must be empty to continue to the reading screen",
+    "remainingEdits": "{{count}} edits left",
     "noEdits": "No edit requests were made.",
     "warningTitle": "Wait, you wrote notes!",
     "warningMessage": "We noticed you wrote edit requests. If you continue to story generation now, the notes will not be sent.",
@@ -101,23 +126,34 @@
     "end": {
       "title": "The End...",
       "subtitle": "We hope you enjoyed the story!",
-      "save": "Save story to library"
+      "save": "Add to library",
+      "coachingTitle": "Coaching Tip"
     }
   },
   "library": {
-    "title": "Our Library",
+    "title": "The Library",
     "empty": {
       "text": "No stories yet",
       "create": "Create first story"
     },
+    "guestWarning": {
+      "title": "Don't lose your stories!",
+      "message": "You are currently using the app as a guest. Register now to save your stories securely so you never lose them.",
+      "registerBtn": "Register Now",
+      "dismissBtn": "Maybe Later"
+    },
     "shareBanner": {
-      "title": "Came to share an experience?",
-      "subtitle": "Click here to create a shared story"
+      "title": "Share Tzipur with other families"
+    },
+    "createBanner": {
+      "title": "Create a new story",
+      "subtitle": "To help deal with a difficult moment"
     },
     "meta": {
       "for": "For",
       "speak": "Speaking",
-      "write": "Writing"
+      "write": "Writing",
+      "createdForOn": "Created for {{child}} on {{date}}"
     },
     "dates": {
       "today": "Today",
@@ -129,8 +165,10 @@
   "components": {
     "topBar": {
       "home": "Home",
-      "create": "Create Story",
-      "library": "Our Library"
+      "create": "Create",
+      "library": "Library",
+      "install": "Install App",
+      "profile": "Profile"
     },
     "error": {
       "title": "Oops, something went wrong...",
@@ -138,5 +176,8 @@
       "retry": "Try again",
       "home": "Back to Home"
     }
+  },
+  "common": {
+    "disclaimer": "Content is generated using AI. It is not a substitute for professional advice or therapy and should be reviewed with care."
   }
 }

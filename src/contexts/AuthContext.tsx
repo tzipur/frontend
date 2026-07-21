@@ -7,12 +7,14 @@ type AuthContextType = {
   session: Session | null;
   user: User | null;
   isInitializing: boolean;
+  refreshMockSession: () => void;
 };
 
 const AuthContext = createContext<AuthContextType>({
   session: null,
   user: null,
   isInitializing: true,
+  refreshMockSession: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -23,16 +25,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let mounted = true;
 
+    const setupMockSession = () => {
+      const pin = localStorage.getItem('tzipur_pin');
+      const isRegistered = !!pin;
+      const mockSessionUser = isRegistered 
+        ? { id: 'offline-user', email: 'test@example.com', role: 'authenticated' }
+        : { id: 'offline-user', role: 'anon' };
+      
+      setSession({ access_token: 'mock-offline-token', user: mockSessionUser } as any);
+      setUser(mockSessionUser as any);
+    };
+
     async function initAuth() {
       if (isOffline) {
         // Mock offline behavior
         setTimeout(() => {
           if (mounted) {
-            setSession({ access_token: 'mock-offline-token', user: { id: 'offline-user', role: 'anon' } } as any);
-            setUser({ id: 'offline-user', role: 'anon' } as any);
+            setupMockSession();
             setIsInitializing(false);
           }
-        }, 2000); // 2s splash screen for offline demo
+        }, 1000); // 1s splash screen for offline demo
         return;
       }
 
@@ -78,12 +90,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  const refreshMockSession = () => {
+    if (isOffline) {
+      const pin = localStorage.getItem('tzipur_pin');
+      const isRegistered = !!pin;
+      const mockSessionUser = isRegistered 
+        ? { id: 'offline-user', email: 'test@example.com', role: 'authenticated' }
+        : { id: 'offline-user', role: 'anon' };
+      setSession({ access_token: 'mock-offline-token', user: mockSessionUser } as any);
+      setUser(mockSessionUser as any);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('tzipur_auth_changed', refreshMockSession);
+    return () => window.removeEventListener('tzipur_auth_changed', refreshMockSession);
+  }, []);
+
   if (isInitializing) {
     return <SplashScreen />;
   }
 
   return (
-    <AuthContext.Provider value={{ session, user, isInitializing }}>
+    <AuthContext.Provider value={{ session, user, isInitializing, refreshMockSession }}>
       {children}
     </AuthContext.Provider>
   );

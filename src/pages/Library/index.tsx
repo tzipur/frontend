@@ -1,8 +1,11 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Plus, BookOpen } from 'lucide-react';
+import { Plus, BookOpen, AlertTriangle, X } from 'lucide-react';
 import { mockStories, mockChildProfiles } from '../../lib/mockData';
+import fallbackImage from '../../assets/bears-story-hero.jpeg';
+import { useAuth } from '../../contexts/AuthContext';
 
 
 const containerVariants = {
@@ -30,6 +33,11 @@ export default function LibraryPage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const stories = mockStories;
+  const { user } = useAuth();
+  
+  const isGuest = user?.is_anonymous === true;
+  const shouldShowWarning = Math.random() < 0.5;
+  const [showGuestWarning, setShowGuestWarning] = useState(isGuest && shouldShowWarning);
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -58,11 +66,11 @@ export default function LibraryPage() {
     return (
       <div className="h-full flex flex-col">
         <header className="flex items-center justify-between p-6 pb-4 bg-white shadow-sm border-b border-tzipur-border sticky top-0 z-10">
-          <h1 className="font-serif text-2xl font-bold">{t('library.title')}</h1>
+          <h1 className="font-serif text-4xl font-bold text-tzipur-sky">{t('library.title')}</h1>
         </header>
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center gap-4">
-          <BookOpen size={64} className="text-tzipur-muted" />
-          <p className="text-xl text-tzipur-muted">{t('library.empty.text')}</p>
+          <BookOpen size={64} className="text-tzipur-brown/70" />
+          <p className="text-base text-tzipur-brown/70">{t('library.empty.text')}</p>
           <button
             onClick={() => navigate('/create')}
             className="bg-tzipur-sky text-white py-3 px-8 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow"
@@ -78,27 +86,21 @@ export default function LibraryPage() {
     <div className="h-full flex flex-col">
       {/* Sticky Header */}
       <header className="flex items-center justify-between p-6 pb-4 bg-white shadow-sm border-b border-tzipur-border sticky top-0 z-10">
-        <h1 className="font-serif text-2xl font-bold">{t('library.title')}</h1>
-        <button
-          onClick={() => navigate('/create')}
-          className="w-10 h-10 bg-tzipur-sand rounded-full flex items-center justify-center text-tzipur-sky hover:bg-tzipur-border transition-colors"
-        >
-          <Plus size={20} />
-        </button>
+        <h1 className="font-serif text-4xl font-bold text-tzipur-sky">{t('library.title')}</h1>
       </header>
 
-      {/* Share Banner */}
-      <div className="px-6 pt-6">
+      {/* Create Banner */}
+      <div className="px-6 pt-6 pb-2">
         <button
           onClick={() => navigate('/create')}
-          className="w-full bg-[#E8F4FA] border border-[#BDE0F5] text-tzipur-sky py-4 px-6 rounded-2xl flex items-center justify-between shadow-sm active:scale-[0.98] transition-transform"
+          className="w-full bg-tzipur-sky text-white py-4 px-6 rounded-2xl flex items-center justify-between shadow-md active:scale-[0.98] transition-all hover:shadow-lg"
         >
-          <div className="flex flex-col items-start text-right">
-            <span className="font-serif font-bold text-lg mb-1">{t('library.shareBanner.title')}</span>
-            <span className="text-sm text-tzipur-sky/80">{t('library.shareBanner.subtitle')}</span>
+          <div className="flex flex-col items-start text-start">
+            <span className="font-serif font-bold text-2xl mb-0.5">{t('library.createBanner.title')}</span>
+            <span className="text-white/80 text-sm font-medium">{t('library.createBanner.subtitle')}</span>
           </div>
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0 mr-4">
-            <Plus size={20} className="text-tzipur-sky" />
+          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0 ms-4">
+            <Plus size={20} className="text-white" />
           </div>
         </button>
       </div>
@@ -120,31 +122,96 @@ export default function LibraryPage() {
             >
               {/* Cover Card */}
               <div
-                className={`aspect-[3/4] rounded-2xl shadow-md border border-tzipur-border flex items-center justify-center p-4 text-center group-hover:shadow-lg transition-shadow ${
-                  index % 2 === 0
-                    ? 'bg-gradient-to-br from-[#D7E9F5] to-tzipur-sand'
-                    : 'bg-gradient-to-br from-tzipur-sand to-tzipur-border'
-                }`}
+                className="aspect-[3/4] rounded-2xl shadow-md border border-tzipur-border overflow-hidden relative group-hover:shadow-lg transition-shadow bg-tzipur-sand"
               >
-                <h3 className="font-serif font-bold text-lg text-tzipur-sky leading-relaxed">
-                  {story.title}
-                </h3>
+                {story.coverImageUrl ? (
+                  <img 
+                    src={story.coverImageUrl} 
+                    alt={story.title} 
+                    className="w-full h-full object-cover" 
+                    onError={(e) => {
+                      e.currentTarget.src = fallbackImage;
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center p-4 text-center">
+                    <BookOpen size={48} className="text-tzipur-sky/50" />
+                  </div>
+                )}
               </div>
 
               {/* Meta */}
-              <div className="px-1">
-                <p className="font-medium text-sm">
-                  {formatDate(story.createdAt)}
-                </p>
-                <p className="text-xs text-tzipur-muted">
-                  {t('library.meta.for')} {getChildNickname(story.childProfileId)} •{' '}
-                  {story.inputMethod === 'speak' ? t('library.meta.speak') : t('library.meta.write')}
+              <div className="px-1 mt-1">
+                <h3 className="font-serif font-bold text-lg text-tzipur-sky leading-tight mb-1">
+                  {story.title}
+                </h3>
+                <p className="font-medium text-sm text-tzipur-brown/80 mb-0.5">
+                  {t('library.meta.createdForOn', {
+                    child: getChildNickname(story.childProfileId),
+                    date: formatDate(story.createdAt)
+                  })}
                 </p>
               </div>
             </motion.div>
           ))}
         </div>
       </motion.main>
+
+      {/* Guest Warning Modal */}
+      <AnimatePresence>
+        {showGuestWarning && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowGuestWarning(false)}
+              className="fixed inset-0 bg-black z-40"
+            />
+            <motion.div
+              initial={{ opacity: 0, x: "-50%", y: "20%", scale: 0.9 }}
+              animate={{ opacity: 1, x: "-50%", y: "30%", scale: 1 }}
+              exit={{ opacity: 0, x: "-50%", y: "30%", scale: 0.9 }}
+              className="fixed top-1/2 left-1/2 w-[calc(100%-2rem)] max-w-md bg-white rounded-3xl shadow-2xl z-50 p-6 border border-tzipur-border flex flex-col gap-4"
+            >
+              <div className="flex justify-between items-start">
+                <div className="flex items-center justify-center text-yellow-500 shrink-0 mt-1">
+                  <AlertTriangle size={32} />
+                </div>
+                <button
+                  onClick={() => setShowGuestWarning(false)}
+                  className="p-2 -m-2 text-tzipur-brown/50 hover:text-tzipur-brown transition-colors"
+                  aria-label="Close"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <div>
+                <h3 className="font-serif font-bold text-xl text-tzipur-sky mb-2">
+                  {t('library.guestWarning.title')}
+                </h3>
+                <p className="text-tzipur-brown/80">
+                  {t('library.guestWarning.message')}
+                </p>
+              </div>
+              <div className="flex flex-col gap-2 mt-2">
+                <button
+                  onClick={() => navigate('/auth')}
+                  className="w-full bg-tzipur-sky text-white py-3.5 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-all"
+                >
+                  {t('library.guestWarning.registerBtn')}
+                </button>
+                <button
+                  onClick={() => setShowGuestWarning(false)}
+                  className="w-full bg-tzipur-cream text-tzipur-brown py-3.5 rounded-2xl font-medium text-lg hover:bg-tzipur-sand transition-all"
+                >
+                  {t('library.guestWarning.dismissBtn')}
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap');
+
 @import "tailwindcss";
 
 /*
@@ -13,13 +13,16 @@
   --color-tzipur-sand: #F4EBE1;
   --color-tzipur-border: #E8DED1;
   --color-tzipur-muted: #A39B90;
-
+  --color-tzipur-error: #EF4444;
+  --color-tzipur-error-bg: #FEF2F2;
+  --color-tzipur-sky-dark: #4A7A9A;
   /* ── Typography ── */
-  --font-sans: 'Heebo', sans-serif;
-  --font-serif: 'Frank Ruhl Libre', serif;
+  --font-sans: 'Calibri', 'Arial', sans-serif;
+  --font-serif: 'Calibri', 'Arial', sans-serif;
 
   /* ── Custom Shadows ── */
   --shadow-raised-panel: 0 -12px 40px -15px rgba(74, 63, 53, 0.15);
+  --shadow-footer-lift: 0 -4px 20px rgba(0, 0, 0, 0.05);
 }
 
 /*
@@ -89,5 +92,5 @@ textarea {
   border-radius: 4px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #4A7A9A; /* Slightly darker shade of sky */
+  background-color: var(--color-tzipur-sky-dark);
 }
