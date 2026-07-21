@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Zap, Flame, ShieldOff, CloudLightning, Hand, Eye, Waves, Cloud, UserPlus, ChevronDown, type LucideIcon } from 'lucide-react';
+import { Zap, Flame, ShieldOff, CloudLightning, Hand, Eye, Waves, Cloud, ChevronDown, type LucideIcon } from 'lucide-react';
 import LoaderScreen from './components/LoaderScreen';
 import Disclaimer from '../../components/Disclaimer';
 import { useAuth } from '../../contexts/AuthContext';

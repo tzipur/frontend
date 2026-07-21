@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { X, User, Calendar, Smile, Star, Plus, Trash2, ChevronDown } from 'lucide-react';
+import { User, Calendar, Smile, Star, Plus, Trash2, ChevronDown } from 'lucide-react';
 import { mockChildProfiles } from '../../lib/mockData';
 import type { ChildProfile } from '../../types';
 

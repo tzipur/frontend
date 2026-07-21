@@ -113,7 +113,7 @@ export default function LibraryPage() {
         className="flex-1 p-6"
       >
         <div className="grid grid-cols-2 gap-4">
-          {stories.map((story, index) => (
+          {stories.map((story, _index) => (
             <motion.div
               key={story.id}
               variants={cardVariants}

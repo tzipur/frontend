@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Lightbulb } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import heroSrc from '../../assets/bears-story-hero.jpeg';
 import { useReadingPage } from './hooks/useReadingPage';
@@ -17,12 +17,11 @@ export default function ReadingPage() {
     isLastPage,
     goNext,
     goPrev,
-    navigate,
   } = useReadingPage();
   const { t } = useTranslation();
 
   const pageVariants = {
-    enter: (dir: number) => ({
+    enter: (_dir: number) => ({
       x: 0,
       rotateY: 0,
       z: -100,
