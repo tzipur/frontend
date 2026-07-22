@@ -40,7 +40,7 @@ export default function HomePage() {
         {/* Title */}
         <motion.h1
           variants={itemVariants}
-          className="text-[clamp(3.25rem,10dvh,6rem)] font-black mb-[clamp(0.5rem,2dvh,1.5rem)] text-[#5B93B5] tracking-tight drop-shadow-sm leading-tight mt-2 sm:mt-4 shrink-0"
+          className="text-[clamp(3.25rem,10dvh,6rem)] font-black mb-[clamp(0.5rem,2dvh,1.5rem)] text-[#5B93B5] tracking-tight drop-shadow-sm leading-tight shrink-0"
         >
           {t('welcome.landing.title')}
         </motion.h1>
@@ -73,7 +73,7 @@ export default function HomePage() {
       </div>
 
       {/* Footer Buttons (Pinned to Bottom) */}
-      <footer className="w-full shrink-0 px-6 pt-2 pb-[clamp(0.5rem,2dvh,1.5rem)] flex flex-col items-center bg-gradient-to-t from-tzipur-cream via-tzipur-cream to-transparent z-10">
+      <footer className="w-full shrink-0 px-6 pb-[clamp(0.5rem,2dvh,1.5rem)] flex flex-col items-center bg-gradient-to-t from-tzipur-cream via-tzipur-cream to-transparent z-10">
         <div className="w-full max-w-sm space-y-[clamp(0.5rem,2dvh,1rem)]">
           <Button
             onClick={() => navigate('/auth')}
@@ -94,7 +94,7 @@ export default function HomePage() {
             {t('welcome.landing.guest')}
           </button>
           
-          <div className="flex flex-col gap-[clamp(0.25rem,1dvh,0.5rem)] text-center text-[clamp(0.75rem,2dvh,0.85rem)] font-medium text-tzipur-brown/70 pt-[clamp(0.5rem,2dvh,1rem)] leading-snug max-w-[360px] mx-auto">
+          <div className="flex flex-col gap-[clamp(0.25rem,1dvh,0.5rem)] text-center text-[clamp(0.75rem,2dvh,0.85rem)] font-medium text-tzipur-brown/70 leading-snug max-w-[360px] mx-auto">
             <p>{t('common.disclaimer')}</p>
             <p dir="auto" className="text-[clamp(0.65rem,1.5dvh,0.75rem)] font-normal opacity-80">{t('common.rights', { year: new Date().getFullYear() })}</p>
           </div>

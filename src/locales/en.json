@@ -43,7 +43,7 @@
       "placeholder": "For example: Ronnie"
     },
     "age": {
-      "label": "Age"
+      "label": "Age (used to adapt the story)"
     },
     "animal": {
       "label": "Favorite animal (may appear in the story)"
@@ -60,8 +60,21 @@
     "startCreating": "Create a Story",
     "goToLibrary": "Go to Library",
     "deleteConfirmTitle": "Delete Profile?",
-    "deleteConfirmMessage": "This will permanently delete the profile. This action cannot be undone.",
+    "deleteConfirmMessage": "This action will permanently delete the profile and cannot be undone.",
     "confirmDelete": "Delete"
+  },
+  "animals": {
+    "dog": "Dog",
+    "cat": "Cat",
+    "rabbit": "Rabbit",
+    "bear": "Bear",
+    "panda": "Panda",
+    "lion": "Lion",
+    "elephant": "Elephant",
+    "monkey": "Monkey",
+    "fox": "Fox",
+    "bird": "Bird",
+    "turtle": "Turtle"
   },
   "creation": {
     "title": "What happened today?",

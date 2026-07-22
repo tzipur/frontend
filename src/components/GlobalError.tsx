@@ -8,7 +8,7 @@ export default function GlobalError() {
   const { t } = useTranslation();
 
   return (
-    <div className="max-w-md mx-auto min-h-[100dvh] flex flex-col items-center justify-center bg-tzipur-cream text-tzipur-brown p-6 text-center" dir="rtl">
+    <div className="max-w-md mx-auto min-h-[100dvh] flex flex-col items-center justify-center bg-tzipur-cream text-tzipur-brown p-6 text-center">
       <div className="w-24 h-24 bg-tzipur-error-bg text-tzipur-error rounded-full flex items-center justify-center mb-6 shadow-sm border border-tzipur-error/20">
         <AlertTriangle size={48} />
       </div>

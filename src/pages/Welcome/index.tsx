@@ -56,12 +56,12 @@ export default function Welcome() {
 
   return (
     <div className="flex-1 flex flex-col relative bg-white text-tzipur-brown overflow-hidden w-full h-full">
-      <main className="flex-1 relative flex flex-col mt-2 sm:mt-6 overflow-hidden">
+      <main className="flex-1 relative flex flex-col mt-2 sm:mt-6 mb-2 overflow-hidden">
         <Swiper
           className="w-full h-full flex"
           onSwiper={setSwiper}
           onSlideChange={(s) => setActiveIndex(s.activeIndex)}
-          dir="rtl"
+          dir={i18n.dir()}
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index} className="flex flex-col">
@@ -82,8 +82,8 @@ export default function Welcome() {
         </Swiper>
       </main>
 
-      <footer className="px-6 pt-2 pb-[clamp(1.5rem,4dvh,2.5rem)] shrink-0 flex flex-col items-center gap-[clamp(1rem,3dvh,1.5rem)] z-10">
-        <div className="flex gap-2.5">
+      <footer className="px-6 pb-[clamp(1.5rem,4dvh,2.5rem)] shrink-0 flex flex-col items-center gap-[clamp(1rem,3dvh,1.5rem)] z-10">
+        <div className="flex gap-2.5 mb-1 sm:mb-4">
           {slides.map((_, index) => (
             <div
               key={index}
@@ -94,7 +94,7 @@ export default function Welcome() {
           ))}
         </div>
 
-        <div className="w-full flex flex-col gap-3 mt-1 sm:mt-4">
+        <div className="w-full flex flex-col gap-3">
           <Button fullWidth onClick={handleNext}>
             {activeIndex === slides.length - 1 ? t('welcome.start') : t('welcome.next')}
           </Button>

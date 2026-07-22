@@ -73,8 +73,8 @@ export default function PreviewPage() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 px-6 pt-[clamp(0.75rem,2dvh,1.5rem)] pb-[clamp(0.5rem,2dvh,1.5rem)] relative z-0 flex flex-col min-h-0">
-        <div className="flex-1 flex flex-col gap-[clamp(0.75rem,2dvh,1rem)] pb-2 pr-1 min-h-0 overflow-hidden">
+      <main className="flex-1 p-4 pb-2 relative z-0 flex flex-col min-h-0">
+        <div className="flex-1 flex flex-col gap-[clamp(0.75rem,2dvh,1rem)] min-h-0 overflow-hidden">
           
           {/* Story Accordion */}
           <div className={`bg-white rounded-[24px] shadow-sm border ${isStoryExpanded ? 'border-tzipur-sky/40' : 'border-tzipur-border'} flex flex-col ${isStoryExpanded ? 'flex-1 min-h-0' : 'shrink-0'} overflow-hidden transition-colors`}>
@@ -92,7 +92,7 @@ export default function PreviewPage() {
             {isStoryExpanded && (
               <div className="p-[clamp(1rem,3dvh,1.5rem)] pt-0 flex flex-col gap-[clamp(1.25rem,3dvh,2rem)] border-t border-tzipur-border/30 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
                 {story.chapters.map((chapter) => (
-                  <div key={chapter.id} className="flex flex-col gap-2 shrink-0 mt-4 first:mt-2">
+                  <div key={chapter.id} className="flex flex-col gap-2 shrink-0">
                     <h4 className="text-xl font-bold text-tzipur-sky mb-1">
                       {getCleanTitle(chapter.title)}
                     </h4>
@@ -155,9 +155,7 @@ export default function PreviewPage() {
       </main>
 
       {/* Disclaimer */}
-      <div className="shrink-0 px-4 pt-2 pb-1 bg-tzipur-cream">
-        <Disclaimer />
-      </div>
+      <Disclaimer />
 
       {/* Footer Actions */}
       <footer className="shrink-0 w-full bg-white/80 backdrop-blur-md border-t border-tzipur-border p-[clamp(0.5rem,2dvh,1rem)] shadow-footer-lift z-20">

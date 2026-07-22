@@ -52,9 +52,9 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex-1 w-full flex flex-col px-4 py-2 sm:p-4 bg-tzipur-cream text-tzipur-brown overflow-y-auto custom-scrollbar" dir="rtl">
+    <div className="flex-1 w-full flex flex-col px-4 py-2 sm:p-4 bg-tzipur-cream text-tzipur-brown overflow-y-auto custom-scrollbar">
 
-      <div className="shrink-0">
+      <div className="shrink-0 mb-1 sm:mb-4">
         <label className="block text-[clamp(0.85rem,2.5dvh,0.95rem)] mb-[clamp(0.25rem,1dvh,0.5rem)] font-medium text-tzipur-brown/80">{t('auth.nicknameLabel')}</label>
         <input 
           type="text" 
@@ -81,7 +81,7 @@ export default function AuthPage() {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-end min-h-0 pb-2 sm:pb-4 pt-1 sm:pt-4">
+      <div className="flex-1 flex flex-col items-center justify-end min-h-0 pb-2 sm:pb-4">
         <div className="w-full max-w-[340px] flex flex-col items-center mx-auto">
           <p className={`text-center text-[clamp(1.1rem,3dvh,1.35rem)] mb-[clamp(0.75rem,2dvh,1.25rem)] font-bold transition-colors ${error ? 'text-tzipur-error' : 'text-tzipur-sky'}`}>
             {error ? t('auth.error') : t('auth.pinLabel')}

@@ -22,7 +22,7 @@ export default function EndPage({ goPrev, coachingTip }: EndPageProps) {
         >
           <ChevronRight className="w-[clamp(1.5rem,4dvh,2rem)] h-[clamp(1.5rem,4dvh,2rem)]" strokeWidth={2.5} />
         </button>
-        <h2 className="font-sans font-bold text-tzipur-sky leading-none mt-1 text-[clamp(2rem,5dvh,3rem)]">
+        <h2 className="font-sans font-bold text-tzipur-sky leading-none mb-1 text-[clamp(2rem,5dvh,3rem)]">
           {t('reading.end.title')}
         </h2>
       </div>

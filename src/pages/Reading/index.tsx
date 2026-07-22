@@ -70,7 +70,7 @@ export default function ReadingPage() {
       className="absolute inset-0 flex flex-col overflow-hidden bg-tzipur-cream [perspective:1000px]"
     >
       {/* First Panel: Title and Image */}
-      <div className="bg-tzipur-sand rounded-b-2xl shadow-sm relative z-10 flex flex-col items-center pb-2">
+      <div className="bg-tzipur-sand rounded-b-2xl shadow-sm relative z-10 flex flex-col items-center pb-2 mb-2">
         <div className="shrink-0 pt-[clamp(0.5rem,2dvh,1rem)] pb-2 px-6 relative z-10 text-center">
           <h1 className="font-sans font-bold tracking-tight leading-relaxed text-tzipur-sky text-center text-[clamp(1.5rem,4.5dvh,2.5rem)]">
             {story.title}
@@ -98,7 +98,7 @@ export default function ReadingPage() {
             if (offset.x < -30 || velocity.x < -400) setTimeout(goPrev, 50);
             else if (offset.x > 30 || velocity.x > 400) setTimeout(goNext, 50);
           }}
-          className="flex-1 min-h-0 overflow-hidden bg-white rounded-t-[36px] mb-2 mx-2 shadow-raised-panel mt-2 z-20 relative px-2 pt-4 pb-4 flex flex-col justify-between border border-tzipur-border touch-pan-y"
+          className="flex-1 min-h-0 overflow-hidden bg-white rounded-t-[36px] mb-2 mx-2 shadow-raised-panel z-20 relative px-2 py-4 flex flex-col justify-between border border-tzipur-border touch-pan-y"
         >
           {/* Navigation + Text Container (For Normal Pages) */}
           {!currentPage?.isEndPage ? (

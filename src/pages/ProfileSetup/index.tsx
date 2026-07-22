@@ -11,11 +11,16 @@ import { ButtonGroup } from '../../components/ButtonGroup';
 const ages = [4, 5, 6, 7, 8];
 
 const animals = [
-  { emoji: '🐻', name: 'דוב', id: 'bear' },
-  { emoji: '🦊', name: 'שועל', id: 'fox' },
-  { emoji: '🐰', name: 'ארנב', id: 'rabbit' },
-  { emoji: '🐦', name: 'ציפור', id: 'bird' },
-  { emoji: '🐢', name: 'צב', id: 'turtle' },
+  { emoji: '🐶', id: 'dog' },
+  { emoji: '🐱', id: 'cat' },
+  { emoji: '🐰', id: 'rabbit' },
+  { emoji: '🐻', id: 'bear' },
+  { emoji: '🐼', id: 'panda' },
+  { emoji: '🦁', id: 'lion' },
+  { emoji: '🐘', id: 'elephant' },
+  { emoji: '🐒', id: 'monkey' },
+  { emoji: '🦊', id: 'fox' },
+  { emoji: '🐦', id: 'bird' },
 ];
 
 const containerVariants = {
@@ -54,7 +59,7 @@ export default function ProfileSetupPage() {
       id: newId,
       nickname: '',
       age: 4,
-      favoriteAnimal: 'bear',
+      favoriteAnimal: 'dog',
       hobby: ''
     };
     const newList = [...childrenList, newChild];
@@ -134,8 +139,8 @@ export default function ProfileSetupPage() {
     >
       <header className="flex items-center justify-between pb-[clamp(0.5rem,2dvh,1.5rem)] shrink-0">
         <div>
-          <h1 className="font-serif text-3xl font-bold text-tzipur-sky leading-tight">{t('profile.title')}</h1>
-          <p className="text-tzipur-brown/70 font-medium mt-1">{t('profile.subtitle', 'בואו נכיר את הילד/ה')}</p>
+          <h1 className="font-serif text-3xl font-bold text-tzipur-sky leading-tight mb-1">{t('profile.title')}</h1>
+          <p className="text-tzipur-brown/70 font-medium">{t('profile.subtitle', 'ספרו לנו על הילדים כדי שנתאים להם את הסיפורים')}</p>
         </div>
         <button
           onClick={() => setShowDeleteProfileModal(true)}
@@ -150,7 +155,7 @@ export default function ProfileSetupPage() {
         <div className="space-y-[clamp(0.5rem,2dvh,1rem)]">
           {childrenList.map(child => {
             const isExpanded = expandedChildId === child.id;
-            const childAnimal = animals.find(a => a.id === child.favoriteAnimal || a.name === child.favoriteAnimal) || animals[0];
+            const childAnimal = animals.find(a => a.id === child.favoriteAnimal || t(`animals.${a.id}`) === child.favoriteAnimal) || animals[0];
             const isDuplicateName = child.nickname.trim() !== '' && childrenList.some(c => c.id !== child.id && c.nickname.trim().toLowerCase() === child.nickname.trim().toLowerCase());
 
             return (
@@ -165,11 +170,11 @@ export default function ProfileSetupPage() {
                       <span className="text-3xl leading-none select-none">{childAnimal.emoji}</span>
                     </div>
                     <div>
-                      <h3 className={`font-bold text-lg ${child.nickname ? 'text-tzipur-brown' : 'text-tzipur-brown/50'}`}>
+                      <h3 className={`font-bold text-lg mb-0.5 ${child.nickname ? 'text-tzipur-brown' : 'text-tzipur-brown/50'}`}>
                         {child.nickname || t('profile.newChild', 'ילד חדש')}
                       </h3>
                       {!isExpanded && (
-                        <p className="text-tzipur-brown/60 text-sm font-medium mt-0.5">
+                        <p className="text-tzipur-brown/60 text-sm font-medium">
                           {t('profile.age.label')} {child.age} {child.hobby ? `• ${child.hobby}` : ''}
                         </p>
                       )}
@@ -192,7 +197,7 @@ export default function ProfileSetupPage() {
                       <div className="p-[clamp(1rem,3dvh,1.5rem)] pt-2 border-t border-tzipur-border/30 space-y-[clamp(1rem,3dvh,2rem)]">
                         {/* Nickname Input */}
                         <motion.div 
-                          className="space-y-3 mt-2"
+                          className="space-y-3"
                           animate={invalidFields?.id === child.id && invalidFields.fields.includes('nickname') ? { x: [-10, 10, -10, 10, 0] } : {}}
                           transition={{ duration: 0.4 }}
                         >
@@ -260,7 +265,7 @@ export default function ProfileSetupPage() {
                                 key={animal.id}
                                 onClick={() => updateChild(child.id, 'favoriteAnimal', animal.id)}
                                 className={`aspect-square rounded-2xl border-2 flex items-center justify-center transition-all ${
-                                  (child.favoriteAnimal === animal.id || child.favoriteAnimal === animal.name)
+                                  (child.favoriteAnimal === animal.id || child.favoriteAnimal === t(`animals.${animal.id}`))
                                     ? 'border-tzipur-sky bg-tzipur-sky/10 shadow-md shadow-tzipur-sky/10 scale-105'
                                     : 'border-tzipur-border bg-tzipur-cream/50 hover:border-tzipur-sky hover:bg-tzipur-cream'
                                 }`}
