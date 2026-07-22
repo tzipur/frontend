@@ -15,8 +15,9 @@ export function ButtonGroup({ children, className = '' }: ButtonGroupProps) {
       {React.Children.map(children, child => {
         if (!React.isValidElement(child)) return child;
         // Automatically make children flex-1 to fill the space equally
-        return React.cloneElement(child as React.ReactElement<any>, {
-          className: `${child.props.className || ''} flex-1`
+        const element = child as React.ReactElement<any>;
+        return React.cloneElement(element, {
+          className: `${element.props.className || ''} flex-1`
         });
       })}
     </div>

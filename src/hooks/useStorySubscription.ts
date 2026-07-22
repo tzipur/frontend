@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { supabase, isOffline } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
+import logoSrc from '../assets/tzipur_logo.png';
 
 export function useStorySubscription() {
   const { session } = useAuth();
@@ -30,7 +31,7 @@ export function useStorySubscription() {
             if (Notification.permission === 'granted') {
               new Notification('הסיפור שלכם מוכן!', {
                 body: 'היכנסו לאפליקציה כדי לקרוא את הסיפור החדש.',
-                icon: '/vite.svg' // Placeholder icon
+                icon: logoSrc
               });
             }
           }
