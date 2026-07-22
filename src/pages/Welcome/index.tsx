@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/Button';
 
 export default function Welcome() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const tSlides = t('welcome.slides', { returnObjects: true }) as Array<{title: string, text: string}>;
   const slides = tSlides.map((slide, i) => ({ ...slide, image: slideImages[i] }));
 
