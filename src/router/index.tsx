@@ -1,14 +1,16 @@
 import { createBrowserRouter, redirect } from 'react-router-dom';
 import RootLayout from '../layouts/RootLayout';
 import GlobalError from '../components/GlobalError';
-import WelcomePage from '../pages/Welcome';
-import ProfileSetupPage from '../pages/ProfileSetup';
-import CreationPage from '../pages/Creation';
-import AuthPage from '../pages/Auth';
-import ReadingPage from '../pages/Reading';
-import PreviewPage from '../pages/Preview';
-import LibraryPage from '../pages/Library';
-import HomePage from '../pages/HomePage';
+import { lazy } from 'react';
+
+const WelcomePage = lazy(() => import('../pages/Welcome'));
+const ProfileSetupPage = lazy(() => import('../pages/ProfileSetup'));
+const CreationPage = lazy(() => import('../pages/Creation'));
+const AuthPage = lazy(() => import('../pages/Auth'));
+const ReadingPage = lazy(() => import('../pages/Reading'));
+const PreviewPage = lazy(() => import('../pages/Preview'));
+const LibraryPage = lazy(() => import('../pages/Library'));
+const HomePage = lazy(() => import('../pages/HomePage'));
 
 const getHasSeenOnboarding = () => {
   try {

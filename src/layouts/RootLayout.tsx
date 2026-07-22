@@ -1,5 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
+import { Suspense } from 'react';
 import TopBar from '../components/TopBar';
+import SplashScreen from '../components/SplashScreen';
 
 import { useTranslation } from 'react-i18next';
 
@@ -20,7 +22,9 @@ export default function RootLayout() {
     >
       {!hideTopBar && <TopBar />}
       <div className="flex-1 flex flex-col relative overflow-hidden">
-        <Outlet />
+        <Suspense fallback={<SplashScreen />}>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   );
