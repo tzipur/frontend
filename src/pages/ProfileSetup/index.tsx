@@ -163,7 +163,7 @@ export default function ProfileSetupPage() {
                 {/* Accordion Header */}
                 <button 
                   onClick={() => setExpandedChildId(isExpanded ? null : child.id)}
-                  className="w-full p-[clamp(0.75rem,2dvh,1.25rem)] flex items-center justify-between text-right"
+                  className="w-full p-[clamp(0.75rem,2dvh,1.25rem)] flex items-center justify-between text-start"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 bg-tzipur-sky/5 rounded-2xl flex items-center justify-center shrink-0 border border-tzipur-sky/10">
@@ -236,7 +236,7 @@ export default function ProfileSetupPage() {
                             <Calendar size={18} strokeWidth={2.5} />
                             <span>{t('profile.age.label')}<span className="text-red-500 ms-1">*</span></span>
                           </label>
-                          <div className="grid grid-cols-5 gap-2.5">
+                          <div className="grid grid-cols-5 gap-2.5" dir="ltr">
                             {ages.map((age) => (
                               <button
                                 key={age}
@@ -259,7 +259,7 @@ export default function ProfileSetupPage() {
                             <Smile size={18} strokeWidth={2.5} />
                             <span>{t('profile.animal.label')}</span>
                           </label>
-                          <div className="grid grid-cols-5 gap-2.5">
+                          <div className="grid grid-cols-5 gap-2.5" dir="ltr">
                             {animals.map((animal) => (
                               <button
                                 key={animal.id}
