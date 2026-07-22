@@ -2,8 +2,8 @@
   "welcome": {
     "slides": [
       {
-        "title": "Safe Sharing",
-        "text": "In challenging, sensitive moments, and even changes like moving house - Tzipur gives you a safe space to share what's happening. No judgment. No shame. Just you."
+        "title": "A Safe Space to Share",
+        "text": "Difficult moments are a part of life. Tzipur gives you a safe space to share and process them together, without judgment."
       },
       {
         "title": "Tzipur turns it into a story",
@@ -18,22 +18,26 @@
     "next": "Next",
     "landing": {
       "title": "Turning moments of difficulty",
-      "subtitle": "Into a connecting family story.\nReady to discover your story?",
+      "subtitle": "Turning hard moments into a story that brings you closer.\nReady to discover your story?",
       "auth": "Login / Register",
       "guest": "Continue as guest"
     }
   },
   "auth": {
-    "title": "Login & Registration",
-    "explainer": "A personal account allows you to save stories and get a personalized experience.",
-    "nicknameLabel": "Family Name or Nickname",
+    "title": "Welcome",
+    "explainerTitle": "Why connect to an account:",
+    "explainerBullets": [
+      "Create personalized stories for you and each of your children",
+      "Save stories in a family library"
+    ],
+    "nicknameLabel": "Choose a family name or nickname (used for connecting to Tzipur)",
     "nicknamePlaceholder": "e.g., The Cohens",
-    "pinLabel": "Your secret code (4 digits)",
-    "error": "Incorrect code, try again",
+    "pinLabel": "Secret PIN (4 digits)",
+    "error": "Incorrect code, please try again",
     "submit": "Continue"
   },
   "profile": {
-    "title": "Our Profile",
+    "title": "Family Profile",
     "nickname": {
       "label": "Child's nickname",
       "placeholder": "For example: Ronnie"
@@ -42,13 +46,13 @@
       "label": "Age"
     },
     "animal": {
-      "label": "Favorite animal (will join the story)"
+      "label": "Favorite animal (may appear in the story)"
     },
     "hobby": {
       "label": "Hobby",
       "placeholder": "For example: Drawing, football, dancing"
     },
-    "save": "Save & Continue",
+    "save": "Save",
     "addChild": "Add Child",
     "delete": "Delete",
     "cancel": "Cancel",
@@ -56,12 +60,12 @@
     "startCreating": "Create a Story",
     "goToLibrary": "Go to Library",
     "deleteConfirmTitle": "Delete Profile?",
-    "deleteConfirmMessage": "Are you sure you want to delete this profile? This action cannot be undone.",
-    "confirmDelete": "Yes, Delete"
+    "deleteConfirmMessage": "This will permanently delete the profile. This action cannot be undone.",
+    "confirmDelete": "Delete"
   },
   "creation": {
     "title": "What happened today?",
-    "subtitle": "Choose an option or tell in your own words.",
+    "subtitle": "Choose a topic or share in your own words.",
     "tracks": {
       "startle": "Startle",
       "anger": "Anger",
@@ -74,12 +78,12 @@
     },
     "forWhom": "For whom is the story?",
     "or": "OR",
-    "freeText": "You can also write here in a few words...",
-    "submit": "Create story",
-    "signupHintPrefix": "Want a more personalized experience? ",
-    "signupHintAction": "Register",
+    "freeText": "You can share what happened here (e.g., 'I felt disconnected in the evening, and couldn't play together even though I wanted to...')",
+    "submit": "Create the story",
+    "signupHintPrefix": "Want a more personalized story? ",
+    "signupHintAction": "Create an account",
     "loader": {
-      "notification": "Your story is ready! Click here to review",
+      "notification": "Your story is ready! Tap to review",
       "notificationBody": "Your story is ready! Return to the app to read it",
       "sentences": [
         "We sent a dove with your message... it's already returning",
@@ -98,36 +102,36 @@
     }
   },
   "preview": {
-    "title": "Story Review",
+    "title": "Review Before Reading",
     "summaryTitle": "Review All Edit Requests",
-    "instruction": "Please review the story and request edits if necessary",
+    "instruction": "Your story is ready to read!",
     "chapterCount": "Chapter {{current}}/{{total}}",
     "chapter": "Chapter",
     "showChapter": "Show content",
     "hideChapter": "Hide content",
-    "editLabel": "Something in the story feels off? Request edits",
-    "editPlaceholder": "For example, soften the tone, or use our nicknames for the characters",
-    "nextChapter": "Continue to next chapter",
+    "editLabel": "You can request adjustments before reading together:",
+    "editPlaceholder": "For example: soften the tone, or use our nicknames for the characters",
+    "nextChapter": "Next chapter",
     "prevChapter": "Back",
     "reviewAll": "Review all edit requests",
     "sendEdits": "Send edit requests",
-    "generate": "To reading",
-    "editBoxNotEmpty": "The edit box must be empty to continue to the reading screen",
+    "generate": "Start reading",
+    "editBoxNotEmpty": "Send edit requests or clear the text box before continuing",
     "remainingEdits": "{{count}} edits left",
     "noEdits": "No edit requests were made.",
-    "warningTitle": "Wait, you wrote notes!",
-    "warningMessage": "We noticed you wrote edit requests. If you continue to story generation now, the notes will not be sent.",
+    "warningTitle": "You have unsent notes",
+    "warningMessage": "You have edit requests that haven't been sent. If you continue to reading, they won't be included.",
     "warningCancel": "Go back",
-    "warningConfirm": "Continue and generate"
+    "warningConfirm": "Continue to reading"
   },
   "reading": {
     "notFound": "Story not found",
     "backHome": "Back to Home",
     "end": {
       "title": "The End...",
-      "subtitle": "We hope you enjoyed the story!",
+      "subtitle": "We hope this was a connecting read. We invite you to read the 'Tip for Parents' to continue the conversation.",
       "save": "Add to library",
-      "coachingTitle": "Coaching Tip"
+      "coachingTitle": "Tip for Parents"
     }
   },
   "library": {
@@ -138,7 +142,7 @@
     },
     "guestWarning": {
       "title": "Don't lose your stories!",
-      "message": "You are currently using the app as a guest. Register now to save your stories securely so you never lose them.",
+      "message": "You're currently browsing as a guest. To save this story and return to it later, we recommend creating an account.",
       "registerBtn": "Register Now",
       "dismissBtn": "Maybe Later"
     },
@@ -147,7 +151,7 @@
     },
     "createBanner": {
       "title": "Create a new story",
-      "subtitle": "To help deal with a difficult moment"
+      "subtitle": "To help with a challenging moment"
     },
     "meta": {
       "for": "For",
@@ -172,12 +176,14 @@
     },
     "error": {
       "title": "Oops, something went wrong...",
-      "message": "It seems an unexpected error occurred. We apologize for the inconvenience.",
+      "message": "An unexpected error occurred. We're working on it.",
       "retry": "Try again",
       "home": "Back to Home"
     }
   },
   "common": {
-    "disclaimer": "Content is generated using AI. It is not a substitute for professional advice or therapy and should be reviewed with care."
+    "error": "Oops, something went wrong",
+    "disclaimer": "Stories are generated using AI and are not a substitute for professional advice or therapy. Please review them carefully before reading together.",
+    "rights": "© {{year}} Tzipur. All rights reserved."
   }
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Delete } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { Button } from '../../components/Button';
 
 export default function AuthPage() {
   const navigate = useNavigate();
@@ -51,66 +52,71 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="fixed inset-0 h-[100svh] max-h-[100svh] w-full flex flex-col p-6 bg-tzipur-cream text-tzipur-brown overflow-y-auto custom-scrollbar" dir="rtl">
-      <h1 className="font-serif text-2xl text-tzipur-sky mb-2 font-bold mt-2">{t('auth.title')}</h1>
-      
-      {!hasSavedNickname && (
-        <p className="text-base text-tzipur-brown/70 leading-relaxed mb-8">
-          {t('auth.explainer')}
-        </p>
-      )}
+    <div className="flex-1 w-full flex flex-col px-4 py-2 sm:p-4 bg-tzipur-cream text-tzipur-brown overflow-y-auto custom-scrollbar" dir="rtl">
 
-      <div className={`mb-[clamp(1rem,3dvh,2rem)] ${hasSavedNickname ? 'mt-6' : ''} shrink-0`}>
-        <label className="block text-base mb-2 font-medium">{t('auth.nicknameLabel')}</label>
+      <div className="shrink-0">
+        <label className="block text-[clamp(0.85rem,2.5dvh,0.95rem)] mb-[clamp(0.25rem,1dvh,0.5rem)] font-medium text-tzipur-brown/80">{t('auth.nicknameLabel')}</label>
         <input 
           type="text" 
           value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-          className="w-full bg-white border-2 border-tzipur-border rounded-2xl px-4 py-[clamp(0.5rem,1.5dvh,1rem)] outline-none focus:border-tzipur-sky transition-colors text-base"
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === '' || /^[a-zA-Zא-ת\s]+$/.test(val)) {
+              setNickname(val);
+            }
+          }}
+          className="w-full bg-white border border-tzipur-border shadow-sm rounded-xl px-4 py-[clamp(0.5rem,1.5dvh,0.75rem)] outline-none focus:border-tzipur-sky focus:ring-4 focus:ring-tzipur-sky/10 transition-all text-[clamp(0.95rem,2.5dvh,1.05rem)] font-medium placeholder:text-tzipur-brown/40 placeholder:font-normal text-tzipur-brown"
           placeholder={t('auth.nicknamePlaceholder')}
         />
+        <div className="text-[clamp(0.8rem,2dvh,0.95rem)] text-tzipur-brown/70 mt-[clamp(0.75rem,2dvh,1rem)] space-y-[clamp(0.25rem,1dvh,0.5rem)]">
+          <p className="font-bold text-tzipur-brown text-[clamp(0.85rem,2dvh,1rem)]">{t('auth.explainerTitle')}</p>
+          <ul className="space-y-[clamp(0.25rem,1dvh,0.5rem)] leading-snug sm:leading-relaxed">
+            {(t('auth.explainerBullets', { returnObjects: true }) as string[]).map((bullet, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                <span className="text-tzipur-sky mt-0.5">•</span>
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <div className="flex-1 flex flex-col items-center">
-        <div className="flex-1 flex flex-col justify-center items-center w-full min-h-0 shrink-0 py-[clamp(0.5rem,2dvh,1rem)]">
-          <p className={`text-[clamp(1rem,3dvh,1.25rem)] mb-[clamp(1rem,3dvh,2rem)] font-medium transition-colors ${error ? 'text-tzipur-error' : 'text-tzipur-sky'}`}>
+      <div className="flex-1 flex flex-col items-center justify-end min-h-0 pb-2 sm:pb-4 pt-1 sm:pt-4">
+        <div className="w-full max-w-[340px] flex flex-col items-center mx-auto">
+          <p className={`text-center text-[clamp(1.1rem,3dvh,1.35rem)] mb-[clamp(0.75rem,2dvh,1.25rem)] font-bold transition-colors ${error ? 'text-tzipur-error' : 'text-tzipur-sky'}`}>
             {error ? t('auth.error') : t('auth.pinLabel')}
           </p>
           <motion.div 
-            className="flex gap-6 mb-[clamp(1rem,4dvh,2.5rem)]" 
+            className="flex justify-between w-[85%] mb-[clamp(0.75rem,2.5dvh,2rem)]" 
             dir="ltr"
             animate={error ? { x: [-10, 10, -10, 10, 0] } : {}}
             transition={{ duration: 0.4 }}
           >
             {[0, 1, 2, 3].map(i => (
-              <div key={i} className={`w-6 h-6 rounded-full border-2 transition-colors ${error ? 'border-tzipur-error bg-tzipur-error-bg' : pin.length > i ? 'bg-tzipur-sky border-tzipur-sky' : 'border-tzipur-border bg-white'}`} />
+              <div key={i} className={`w-[clamp(2rem,6dvh,3.5rem)] h-[clamp(2rem,6dvh,3.5rem)] rounded-full border-[3px] transition-colors ${error ? 'border-tzipur-error bg-tzipur-error-bg' : pin.length > i ? 'bg-tzipur-sky border-tzipur-sky' : 'border-tzipur-border bg-white'}`} />
             ))}
           </motion.div>
 
-          <div className="grid grid-cols-3 gap-[clamp(0.5rem,1.5dvh,1rem)] sm:gap-[clamp(1rem,3dvh,2rem)] max-w-[350px] w-full text-lg sm:text-2xl font-medium" dir="ltr">
+          <div className="grid grid-cols-3 place-items-center gap-y-[clamp(0.25rem,1.5dvh,1.25rem)] gap-x-[clamp(1rem,4vw,2.5rem)] w-full text-lg sm:text-2xl font-medium" dir="ltr">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
-              <button key={num} onClick={() => handleKeyPress(num.toString())} className="w-[clamp(2.5rem,8dvh,5rem)] h-[clamp(2.5rem,8dvh,5rem)] rounded-full bg-white shadow-sm border border-tzipur-border flex items-center justify-center active:scale-95 transition-transform text-tzipur-sky hover:bg-tzipur-sand mx-auto">
+              <button key={num} onClick={() => handleKeyPress(num.toString())} className="w-[clamp(3rem,8.5dvh,4.5rem)] h-[clamp(3rem,8.5dvh,4.5rem)] rounded-full bg-white shadow-sm border border-tzipur-border flex items-center justify-center active:scale-95 transition-transform text-tzipur-sky hover:bg-tzipur-sand">
                 {num}
               </button>
             ))}
             <div />
-            <button onClick={() => handleKeyPress('0')} className="w-[clamp(2.5rem,8dvh,5rem)] h-[clamp(2.5rem,8dvh,5rem)] rounded-full bg-white shadow-sm border border-tzipur-border flex items-center justify-center active:scale-95 transition-transform text-tzipur-sky hover:bg-tzipur-sand mx-auto">
+            <button onClick={() => handleKeyPress('0')} className="w-[clamp(3rem,8.5dvh,4.5rem)] h-[clamp(3rem,8.5dvh,4.5rem)] rounded-full bg-white shadow-sm border border-tzipur-border flex items-center justify-center active:scale-95 transition-transform text-tzipur-sky hover:bg-tzipur-sand">
               0
             </button>
-            <button onClick={handleDelete} className="w-[clamp(2.5rem,8dvh,5rem)] h-[clamp(2.5rem,8dvh,5rem)] rounded-full bg-transparent flex items-center justify-center active:scale-95 transition-transform text-tzipur-brown/70 hover:bg-tzipur-sand mx-auto">
+            <button onClick={handleDelete} className="w-[clamp(3rem,8.5dvh,4.5rem)] h-[clamp(3rem,8.5dvh,4.5rem)] rounded-full bg-transparent flex items-center justify-center active:scale-95 transition-transform text-tzipur-brown/70 hover:bg-tzipur-sand">
               <Delete size={32} />
             </button>
           </div>
         </div>
 
-        <div className="w-full mt-auto pt-[clamp(1rem,3dvh,1.5rem)] shrink-0">
-          <button 
-            onClick={handleAuth}
-            disabled={pin.length < 4 || !nickname}
-            className="w-full bg-[#5B93B5] text-white py-[clamp(0.75rem,2dvh,1rem)] rounded-2xl font-medium text-base disabled:opacity-50 disabled:active:scale-100 disabled:cursor-not-allowed active:scale-[0.98] transition-all hover:bg-[#4A7A9A] shadow-md"
-          >
+        <div className="w-full mt-auto pt-[clamp(0.5rem,2dvh,1.5rem)] shrink-0">
+          <Button variant="primary" fullWidth onClick={handleAuth} disabled={pin.length < 4 || !nickname}>
             {t('auth.submit')}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

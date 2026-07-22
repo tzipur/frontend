@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ChevronRight, Lightbulb } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '../../../components/Button';
 
 interface EndPageProps {
   goPrev: () => void;
@@ -44,12 +45,9 @@ export default function EndPage({ goPrev, coachingTip }: EndPageProps) {
       )}
 
       {/* Bottom Section - Save Button */}
-      <button
-        onClick={() => navigate('/library')}
-        className="w-full bg-[#5B93B5] text-white py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl sm:rounded-2xl font-bold shadow-md hover:bg-[#4A7A9A] active:scale-[0.98] transition-all shrink-0 text-[clamp(0.875rem,2.25dvh,1.125rem)]"
-      >
+      <Button variant="primary" fullWidth onClick={() => navigate('/library')}>
         {t('reading.end.save')}
-      </button>
+      </Button>
     </div>
   );
 }

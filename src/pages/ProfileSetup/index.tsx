@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { User, Calendar, Smile, Star, Plus, Trash2, ChevronDown } from 'lucide-react';
 import { mockChildProfiles } from '../../lib/mockData';
 import type { ChildProfile } from '../../types';
+import { Button } from '../../components/Button';
+import { ButtonGroup } from '../../components/ButtonGroup';
 
 const ages = [4, 5, 6, 7, 8];
 
@@ -33,6 +35,8 @@ export default function ProfileSetupPage() {
   const [expandedChildId, setExpandedChildId] = useState<string | null>(null);
   const [childToDelete, setChildToDelete] = useState<string | null>(null);
   const [showDeleteProfileModal, setShowDeleteProfileModal] = useState(false);
+  const [savedChildIds, setSavedChildIds] = useState<Set<string>>(new Set(mockChildProfiles.map(c => c.id)));
+  const [invalidFields, setInvalidFields] = useState<{id: string, fields: string[]} | null>(null);
 
   useEffect(() => {
     if (childrenList.length === 0) {
@@ -91,11 +95,32 @@ export default function ProfileSetupPage() {
       setExpandedChildId(null);
     }
     setChildToDelete(null);
+    
+    const newSaved = new Set(savedChildIds);
+    newSaved.delete(id);
+    setSavedChildIds(newSaved);
+  };
+
+  const handleSaveChild = (child: ChildProfile, isDuplicateName: boolean) => {
+    const invalid = [];
+    if (child.nickname.trim() === '' || isDuplicateName) invalid.push('nickname');
+    if (!child.age) invalid.push('age');
+    
+    if (invalid.length > 0) {
+      setInvalidFields({ id: child.id, fields: invalid });
+      setTimeout(() => setInvalidFields(null), 500);
+      return;
+    }
+    
+    const newSaved = new Set(savedChildIds);
+    newSaved.add(child.id);
+    setSavedChildIds(newSaved);
+    setExpandedChildId(null);
   };
 
   const isFormValid = (child: ChildProfile) => {
     const isDuplicate = childrenList.some(c => c.id !== child.id && c.nickname.trim() !== '' && c.nickname.trim().toLowerCase() === child.nickname.trim().toLowerCase());
-    return !isDuplicate && child.nickname.trim() !== '' && !!child.age && !!child.favoriteAnimal && !!child.hobby && child.hobby.trim() !== '';
+    return !isDuplicate && child.nickname.trim() !== '' && !!child.age;
   };
 
   const isAllValid = childrenList.length > 0 && childrenList.every(isFormValid);
@@ -166,7 +191,11 @@ export default function ProfileSetupPage() {
                     >
                       <div className="p-[clamp(1rem,3dvh,1.5rem)] pt-2 border-t border-tzipur-border/30 space-y-[clamp(1rem,3dvh,2rem)]">
                         {/* Nickname Input */}
-                        <div className="space-y-3 mt-2">
+                        <motion.div 
+                          className="space-y-3 mt-2"
+                          animate={invalidFields?.id === child.id && invalidFields.fields.includes('nickname') ? { x: [-10, 10, -10, 10, 0] } : {}}
+                          transition={{ duration: 0.4 }}
+                        >
                           <label className="flex items-center gap-2 text-base font-bold text-tzipur-sky">
                             <User size={18} strokeWidth={2.5} />
                             <span>{t('profile.nickname.label')}<span className="text-red-500 ms-1">*</span></span>
@@ -175,7 +204,12 @@ export default function ProfileSetupPage() {
                             type="text"
                             placeholder={t('profile.nickname.placeholder')}
                             value={child.nickname}
-                            onChange={(e) => updateChild(child.id, 'nickname', e.target.value)}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              if (val === '' || /^[a-zA-Zא-ת\s]+$/.test(val)) {
+                                updateChild(child.id, 'nickname', val);
+                              }
+                            }}
                             className={`w-full bg-tzipur-cream/50 border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] focus:outline-none focus:ring-2 transition text-tzipur-brown font-medium placeholder:text-tzipur-brown/50 placeholder:font-normal ${
                               isDuplicateName 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
@@ -185,10 +219,14 @@ export default function ProfileSetupPage() {
                           {isDuplicateName && (
                             <p className="text-red-500 text-sm font-medium mt-1">{t('profile.duplicateName', 'שם זה כבר קיים, נא לבחור שם אחר')}</p>
                           )}
-                        </div>
+                        </motion.div>
 
                         {/* Age Selector */}
-                        <div className="space-y-3">
+                        <motion.div 
+                          className="space-y-3"
+                          animate={invalidFields?.id === child.id && invalidFields.fields.includes('age') ? { x: [-10, 10, -10, 10, 0] } : {}}
+                          transition={{ duration: 0.4 }}
+                        >
                           <label className="flex items-center gap-2 text-base font-bold text-tzipur-sky">
                             <Calendar size={18} strokeWidth={2.5} />
                             <span>{t('profile.age.label')}<span className="text-red-500 ms-1">*</span></span>
@@ -208,13 +246,13 @@ export default function ProfileSetupPage() {
                               </button>
                             ))}
                           </div>
-                        </div>
+                        </motion.div>
 
                         {/* Animal Selector */}
                         <div className="space-y-3">
                           <label className="flex items-center gap-2 text-base font-bold text-tzipur-sky">
                             <Smile size={18} strokeWidth={2.5} />
-                            <span>{t('profile.animal.label')}<span className="text-red-500 ms-1">*</span></span>
+                            <span>{t('profile.animal.label')}</span>
                           </label>
                           <div className="grid grid-cols-5 gap-2.5">
                             {animals.map((animal) => (
@@ -237,35 +275,39 @@ export default function ProfileSetupPage() {
                         <div className="space-y-3">
                           <label className="flex items-center gap-2 text-base font-bold text-tzipur-sky">
                             <Star size={18} strokeWidth={2.5} />
-                            <span>{t('profile.hobby.label')}<span className="text-red-500 ms-1">*</span></span>
+                            <span>{t('profile.hobby.label')}</span>
                           </label>
                           <input
                             type="text"
                             placeholder={t('profile.hobby.placeholder')}
                             value={child.hobby}
-                            onChange={(e) => updateChild(child.id, 'hobby', e.target.value)}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              if (val === '' || /^[a-zA-Zא-ת\s]+$/.test(val)) {
+                                updateChild(child.id, 'hobby', val);
+                              }
+                            }}
                             className="w-full bg-tzipur-cream/50 border border-tzipur-border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-medium placeholder:text-tzipur-brown/50 placeholder:font-normal"
                           />
                         </div>
 
                         {/* Actions */}
-                        <div className="flex items-center justify-between pt-4 border-t border-tzipur-border/30">
-                          {child.nickname.trim() !== '' ? (
-                            <button
-                              onClick={() => handleDeleteChild(child.id)}
-                              className="flex items-center gap-2 text-red-500/80 hover:text-red-500 hover:bg-red-50 px-4 py-2 rounded-xl transition-colors font-bold text-sm"
-                            >
-                              <Trash2 size={18} strokeWidth={2.5} />
-                              {t('profile.delete')}
-                            </button>
-                          ) : <div />}
-                          <button
-                            onClick={() => setExpandedChildId(null)}
-                            disabled={!child.nickname.trim() || isDuplicateName}
-                            className="bg-tzipur-sky/10 text-tzipur-sky hover:bg-tzipur-sky/20 px-6 py-2.5 rounded-xl transition-colors font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {t('profile.save')}
-                          </button>
+                        <div className="pt-4 border-t border-tzipur-border/30">
+                          <ButtonGroup>
+                            {savedChildIds.has(child.id) ? (
+                              <Button variant="destructive" onClick={() => handleDeleteChild(child.id)}>
+                                <Trash2 size={18} strokeWidth={2.5} />
+                                {t('profile.delete')}
+                              </Button>
+                            ) : (
+                              <Button variant="secondary" onClick={() => confirmDeleteChild(child.id)}>
+                                {t('profile.cancel')}
+                              </Button>
+                            )}
+                            <Button variant="primary" onClick={() => handleSaveChild(child, isDuplicateName)}>
+                              {t('profile.save')}
+                            </Button>
+                          </ButtonGroup>
                         </div>
                       </div>
                     </motion.div>
@@ -288,19 +330,12 @@ export default function ProfileSetupPage() {
       </main>
 
       <footer className="pt-[clamp(0.75rem,2dvh,1.5rem)] pb-2 mt-auto shrink-0 z-10 flex flex-col gap-[clamp(0.5rem,1.5dvh,0.75rem)]">
-        <button
-          onClick={() => navigate('/create')}
-          className="w-full bg-tzipur-sky text-white py-[clamp(0.75rem,2dvh,1rem)] rounded-2xl font-bold text-lg shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform disabled:opacity-50 disabled:active:scale-100 disabled:cursor-not-allowed"
-          disabled={!isAllValid}
-        >
+        <Button variant="primary" fullWidth onClick={() => navigate('/create')} disabled={!isAllValid}>
           {t('profile.startCreating')}
-        </button>
-        <button
-          onClick={() => navigate('/library')}
-          className="w-full bg-white text-tzipur-sky py-[clamp(0.75rem,2dvh,1rem)] rounded-2xl font-bold text-lg border-2 border-tzipur-sky/20 hover:bg-tzipur-sky/5 transition-colors active:scale-[0.98] transition-transform"
-        >
+        </Button>
+        <Button variant="secondary" fullWidth onClick={() => navigate('/library')}>
           {t('profile.goToLibrary')}
-        </button>
+        </Button>
       </footer>
 
       {/* Delete Profile Confirmation Modal */}
@@ -322,24 +357,18 @@ export default function ProfileSetupPage() {
                   {t('profile.deleteProfileConfirm', 'האם אתה בטוח שברצונך למחוק את הפרופיל?')}
                 </p>
               </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setShowDeleteProfileModal(false)}
-                  className="flex-1 py-3.5 rounded-2xl font-bold text-tzipur-brown/70 bg-tzipur-cream hover:bg-tzipur-border/50 transition-colors"
-                >
+              <ButtonGroup>
+                <Button variant="secondary" onClick={() => setShowDeleteProfileModal(false)}>
                   {t('profile.cancel')}
-                </button>
-                <button
-                  onClick={() => {
-                    localStorage.removeItem('tzipur_pin');
-                    window.dispatchEvent(new Event('tzipur_auth_changed'));
-                    navigate('/');
-                  }}
-                  className="flex-1 py-3.5 rounded-2xl font-bold text-white bg-red-500 hover:bg-red-600 shadow-md shadow-red-500/20 transition-colors"
-                >
+                </Button>
+                <Button variant="destructive" onClick={() => {
+                  localStorage.removeItem('tzipur_pin');
+                  window.dispatchEvent(new Event('tzipur_auth_changed'));
+                  navigate('/');
+                }}>
                   {t('profile.confirmDelete')}
-                </button>
-              </div>
+                </Button>
+              </ButtonGroup>
             </motion.div>
           </div>
         )}
@@ -364,20 +393,14 @@ export default function ProfileSetupPage() {
                   {t('profile.deleteConfirmMessage')}
                 </p>
               </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setChildToDelete(null)}
-                  className="flex-1 py-3.5 rounded-2xl font-bold text-tzipur-brown/70 bg-tzipur-cream hover:bg-tzipur-border/50 transition-colors"
-                >
+              <ButtonGroup>
+                <Button variant="secondary" onClick={() => setChildToDelete(null)}>
                   {t('profile.cancel')}
-                </button>
-                <button
-                  onClick={() => confirmDeleteChild(childToDelete)}
-                  className="flex-1 py-3.5 rounded-2xl font-bold text-white bg-red-500 hover:bg-red-600 shadow-md shadow-red-500/20 transition-colors"
-                >
+                </Button>
+                <Button variant="destructive" onClick={() => confirmDeleteChild(childToDelete)}>
                   {t('profile.confirmDelete')}
-                </button>
-              </div>
+                </Button>
+              </ButtonGroup>
             </motion.div>
           </div>
         )}

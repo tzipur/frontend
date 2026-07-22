@@ -19,7 +19,7 @@ export default function TopBar() {
   const showProfile = !isGuest;
 
   return (
-    <header className="w-full bg-tzipur-cream text-tzipur-brown h-16 px-4 flex items-center justify-between z-40 relative shadow-sm border-b border-tzipur-border shrink-0">
+    <header className="w-full bg-tzipur-cream text-tzipur-brown h-14 sm:h-16 px-3 sm:px-4 flex items-center justify-between z-40 relative shadow-sm border-b border-tzipur-border shrink-0">
       {/* Right side (RTL Start) */}
       <div className="flex items-center z-10 w-18">
         {showBack && (
@@ -29,8 +29,8 @@ export default function TopBar() {
             aria-label={t('navigation.back', 'Back')}
             title={t('navigation.back', 'Back')}
           >
-            <ChevronRight size={32  } className="hidden rtl:block" />
-            <ChevronLeft size={32} className="hidden ltr:block" />
+            <ChevronRight className="hidden rtl:block w-7 h-7 sm:w-8 sm:h-8" />
+            <ChevronLeft className="hidden ltr:block w-7 h-7 sm:w-8 sm:h-8" />
           </button>
         )}  
       </div>
@@ -43,7 +43,7 @@ export default function TopBar() {
           aria-label={t('components.topBar.home')}
           title={t('components.topBar.home')}
         >
-          <img src={logoSrc} alt="Tzipur Logo" className="w-12 h-12 object-contain" />
+          <img src={logoSrc} alt="Tzipur Logo" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
         </Link>
       </div>
 
@@ -56,7 +56,7 @@ export default function TopBar() {
             aria-label={t('components.topBar.profile')}
             title={t('components.topBar.profile')}
           >
-            <User size={32} />
+            <User className="w-7 h-7 sm:w-8 sm:h-8" />
           </Link>
         )}
       </div>

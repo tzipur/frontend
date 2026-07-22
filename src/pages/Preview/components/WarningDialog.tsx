@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { AlertCircle } from 'lucide-react';
+import { Button } from '../../../components/Button';
+import { ButtonGroup } from '../../../components/ButtonGroup';
 
 interface WarningDialogProps {
   isVisible: boolean;
@@ -36,20 +38,14 @@ export default function WarningDialog({ isVisible, onConfirm, onCancel }: Warnin
               {t('preview.warningMessage')}
             </p>
             
-            <div className="w-full flex flex-col gap-3">
-              <button
-                onClick={onConfirm}
-                className="w-full bg-tzipur-error text-white py-3 rounded-2xl font-medium shadow-sm hover:bg-tzipur-error/90 transition-colors active:scale-[0.98]"
-              >
-                {t('preview.warningConfirm')}
-              </button>
-              <button
-                onClick={onCancel}
-                className="w-full bg-tzipur-cream text-tzipur-brown py-3 rounded-2xl font-medium hover:bg-tzipur-border transition-colors active:scale-[0.98]"
-              >
+            <ButtonGroup>
+              <Button variant="secondary" onClick={onCancel}>
                 {t('preview.warningCancel')}
-              </button>
-            </div>
+              </Button>
+              <Button variant="destructive" onClick={onConfirm}>
+                {t('preview.warningConfirm')}
+              </Button>
+            </ButtonGroup>
           </motion.div>
         </motion.div>
       )}

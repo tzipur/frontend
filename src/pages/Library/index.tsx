@@ -6,6 +6,8 @@ import { Plus, BookOpen, AlertTriangle, X } from 'lucide-react';
 import { mockStories, mockChildProfiles } from '../../lib/mockData';
 import fallbackImage from '../../assets/bears-story-hero.jpeg';
 import { useAuth } from '../../contexts/AuthContext';
+import { Button } from '../../components/Button';
+import { ButtonGroup } from '../../components/ButtonGroup';
 
 
 const containerVariants = {
@@ -71,12 +73,9 @@ export default function LibraryPage() {
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center gap-4">
           <BookOpen size={64} className="text-tzipur-brown/70" />
           <p className="text-base text-tzipur-brown/70">{t('library.empty.text')}</p>
-          <button
-            onClick={() => navigate('/create')}
-            className="bg-tzipur-sky text-white py-3 px-8 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-shadow"
-          >
+          <Button variant="primary" onClick={() => navigate('/create')}>
             {t('library.empty.create')}
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -194,20 +193,14 @@ export default function LibraryPage() {
                   {t('library.guestWarning.message')}
                 </p>
               </div>
-              <div className="flex flex-col gap-2 mt-2">
-                <button
-                  onClick={() => navigate('/auth')}
-                  className="w-full bg-tzipur-sky text-white py-3.5 rounded-2xl font-medium text-lg shadow-md hover:shadow-lg transition-all"
-                >
-                  {t('library.guestWarning.registerBtn')}
-                </button>
-                <button
-                  onClick={() => setShowGuestWarning(false)}
-                  className="w-full bg-tzipur-cream text-tzipur-brown py-3.5 rounded-2xl font-medium text-lg hover:bg-tzipur-sand transition-all"
-                >
+              <ButtonGroup>
+                <Button variant="secondary" onClick={() => setShowGuestWarning(false)}>
                   {t('library.guestWarning.dismissBtn')}
-                </button>
-              </div>
+                </Button>
+                <Button variant="primary" onClick={() => navigate('/auth')}>
+                  {t('library.guestWarning.registerBtn')}
+                </Button>
+              </ButtonGroup>
             </motion.div>
           </>
         )}

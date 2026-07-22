@@ -23,6 +23,7 @@ const itemVariants = {
 };
 
 import { useTranslation } from 'react-i18next';
+import { Button } from '../../components/Button';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function HomePage() {
       animate="visible"
       className="flex flex-col fixed inset-0 h-[100svh] max-h-[100svh] overflow-hidden bg-tzipur-cream"
     >
-      <div className="flex-1 flex flex-col justify-center items-center w-full overflow-y-auto overflow-x-hidden custom-scrollbar p-4 sm:p-6 text-center pb-2 sm:pb-4 pt-4 sm:pt-8">
+      <div className="flex-1 flex flex-col justify-start items-center w-full overflow-y-auto overflow-x-hidden custom-scrollbar p-4 sm:p-6 text-center pb-2 sm:pb-4 pt-[clamp(1.5rem,4dvh,3rem)]">
         {/* Title */}
         <motion.h1
           variants={itemVariants}
@@ -72,14 +73,15 @@ export default function HomePage() {
       </div>
 
       {/* Footer Buttons (Pinned to Bottom) */}
-      <footer className="w-full shrink-0 px-6 pt-2 pb-[clamp(1rem,3dvh,3rem)] flex flex-col items-center bg-gradient-to-t from-tzipur-cream via-tzipur-cream to-transparent z-10">
+      <footer className="w-full shrink-0 px-6 pt-2 pb-[clamp(0.5rem,2dvh,1.5rem)] flex flex-col items-center bg-gradient-to-t from-tzipur-cream via-tzipur-cream to-transparent z-10">
         <div className="w-full max-w-sm space-y-[clamp(0.5rem,2dvh,1rem)]">
-          <button
+          <Button
             onClick={() => navigate('/auth')}
-            className="w-full bg-[#5B93B5] text-white py-[clamp(0.75rem,2dvh,1rem)] rounded-2xl text-[clamp(1.125rem,2.5dvh,1.25rem)] font-medium shadow-md hover:bg-[#4A7A9A] active:scale-[0.98] transition-all"
+            variant="primary"
+            fullWidth
           >
             {t('welcome.landing.auth')}
-          </button>
+          </Button>
 
           <button
             onClick={() => {
@@ -92,9 +94,10 @@ export default function HomePage() {
             {t('welcome.landing.guest')}
           </button>
           
-          <p className="text-center text-[10px] text-tzipur-brown/50 pt-1 sm:pt-2 leading-tight">
-            {t('common.disclaimer')}
-          </p>
+          <div className="flex flex-col gap-[clamp(0.25rem,1dvh,0.5rem)] text-center text-[clamp(0.75rem,2dvh,0.85rem)] font-medium text-tzipur-brown/70 pt-[clamp(0.5rem,2dvh,1rem)] leading-snug max-w-[360px] mx-auto">
+            <p>{t('common.disclaimer')}</p>
+            <p dir="auto" className="text-[clamp(0.65rem,1.5dvh,0.75rem)] font-normal opacity-80">{t('common.rights', { year: new Date().getFullYear() })}</p>
+          </div>
         </div>
       </footer>
     </motion.div>

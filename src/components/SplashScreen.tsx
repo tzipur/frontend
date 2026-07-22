@@ -16,7 +16,7 @@ export default function SplashScreen() {
         }}
         className="w-48 h-48 flex items-center justify-center"
       >
-        <img src={logoSrc} alt="Tzipur Logo" className="w-full h-full object-contain filter drop-shadow-2xl" />
+        <img src={logoSrc} alt="Tzipur Logo" className="w-full h-full object-contain" />
       </motion.div>
     </div>
   );

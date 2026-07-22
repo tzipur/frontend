@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Zap, Flame, ShieldOff, CloudLightning, Hand, Eye, Waves, Cloud, ChevronDown, type LucideIcon } from 'lucide-react';
 import LoaderScreen from './components/LoaderScreen';
 import Disclaimer from '../../components/Disclaimer';
+import { Button } from '../../components/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { mockChildProfiles } from '../../lib/mockData';
 
@@ -267,13 +268,14 @@ export default function CreationPage() {
             </div>
           )}
 
-          <button
+          <Button
+            variant="primary"
+            fullWidth
             onClick={handleCreate}
             disabled={!selectedTrack && !freeText.trim()}
-            className="w-full bg-tzipur-sky text-white py-[clamp(0.75rem,2dvh,1rem)] rounded-2xl font-medium text-base shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {t('creation.submit')}
-          </button>
+          </Button>
 
           <Disclaimer />
         </footer>

@@ -14,6 +14,7 @@ const AUTOPLAY_DELAY_MS = 10000;
 const slideImages = [img1, img2, img3];
 
 import { useTranslation } from 'react-i18next';
+import { Button } from '../../components/Button';
 
 export default function Welcome() {
   const { t } = useTranslation();
@@ -94,12 +95,9 @@ export default function Welcome() {
         </div>
 
         <div className="w-full flex flex-col gap-3 mt-1 sm:mt-4">
-          <button
-            onClick={handleNext}
-            className="w-full bg-tzipur-sky text-white py-[clamp(0.8rem,2dvh,1rem)] rounded-2xl font-medium text-[clamp(1.125rem,2.5dvh,1.25rem)] shadow-md hover:bg-tzipur-sky/90 transition"
-          >
+          <Button fullWidth onClick={handleNext}>
             {activeIndex === slides.length - 1 ? t('welcome.start') : t('welcome.next')}
-          </button>
+          </Button>
         </div>
       </footer>
     </div>

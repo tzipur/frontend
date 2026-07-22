@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import logoSrc from '../../../assets/tzipur_logo.png';
+import { Button } from '../../../components/Button';
 
 interface LoaderScreenProps {
   isVisible: boolean;
@@ -94,12 +95,9 @@ export default function LoaderScreen({ isVisible, isReady, onContinue, mode = 'g
               <h2 className="font-serif text-2xl font-bold text-tzipur-sky mb-8">
                 {t('creation.loader.notification')}
               </h2>
-              <button
-                onClick={onContinue}
-                className="bg-tzipur-sky text-white text-base px-8 py-4 rounded-2xl font-medium shadow-md hover:shadow-lg active:scale-95 transition-all"
-              >
+              <Button variant="primary" onClick={onContinue}>
                 צפייה בסיפור
-              </button>
+              </Button>
             </motion.div>
           )}
         </motion.div>
