@@ -133,21 +133,6 @@ export function useProfileSetup() {
     navigate('/');
   };
 
-  const handleSaveAllAndNavigate = async (path: string) => {
-    const isValid = await form.trigger();
-    if (!isValid) return;
-
-    const values = form.getValues();
-    const payload = values.children.map(c => ({
-      ...c,
-      id: c.id.startsWith('child-') ? null : c.id
-    }));
-    
-    updateMutation.mutate({ children: payload }, {
-      onSuccess: () => navigate(path),
-    });
-  };
-
   return {
     form,
     fields,
@@ -167,7 +152,7 @@ export function useProfileSetup() {
       handleSaveChild,
       confirmDeleteChild,
       handleDeleteProfile,
-      handleSaveAllAndNavigate
+      navigate
     }
   };
 }

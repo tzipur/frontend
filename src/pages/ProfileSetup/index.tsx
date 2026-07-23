@@ -76,7 +76,7 @@ export default function ProfileSetupPage() {
         <Button 
           variant="primary" 
           fullWidth 
-          onClick={() => actions.handleSaveAllAndNavigate('/create')} 
+          onClick={() => actions.navigate('/create')} 
           disabled={!isFormValid || state.isPending}
         >
           {state.isPending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : t('profile.startCreating')}
@@ -84,7 +84,7 @@ export default function ProfileSetupPage() {
         <Button 
           variant="secondary" 
           fullWidth 
-          onClick={() => actions.handleSaveAllAndNavigate('/library')} 
+          onClick={() => actions.navigate('/library')} 
           disabled={state.isPending}
         >
           {t('profile.goToLibrary')}
