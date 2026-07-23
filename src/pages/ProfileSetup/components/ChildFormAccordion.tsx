@@ -76,7 +76,7 @@ export function ChildFormAccordion({
             </h3>
             {!isExpanded && (
               <p className="text-tzipur-brown/60 text-sm font-medium">
-                {t('profile.age.label')} {currentAge} {currentHobby ? `• ${currentHobby}` : ''}
+                {t('profile.age.shortLabel', 'גיל')}: {currentAge}{currentHobby ? ` ${t('profile.hobby.shortLabel', 'תחביב')}: ${currentHobby}` : ''}
               </p>
             )}
           </div>
