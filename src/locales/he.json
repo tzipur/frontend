@@ -34,7 +34,9 @@
     "nicknamePlaceholder": "למשל: משפחת כהן",
     "pinLabel": "קוד סודי (4 ספרות)",
     "error": "הקוד שגוי, יש לנסות שוב",
-    "submit": "המשך"
+    "submit": "המשך",
+    "loginError": "שגיאה בהתחברות. נסו שוב.",
+    "registerError": "שגיאה בהרשמה. נסו שוב."
   },
   "profile": {
     "title": "הפרופיל המשפחתי",
@@ -62,7 +64,9 @@
     "goToLibrary": "לספרייה",
     "deleteConfirmTitle": "מחיקת פרופיל?",
     "deleteConfirmMessage": "הפעולה תמחק את הפרופיל לצמיתות ולא ניתן יהיה לשחזר אותו.",
-    "confirmDelete": "מחיקה"
+    "confirmDelete": "מחיקה",
+    "updateError": "שגיאה בשמירת הפרופיל. נסו שוב.",
+    "fetchError": "שגיאה בטעינת הפרופיל."
   },
   "animals": {
     "dog": "כלב",
@@ -112,7 +116,8 @@
         "משפרים את הניסוחים",
         "ממש עוד רגע..."
       ]
-    }
+    },
+    "generateError": "שגיאה ביצירת הסיפור. נסו שוב."
   },
   "preview": {
     "title": "סקירה לפני הקריאה",
@@ -135,7 +140,8 @@
     "warningTitle": "שימו לב – יש הערות פתוחות",
     "warningMessage": "ישנן בקשות עריכה שעדיין לא נשלחו. במעבר לקריאה, ההערות לא ייכללו.",
     "warningCancel": "חזרה",
-    "warningConfirm": "המשך לקריאה"
+    "warningConfirm": "המשך לקריאה",
+    "editError": "שגיאה בעדכון הסיפור. נסו שוב."
   },
   "reading": {
     "notFound": "הסיפור לא נמצא",
@@ -145,7 +151,8 @@
       "subtitle": "קראתם יחד. זה מה שחשוב ♡",
       "save": "הוספה לספרייה",
       "coachingTitle": "טיפ להורה"
-    }
+    },
+    "fetchError": "שגיאה בטעינת הסיפור."
   },
   "library": {
     "title": "הספריה",
@@ -177,7 +184,9 @@
       "yesterday": "אתמול",
       "daysAgo": "לפני {{count}} ימים"
     },
-    "defaultChild": "ילד/ה"
+    "defaultChild": "ילד/ה",
+    "fetchError": "שגיאה בטעינת הספרייה.",
+    "deleteError": "שגיאה במחיקת הסיפור."
   },
   "components": {
     "topBar": {

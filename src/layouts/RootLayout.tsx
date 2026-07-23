@@ -2,6 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Suspense } from 'react';
 import TopBar from '../components/TopBar';
 import SplashScreen from '../components/SplashScreen';
+import { Toaster } from 'react-hot-toast';
 
 import { useTranslation } from 'react-i18next';
 
@@ -20,6 +21,11 @@ export default function RootLayout() {
       dir={i18n.dir()}
       className="max-w-md mx-auto min-h-[100dvh] flex flex-col overflow-x-hidden relative shadow-2xl bg-tzipur-cream"
     >
+      <Toaster 
+        position="top-left" 
+        toastOptions={{ className: 'font-sans font-medium' }} 
+        containerStyle={{ top: 72 }} 
+      />
       {!hideTopBar && <TopBar />}
       <div className="flex-1 flex flex-col relative overflow-hidden">
         <Suspense fallback={<SplashScreen />}>

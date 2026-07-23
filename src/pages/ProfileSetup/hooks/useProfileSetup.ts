@@ -84,46 +84,53 @@ export function useProfileSetup() {
 
   const handleSaveChild = async (index: number, childId: string) => {
     const isValid = await form.trigger(`children.${index}`);
-    if (isValid) {
-      setSavedChildIds(prev => {
-        const newSet = new Set(prev).add(childId);
-        
-        const values = form.getValues();
-        const payload = values.children
-          .filter(c => newSet.has(c.id))
-          .map(c => ({
-            ...c,
-            id: c.id.startsWith('child-') ? null : c.id
-          }));
-        updateMutation.mutate({ children: payload });
+    if (!isValid) return;
 
-        return newSet;
-      });
-      setExpandedChildId(null);
-    }
+    const values = form.getValues();
+    const payload = values.children
+      .filter(c => savedChildIds.has(c.id) || c.id === childId)
+      .map(c => ({
+        ...c,
+        id: c.id.startsWith('child-') ? null : c.id
+      }));
+
+    updateMutation.mutate({ children: payload }, {
+      onSuccess: () => {
+        setSavedChildIds(prev => new Set(prev).add(childId));
+        setExpandedChildId(null);
+      }
+    });
   };
 
   const confirmDeleteChild = (index: number, childId: string) => {
-    remove(index);
-    if (expandedChildId === childId) {
-      setExpandedChildId(null);
-    }
-    setChildToDelete(null);
-    
-    setSavedChildIds(prev => {
-      const newSaved = new Set(prev);
-      newSaved.delete(childId);
-      
-      const values = form.getValues();
-      const payload = values.children
-        .filter(c => newSaved.has(c.id) && c.id !== childId)
-        .map(c => ({
-          ...c,
-          id: c.id.startsWith('child-') ? null : c.id
-        }));
-      updateMutation.mutate({ children: payload });
+    const isSaved = savedChildIds.has(childId);
 
-      return newSaved;
+    if (!isSaved) {
+      remove(index);
+      if (expandedChildId === childId) setExpandedChildId(null);
+      setChildToDelete(null);
+      return;
+    }
+    
+    const values = form.getValues();
+    const payload = values.children
+      .filter(c => savedChildIds.has(c.id) && c.id !== childId)
+      .map(c => ({
+        ...c,
+        id: c.id.startsWith('child-') ? null : c.id
+      }));
+    
+    updateMutation.mutate({ children: payload }, {
+      onSuccess: () => {
+        remove(index);
+        if (expandedChildId === childId) setExpandedChildId(null);
+        setChildToDelete(null);
+        setSavedChildIds(prev => {
+          const newSaved = new Set(prev);
+          newSaved.delete(childId);
+          return newSaved;
+        });
+      }
     });
   };
 

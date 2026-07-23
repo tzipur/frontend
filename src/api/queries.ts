@@ -8,6 +8,7 @@ export const useLibraryStories = (userId: string | null) => {
     queryKey: ['libraryStories', userId],
     queryFn: () => storyRequests.getLibrary(userId!),
     enabled: !!userId,
+    meta: { errorMessage: 'library.fetchError' },
   });
 };
 
@@ -16,6 +17,7 @@ export const useStory = (storyId: string | null) => {
     queryKey: ['story', storyId],
     queryFn: () => storyRequests.getStory(storyId!),
     enabled: !!storyId,
+    meta: { errorMessage: 'reading.fetchError' },
   });
 };
 
@@ -25,5 +27,6 @@ export const useProfile = (enabled: boolean = true) => {
     queryKey: ['profile'],
     queryFn: profileRequests.getProfile,
     enabled,
+    meta: { errorMessage: 'profile.fetchError' },
   });
 };
