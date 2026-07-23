@@ -22,7 +22,7 @@ export interface GenerateStoryPayload {
   user_id: string;
   tags?: string[];
   user_input?: string;
-  child_id?: string;
+  child_id?: string | null;
 }
 
 export interface EditStoryPayload {

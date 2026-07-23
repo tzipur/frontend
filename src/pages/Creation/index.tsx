@@ -48,11 +48,6 @@ export default function CreationPage() {
 
   const generateMutation = useGenerateStory();
 
-  useEffect(() => {
-    if (children.length > 0 && !selectedChild) {
-      setSelectedChild(children[0].id as string);
-    }
-  }, [children, selectedChild]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -80,7 +75,7 @@ export default function CreationPage() {
       user_id: userId || '',
       tags: selectedTrack ? [selectedTrack] : undefined,
       user_input: freeText || undefined,
-      child_id: selectedChild || undefined,
+      child_id: selectedChild ? selectedChild : null,
     };
 
     generateMutation.mutate(payload, {
@@ -247,7 +242,9 @@ export default function CreationPage() {
                   className="w-full bg-white border border-tzipur-border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] flex items-center justify-between focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-bold text-base shadow-sm"
                 >
                   <span>
-                    {children.find(c => c.id === selectedChild)?.nickname || ''}
+                    {selectedChild === '' 
+                      ? t('creation.selectChildPlaceholder', 'ללא שיוך לילד ספציפי') 
+                      : (children.find(c => c.id === selectedChild)?.nickname || '')}
                   </span>
                   <ChevronDown 
                     size={20} 
@@ -265,6 +262,19 @@ export default function CreationPage() {
                       transition={{ duration: 0.2 }}
                       className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-tzipur-border rounded-2xl shadow-lg overflow-hidden flex flex-col z-30 max-h-[200px] overflow-y-auto custom-scrollbar"
                     >
+                      <button
+                        onClick={() => {
+                          setSelectedChild('');
+                          setIsChildDropdownOpen(false);
+                        }}
+                        className={`px-5 py-3 text-right w-full transition-colors ${
+                          selectedChild === '' 
+                            ? 'bg-tzipur-sky/10 text-tzipur-sky font-bold' 
+                            : 'text-tzipur-brown hover:bg-tzipur-cream font-medium'
+                        }`}
+                      >
+                        {t('creation.selectChildPlaceholder', 'ללא שיוך לילד ספציפי')}
+                      </button>
                       {children.map((child) => (
                         <button
                           key={child.id}
