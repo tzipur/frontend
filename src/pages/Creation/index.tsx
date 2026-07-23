@@ -32,10 +32,9 @@ const containerVariants = {
 export default function CreationPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user } = useAuth();
-  const isGuest = user?.is_anonymous || !user?.email;
+  const { isLoggedIn, userId } = useAuth();
   
-  const { data: profileData } = useProfile(!isGuest);
+  const { data: profileData } = useProfile(isLoggedIn);
   const children = profileData?.children || [];
   
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
@@ -78,7 +77,7 @@ export default function CreationPage() {
     }
 
     const payload = {
-      user_id: localStorage.getItem('user_id') || '',
+      user_id: userId || '',
       tags: selectedTrack ? [selectedTrack] : undefined,
       user_input: freeText || undefined,
       child_id: selectedChild || undefined,

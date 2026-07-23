@@ -1,14 +1,13 @@
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Plus, BookOpen, AlertTriangle, X } from 'lucide-react';
-import { mockStories, mockChildProfiles } from '../../lib/mockData';
+import { Plus, BookOpen, AlertTriangle, X, Loader2 } from 'lucide-react';
 import fallbackImage from '../../assets/bears-story-hero.jpeg';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../../components/Button';
 import { ButtonGroup } from '../../components/ButtonGroup';
-
+import { useLibraryStories, useProfile } from '../../api';
+import { useState } from 'react';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -34,12 +33,13 @@ const cardVariants = {
 export default function LibraryPage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const stories = mockStories;
-  const { user } = useAuth();
+  const { isLoggedIn, userId } = useAuth();
   
-  const isGuest = user?.is_anonymous === true;
-  const shouldShowWarning = Math.random() < 0.5;
-  const [showGuestWarning, setShowGuestWarning] = useState(isGuest && shouldShowWarning);
+  const { data: stories = [], isLoading } = useLibraryStories(userId);
+  const { data: profileData } = useProfile(isLoggedIn);
+  const children = profileData?.children || [];
+
+  const [showGuestWarning, setShowGuestWarning] = useState(!isLoggedIn);
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -60,8 +60,21 @@ export default function LibraryPage() {
   }
 
   function getChildNickname(childProfileId: string): string {
-    const child = mockChildProfiles.find((c) => c.id === childProfileId);
+    const child = children.find((c) => c.id === childProfileId);
     return child?.nickname ?? t('library.defaultChild');
+  }
+
+  if (isLoading) {
+    return (
+      <div className="h-full flex flex-col">
+        <header className="flex items-center justify-between p-6 pb-4 bg-white shadow-sm border-b border-tzipur-border sticky top-0 z-10">
+          <h1 className="font-serif text-4xl font-bold text-tzipur-sky">{t('library.title')}</h1>
+        </header>
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="animate-spin text-tzipur-sky w-12 h-12" />
+        </div>
+      </div>
+    );
   }
 
   if (stories.length === 0) {
@@ -112,20 +125,20 @@ export default function LibraryPage() {
         className="flex-1 p-6"
       >
         <div className="grid grid-cols-2 gap-4">
-          {stories.map((story, _index) => (
+          {stories.map((story) => (
             <motion.div
-              key={story.id}
+              key={story.storyId}
               variants={cardVariants}
-              onClick={() => navigate(`/read/${story.id}`)}
+              onClick={() => navigate(`/read/${story.storyId}`)}
               className="flex flex-col gap-2 cursor-pointer group"
             >
               {/* Cover Card */}
               <div
                 className="aspect-[3/4] rounded-2xl shadow-md border border-tzipur-border overflow-hidden relative group-hover:shadow-lg transition-shadow bg-tzipur-sand"
               >
-                {story.coverImageUrl ? (
+                {story.coverImageLink ? (
                   <img 
-                    src={story.coverImageUrl} 
+                    src={story.coverImageLink} 
                     alt={story.title} 
                     className="w-full h-full object-cover" 
                     onError={(e) => {
@@ -146,7 +159,7 @@ export default function LibraryPage() {
                 </h3>
                 <p className="font-medium text-sm text-tzipur-brown/80 mb-0.5">
                   {t('library.meta.createdForOn', {
-                    child: getChildNickname(story.childProfileId),
+                    child: getChildNickname(story.createdFor),
                     date: formatDate(story.createdAt)
                   })}
                 </p>

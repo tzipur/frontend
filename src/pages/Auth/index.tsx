@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '../../components/Button';
 import { useLogin, useRegister } from '../../api';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function AuthPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { userId, isLoggedIn } = useAuth();
   const [nickname, setNickname] = useState('');
   const [pin, setPin] = useState('');
   const [hasSavedId, setHasSavedId] = useState(false);
@@ -18,11 +20,10 @@ export default function AuthPage() {
   const registerMutation = useRegister();
 
   useEffect(() => {
-    const savedId = localStorage.getItem('user_id');
-    if (savedId && savedId !== 'null') {
+    if (isLoggedIn) {
       setHasSavedId(true);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const handleKeyPress = (num: string) => {
     if (error) setError(false);
@@ -38,7 +39,7 @@ export default function AuthPage() {
       const payload = {
         nickname,
         code: pin,
-        user_id: localStorage.getItem('user_id') === 'null' ? null : localStorage.getItem('user_id'),
+        user_id: userId,
       };
 
       const mutation = hasSavedId ? loginMutation : registerMutation;

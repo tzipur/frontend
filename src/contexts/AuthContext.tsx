@@ -6,6 +6,7 @@ import SplashScreen from '../components/SplashScreen';
 type AuthContextType = {
   session: Session | null;
   user: User | null;
+  userId: string | null;
   isInitializing: boolean;
   isLoggedIn: boolean;
   refreshMockSession: () => void;
@@ -14,6 +15,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({
   session: null,
   user: null,
+  userId: null,
   isInitializing: true,
   isLoggedIn: false,
   refreshMockSession: () => {},
@@ -22,6 +24,7 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -37,8 +40,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const setupMockSession = () => {
-      const userId = localStorage.getItem('user_id');
-      const isRegistered = userId && userId !== 'null';
+      const storedId = localStorage.getItem('user_id');
+      const validId = storedId === 'null' ? null : storedId;
+      const isRegistered = !!validId;
       const mockSessionUser = isRegistered 
         ? { id: 'offline-user', email: 'test@example.com', role: 'authenticated' }
         : { id: 'offline-user', role: 'anon' };
@@ -81,8 +85,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       if (mounted) {
-        const userId = localStorage.getItem('user_id');
-        setIsLoggedIn(!!(userId && userId !== 'null'));
+        const storedId = localStorage.getItem('user_id');
+        const validId = storedId === 'null' ? null : storedId;
+        setUserId(validId);
+        setIsLoggedIn(!!validId);
         setIsInitializing(false);
       }
     }
@@ -107,8 +113,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshMockSession = () => {
     if (isOffline) {
-      const userId = localStorage.getItem('user_id');
-      const isRegistered = userId && userId !== 'null';
+      const storedId = localStorage.getItem('user_id');
+      const validId = storedId === 'null' ? null : storedId;
+      const isRegistered = !!validId;
       const mockSessionUser = isRegistered 
         ? { id: 'offline-user', email: 'test@example.com', role: 'authenticated' }
         : { id: 'offline-user', role: 'anon' };
@@ -119,8 +126,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const handleAuthChanged = () => {
-      const userId = localStorage.getItem('user_id');
-      setIsLoggedIn(!!(userId && userId !== 'null'));
+      const storedId = localStorage.getItem('user_id');
+      const validId = storedId === 'null' ? null : storedId;
+      setUserId(validId);
+      setIsLoggedIn(!!validId);
       refreshMockSession();
     };
 
@@ -133,7 +142,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ session, user, isInitializing, isLoggedIn, refreshMockSession }}>
+    <AuthContext.Provider value={{ session, user, userId, isInitializing, isLoggedIn, refreshMockSession }}>
       {children}
     </AuthContext.Provider>
   );
