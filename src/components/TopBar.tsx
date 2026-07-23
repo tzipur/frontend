@@ -1,8 +1,9 @@
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { ChevronRight, ChevronLeft, User } from 'lucide-react';
+import { ChevronRight, ChevronLeft, User, Download } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import logoSrc from '../assets/tzipur_logo.png';
 import { useAuth } from '../contexts/AuthContext';
+import { usePWAInstall } from '../hooks/usePWAInstall';
 
 export default function TopBar() {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ export default function TopBar() {
   const { t } = useTranslation();
 
   const { isLoggedIn } = useAuth();
+  const { isInstallable, isInstalled, promptInstall } = usePWAInstall();
 
   // Hide back button on the root page
   const showBack = location.pathname !== '/';
@@ -47,11 +49,22 @@ export default function TopBar() {
       </div>
 
       {/* Left side (RTL End) */}
-      <div className="flex items-center justify-end z-10 w-16"> 
+      <div className="flex items-center justify-end z-10 gap-1 w-24"> 
+        {isInstallable && !isInstalled && (
+          <button
+            onClick={promptInstall}
+            className="p-2 -m-2 text-tzipur-sky hover:text-tzipur-sky-dark transition-colors flex items-center gap-1 bg-tzipur-sky/10 rounded-full px-3 mr-1"
+            aria-label={t('components.topBar.install', 'התקנת אפליקציה')}
+            title={t('components.topBar.install', 'התקנת אפליקציה')}
+          >
+            <Download className="w-5 h-5" strokeWidth={2.5} />
+          </button>
+        )}
+        
         {showProfile && (
           <Link
             to="/profile"
-            className="p-2 -m-2 text-tzipur-sky hover:text-tzipur-sky-dark transition-colors"
+            className="p-2 -m-2 text-tzipur-sky hover:text-tzipur-sky-dark transition-colors ml-2"
             aria-label={t('components.topBar.profile')}
             title={t('components.topBar.profile')}
           >
