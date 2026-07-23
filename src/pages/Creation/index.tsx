@@ -1,24 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { Zap, Flame, ShieldOff, CloudLightning, Hand, Eye, Waves, Cloud, ChevronDown, type LucideIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
+
 import LoaderScreen from './components/LoaderScreen';
 import Disclaimer from '../../components/Disclaimer';
 import { Button } from '../../components/Button';
-import { useAuth } from '../../contexts/AuthContext';
-import { useProfile, useGenerateStory } from '../../api';
 
-const fastTracks: { id: string; icon: LucideIcon; labelKey: string }[] = [
-  { id: 'startle', icon: Zap, labelKey: 'creation.tracks.startle' },
-  { id: 'anger', icon: Flame, labelKey: 'creation.tracks.anger' },
-  { id: 'withdrawal', icon: ShieldOff, labelKey: 'creation.tracks.withdrawal' },
-  { id: 'anxiety', icon: CloudLightning, labelKey: 'creation.tracks.anxiety' },
-  { id: 'touch_aversion', icon: Hand, labelKey: 'creation.tracks.touch_aversion' },
-  { id: 'hypervigilance', icon: Eye, labelKey: 'creation.tracks.hypervigilance' },
-  { id: 'emotional_overflow', icon: Waves, labelKey: 'creation.tracks.emotional_overflow' },
-  { id: 'dissociation', icon: Cloud, labelKey: 'creation.tracks.dissociation' },
-];
+import { useCreation } from './hooks/useCreation';
+import { CreationHeader } from './components/CreationHeader';
+import { FastTrackSelector } from './components/FastTrackSelector';
+import { ChildSelectorDropdown } from './components/ChildSelectorDropdown';
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -30,78 +19,12 @@ const containerVariants = {
 };
 
 export default function CreationPage() {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const { isLoggedIn, userId } = useAuth();
-  
-  const { data: profileData } = useProfile(isLoggedIn);
-  const children = profileData?.children || [];
-  
-  const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
-  const [freeText, setFreeText] = useState('');
-  const [selectedChild, setSelectedChild] = useState<string>('');
-  
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isChildDropdownOpen, setIsChildDropdownOpen] = useState(false);
-  const childDropdownRef = useRef<HTMLDivElement>(null);
-
-  const generateMutation = useGenerateStory();
-
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-      if (childDropdownRef.current && !childDropdownRef.current.contains(event.target as Node)) {
-        setIsChildDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleCreate = async () => {
-    if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-      try {
-        await Notification.requestPermission();
-      } catch (e) {
-        console.warn("Notification permission error", e);
-      }
-    }
-
-    const payload = {
-      user_id: userId || '',
-      tags: selectedTrack ? [selectedTrack] : undefined,
-      user_input: freeText || undefined,
-      child_id: selectedChild ? selectedChild : null,
-    };
-
-    generateMutation.mutate(payload, {
-      onSuccess: (data) => {
-        // Assume data returns the created story ID in `id` or `storyId`
-        const newStoryId = data?.id || data?.storyId || 'story-001';
-        navigate(`/preview/${newStoryId}`);
-        
-        if ('Notification' in window && Notification.permission === 'granted' && document.visibilityState === 'hidden') {
-          const notif = new Notification(t('creation.loader.notificationBody') || t('creation.loader.notification'));
-          notif.onclick = () => {
-            window.focus();
-            notif.close();
-          };
-        }
-      },
-      onError: (err) => {
-        console.error("Story generation failed", err);
-      }
-    });
-  };
+  const { state, refs, actions } = useCreation();
 
   return (
     <>
       <LoaderScreen 
-        isVisible={generateMutation.isPending} 
+        isVisible={state.isPending} 
       />
 
       <motion.div
@@ -110,119 +33,32 @@ export default function CreationPage() {
         animate="visible"
         className="page-container h-full flex flex-1 flex-col p-6"
       >
-        {/* Header */}
-        <header className="py-[clamp(0.25rem,1dvh,0.5rem)] mb-[clamp(0.5rem,2dvh,1.5rem)] shrink-0">
-          <h1 className="font-serif text-[clamp(1.25rem,3dvh,1.5rem)] font-bold text-tzipur-sky">{t('creation.title')}</h1>
-          <p className="text-tzipur-brown/70 mt-1 text-base">
-            {t('creation.subtitle')}
-          </p>
-          {!isLoggedIn && (
-            <div className="mt-3 bg-tzipur-cream/80 border border-tzipur-sky/20 rounded-xl p-3 shadow-sm text-center">
-              <p className="text-sm text-tzipur-brown/90 leading-relaxed">
-                {t('creation.signupHintPrefix')}
-                <Link to="/auth" className="text-tzipur-sky font-bold hover:underline">
-                  {t('creation.signupHintAction')}
-                </Link>
-              </p>
-            </div>
-          )}
-        </header>
+        <CreationHeader isLoggedIn={state.isLoggedIn} />
 
         {/* Main Content */}
         <main className="flex flex-1 flex-col w-full min-h-0 space-y-[clamp(0.5rem,2dvh,1rem)] pb-2">
-          {/* Fast Tracks Select (Small Screens / Short Screens) */}
-          <div className="block sm:hidden [@media(min-height:800px)]:hidden relative z-20" ref={dropdownRef}>
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full bg-white border-2 border-tzipur-border rounded-2xl px-5 py-[clamp(0.75rem,2dvh,1rem)] flex items-center justify-between text-tzipur-brown font-bold text-sm shadow-sm"
-            >
-              <div className="flex items-center gap-3">
-                 {selectedTrack ? (
-                   <>
-                     {(() => {
-                       const track = fastTracks.find(t => t.id === selectedTrack);
-                       const Icon = track?.icon || Zap;
-                       return <Icon size={18} className="text-tzipur-sky shrink-0" />;
-                     })()}
-                     <span>{t(fastTracks.find(t => t.id === selectedTrack)?.labelKey || '')}</span>
-                   </>
-                 ) : (
-                   <span>{t('creation.selectTrackPlaceholder', 'בחירת רגש (אופציונלי)')}</span>
-                 )}
-              </div>
-              <ChevronDown size={18} className={`text-tzipur-sky transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} strokeWidth={2.5} />
-            </button>
-            
-            <AnimatePresence>
-              {isDropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute top-full left-0 right-0 mt-2 bg-white border border-tzipur-border rounded-2xl shadow-lg overflow-hidden flex flex-col z-30 max-h-[300px] overflow-y-auto custom-scrollbar"
-                >
-                  {fastTracks.map((track) => {
-                     const Icon = track.icon;
-                     return (
-                       <button
-                         key={track.id}
-                         onClick={() => {
-                           setSelectedTrack(selectedTrack === track.id ? null : track.id);
-                           setIsDropdownOpen(false);
-                         }}
-                         className={`flex items-center gap-3 px-5 py-3 text-right transition-colors ${selectedTrack === track.id ? 'bg-tzipur-sky/10 text-tzipur-sky' : 'text-tzipur-brown hover:bg-tzipur-cream'}`}
-                       >
-                         <Icon size={18} className="shrink-0" />
-                         <span className="font-medium text-sm">{t(track.labelKey)}</span>
-                       </button>
-                     );
-                  })}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Fast Tracks Grid (Large Screens / Tall Screens) */}
-          <div className="hidden sm:grid [@media(min-height:800px)]:grid grid-cols-2 gap-[clamp(0.5rem,1.5dvh,0.625rem)]">
-            {fastTracks.map((track) => {
-              const Icon = track.icon;
-              return (
-                <motion.button
-                  key={track.id}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() =>
-                    setSelectedTrack(
-                      selectedTrack === track.id ? null : track.id
-                    )
-                  }
-                  className={`rounded-2xl p-[clamp(0.5rem,1.5dvh,0.75rem)] text-right flex items-center gap-[clamp(0.25rem,1dvh,0.75rem)] transition-all border-2 ${
-                    selectedTrack === track.id
-                      ? 'bg-tzipur-sky/20 border-tzipur-sky text-tzipur-sky'
-                      : 'bg-white border-tzipur-border text-tzipur-brown hover:border-tzipur-sky'
-                  }`}
-                >
-                  <Icon size={20} className="shrink-0" />
-                  <span className="font-medium text-sm">{t(track.labelKey)}</span>
-                </motion.button>
-              );
-            })}
-          </div>
+          
+          <FastTrackSelector 
+            selectedTrack={state.selectedTrack}
+            setSelectedTrack={actions.setSelectedTrack}
+            isDropdownOpen={state.isDropdownOpen}
+            setIsDropdownOpen={actions.setIsDropdownOpen}
+            dropdownRef={refs.dropdownRef}
+          />
 
           {/* Divider */}
           <div className="flex items-center gap-[clamp(0.5rem,2dvh,1rem)] text-tzipur-brown/70 text-[clamp(0.875rem,2dvh,1rem)] shrink-0">
             <div className="flex-1 h-px bg-tzipur-border" />
-            <span>{t('creation.or')}</span>
+            <span>{actions.t('creation.or')}</span>
             <div className="flex-1 h-px bg-tzipur-border" />
           </div>
 
           <div className="relative flex-1 min-h-0">
             <textarea
-              placeholder={t('creation.freeText')}
-              value={freeText}
-              onChange={(e) => setFreeText(e.target.value)}
-              disabled={!!selectedTrack}
+              placeholder={actions.t('creation.freeText')}
+              value={state.freeText}
+              onChange={(e) => actions.setFreeText(e.target.value)}
+              disabled={!!state.selectedTrack}
               className="absolute inset-0 w-full h-full bg-white border border-tzipur-border rounded-2xl p-4 focus:outline-none focus:border-tzipur-sky focus:ring-1 focus:ring-tzipur-sky transition resize-none text-tzipur-brown placeholder:text-tzipur-brown/70/60 disabled:bg-tzipur-cream disabled:opacity-60 disabled:cursor-not-allowed"
             />
           </div>
@@ -230,81 +66,25 @@ export default function CreationPage() {
 
         {/* Footer CTA */}
         <footer className="pt-[clamp(0.5rem,2dvh,1rem)] pb-[clamp(0.25rem,1dvh,1rem)] mt-auto space-y-[clamp(0.5rem,1.5dvh,0.75rem)] shrink-0">
-          {/* Child Selection */}
-          {isLoggedIn && children.length > 0 && (
-            <div className="mb-[clamp(0.5rem,1.5dvh,1rem)]">
-              <label className="block font-bold text-tzipur-sky mb-2 text-base">
-                {t('creation.forWhom')}
-              </label>
-              <div className="relative z-20" ref={childDropdownRef}>
-                <button
-                  onClick={() => setIsChildDropdownOpen(!isChildDropdownOpen)}
-                  className="w-full bg-white border border-tzipur-border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] flex items-center justify-between focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-bold text-base shadow-sm"
-                >
-                  <span>
-                    {selectedChild === '' 
-                      ? t('creation.selectChildPlaceholder', 'ללא שיוך לילד ספציפי') 
-                      : (children.find(c => c.id === selectedChild)?.nickname || '')}
-                  </span>
-                  <ChevronDown 
-                    size={20} 
-                    className={`text-tzipur-sky transition-transform ${isChildDropdownOpen ? 'rotate-180' : ''}`} 
-                    strokeWidth={2.5} 
-                  />
-                </button>
-                
-                <AnimatePresence>
-                  {isChildDropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-tzipur-border rounded-2xl shadow-lg overflow-hidden flex flex-col z-30 max-h-[200px] overflow-y-auto custom-scrollbar"
-                    >
-                      <button
-                        onClick={() => {
-                          setSelectedChild('');
-                          setIsChildDropdownOpen(false);
-                        }}
-                        className={`px-5 py-3 text-right w-full transition-colors ${
-                          selectedChild === '' 
-                            ? 'bg-tzipur-sky/10 text-tzipur-sky font-bold' 
-                            : 'text-tzipur-brown hover:bg-tzipur-cream font-medium'
-                        }`}
-                      >
-                        {t('creation.selectChildPlaceholder', 'ללא שיוך לילד ספציפי')}
-                      </button>
-                      {children.map((child) => (
-                        <button
-                          key={child.id}
-                          onClick={() => {
-                            setSelectedChild(child.id!);
-                            setIsChildDropdownOpen(false);
-                          }}
-                          className={`px-5 py-3 text-right w-full transition-colors ${
-                            selectedChild === child.id 
-                              ? 'bg-tzipur-sky/10 text-tzipur-sky font-bold' 
-                              : 'text-tzipur-brown hover:bg-tzipur-cream font-medium'
-                          }`}
-                        >
-                          {child.nickname}
-                        </button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
+          
+          {state.isLoggedIn && (
+            <ChildSelectorDropdown
+              childrenList={state.children}
+              selectedChild={state.selectedChild}
+              setSelectedChild={actions.setSelectedChild}
+              isDropdownOpen={state.isChildDropdownOpen}
+              setIsDropdownOpen={actions.setIsChildDropdownOpen}
+              dropdownRef={refs.childDropdownRef}
+            />
           )}
 
           <Button
             variant="primary"
             fullWidth
-            onClick={handleCreate}
-            disabled={(!selectedTrack && !freeText.trim()) || generateMutation.isPending}
+            onClick={actions.handleCreate}
+            disabled={(!state.selectedTrack && !state.freeText.trim()) || state.isPending}
           >
-            {t('creation.submit')}
+            {actions.t('creation.submit')}
           </Button>
 
           <Disclaimer />
