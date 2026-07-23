@@ -148,7 +148,7 @@ export default function ReadingPage() {
             </div>
           ) : (
             /* End Page Component */
-            <EndPage goPrev={goPrev} coachingTip={story.coachingTip} />
+            <EndPage goPrev={goPrev} coachingTip={story.coaching_tip} />
           )}
       </motion.main>
       </AnimatePresence>

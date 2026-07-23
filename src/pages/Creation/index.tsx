@@ -50,7 +50,7 @@ export default function CreationPage() {
 
   useEffect(() => {
     if (children.length > 0 && !selectedChild) {
-      setSelectedChild(children[0].id);
+      setSelectedChild(children[0].id as string);
     }
   }, [children, selectedChild]);
 
@@ -121,7 +121,7 @@ export default function CreationPage() {
           <p className="text-tzipur-brown/70 mt-1 text-base">
             {t('creation.subtitle')}
           </p>
-          {isGuest && (
+          {!isLoggedIn && (
             <div className="mt-3 bg-tzipur-cream/80 border border-tzipur-sky/20 rounded-xl p-3 shadow-sm text-center">
               <p className="text-sm text-tzipur-brown/90 leading-relaxed">
                 {t('creation.signupHintPrefix')}
@@ -236,7 +236,7 @@ export default function CreationPage() {
         {/* Footer CTA */}
         <footer className="pt-[clamp(0.5rem,2dvh,1rem)] pb-[clamp(0.25rem,1dvh,1rem)] mt-auto space-y-[clamp(0.5rem,1.5dvh,0.75rem)] shrink-0">
           {/* Child Selection */}
-          {!isGuest && children.length > 0 && (
+          {isLoggedIn && children.length > 0 && (
             <div className="mb-[clamp(0.5rem,1.5dvh,1rem)]">
               <label className="block font-bold text-tzipur-sky mb-2 text-base">
                 {t('creation.forWhom')}

@@ -48,8 +48,9 @@ export default function ProfileSetupPage() {
 
   useEffect(() => {
     if (profileData?.children) {
-      setChildrenList(profileData.children);
-      setSavedChildIds(new Set(profileData.children.map(c => c.id)));
+      const validChildren = profileData.children as ChildProfile[];
+      setChildrenList(validChildren);
+      setSavedChildIds(new Set(validChildren.map(c => c.id)));
       if (profileData.children.length === 0) {
         handleAddChild();
       }

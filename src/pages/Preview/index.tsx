@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, BookOpen, Edit3 } from 'lucide-react';
@@ -37,10 +37,7 @@ export default function PreviewPage() {
     );
   }
 
-  const getCleanTitle = (title: string) => {
-    const parts = title.split(/[–-]/);
-    return parts.length > 1 ? parts.slice(1).join('-').trim() : title;
-  };
+
 
   const hasEdits = editRequest.trim().length > 0;
 
