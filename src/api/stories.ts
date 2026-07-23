@@ -1,11 +1,21 @@
 import { api } from './api';
 
-export interface StoryLibraryItem {
-  storyId: string;
+export interface StoryChapter {
+  chapter_num: number;
   title: string;
-  coverImageLink: string;
-  createdFor: string;
-  createdAt: string;
+  text: string;
+  image_url: string;
+}
+
+export interface StoryLibraryItem {
+  id: string; // Used to be storyId
+  status: string;
+  title: string;
+  image_url: string; // Used to be coverImageLink
+  created_for: string; // Used to be createdFor
+  created_at: string; // Used to be createdAt
+  coaching_tip?: string;
+  chapters?: StoryChapter[];
 }
 
 export interface GenerateStoryPayload {

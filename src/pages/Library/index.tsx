@@ -127,18 +127,18 @@ export default function LibraryPage() {
         <div className="grid grid-cols-2 gap-4">
           {stories.map((story) => (
             <motion.div
-              key={story.storyId}
+              key={story.id}
               variants={cardVariants}
-              onClick={() => navigate(`/read/${story.storyId}`)}
+              onClick={() => navigate(`/read/${story.id}`)}
               className="flex flex-col gap-2 cursor-pointer group"
             >
               {/* Cover Card */}
               <div
                 className="aspect-[3/4] rounded-2xl shadow-md border border-tzipur-border overflow-hidden relative group-hover:shadow-lg transition-shadow bg-tzipur-sand"
               >
-                {story.coverImageLink ? (
+                {story.image_url ? (
                   <img 
-                    src={story.coverImageLink} 
+                    src={story.image_url} 
                     alt={story.title} 
                     className="w-full h-full object-cover" 
                     onError={(e) => {
@@ -159,8 +159,8 @@ export default function LibraryPage() {
                 </h3>
                 <p className="font-medium text-sm text-tzipur-brown/80 mb-0.5">
                   {t('library.meta.createdForOn', {
-                    child: getChildNickname(story.createdFor),
-                    date: formatDate(story.createdAt)
+                    child: getChildNickname(story.created_for),
+                    date: formatDate(story.created_at)
                   })}
                 </p>
               </div>

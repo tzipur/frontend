@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { mockStories } from '../../../lib/mockData';
 import { paginateChapterText } from '../../../lib/paginateChapterText';
-import type { Story } from '../../../types';
+import { useStory } from '../../../api';
+import type { StoryLibraryItem } from '../../../api/stories';
 
 export interface PageInfo {
   text: string;
@@ -12,7 +12,8 @@ export interface PageInfo {
 }
 
 interface UseReadingPageResult {
-  story: Story | undefined;
+  story: StoryLibraryItem | undefined;
+  isLoading: boolean;
   pages: PageInfo[];
   currentPageIndex: number;
   direction: number;
@@ -34,28 +35,29 @@ export function useReadingPage(): UseReadingPageResult {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 = going back, 1 = going forward
 
-  const story = useMemo(() => mockStories.find((s) => s.id === storyId), [storyId]);
+  const { data: story, isLoading } = useStory(storyId || null);
 
   // Flatten all chapters into a single array of pages
   const pages: PageInfo[] = useMemo(() => {
     if (!story) return [];
     const result: PageInfo[] = [];
-    for (const chapter of story.chapters) {
+    for (const chapter of (story.chapters || [])) {
+      const chapterTitle = chapter.title || `Chapter ${chapter.chapter_num}`;
       result.push({
-        text: chapter.title,
-        chapterTitle: chapter.title,
+        text: chapterTitle,
+        chapterTitle: chapterTitle,
         isTitlePage: true,
       });
 
-      const pageTexts = paginateChapterText(chapter.content, wordsPerPage);
+      const pageTexts = paginateChapterText(chapter.text, wordsPerPage);
       for (const text of pageTexts) {
         result.push({
           text,
-          chapterTitle: chapter.title,
+          chapterTitle: chapterTitle,
         });
       }
     }
-    
+
     result.push({
       text: '', // Text handled by translation in component
       chapterTitle: 'end',
@@ -87,6 +89,7 @@ export function useReadingPage(): UseReadingPageResult {
 
   return {
     story,
+    isLoading,
     pages,
     currentPageIndex,
     direction,

@@ -3,8 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, BookOpen, Edit3 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { mockStories } from '../../lib/mockData';
-import { regenerateStoryWithEdits } from '../../lib/api';
+import { useStory, useEditStory } from '../../api';
 import Disclaimer from '../../components/Disclaimer';
 import LoaderScreen from '../Creation/components/LoaderScreen';
 import { Button } from '../../components/Button';
@@ -15,13 +14,19 @@ export default function PreviewPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const story = useMemo(() => mockStories.find((s) => s.id === storyId), [storyId]);
+  const { data: story, isLoading } = useStory(storyId || null);
+  const editMutation = useEditStory();
 
   const [editRequest, setEditRequest] = useState('');
-  const [isRegenerating, setIsRegenerating] = useState(false);
   const [remainingEdits, setRemainingEdits] = useState(3);
   const [isStoryExpanded, setIsStoryExpanded] = useState(true);
   const [isEditExpanded, setIsEditExpanded] = useState(false);
+
+  if (isLoading) {
+    return (
+      <LoaderScreen isVisible={true} mode="edit" />
+    );
+  }
 
   if (!story) {
     return (
@@ -43,24 +48,36 @@ export default function PreviewPage() {
     navigate(`/read/${storyId}`);
   };
 
-  const handleSendEdits = async () => {
+  const handleSendEdits = () => {
     if (!storyId || !editRequest.trim()) return;
-    setIsRegenerating(true);
-    try {
-      await regenerateStoryWithEdits(storyId, editRequest);
-      setEditRequest('');
-      setRemainingEdits((prev) => Math.max(0, prev - 1));
-    } catch (e) {
-      console.error('Failed to regenerate story', e);
-    } finally {
-      setIsRegenerating(false);
-    }
+    
+    // Stitch chapters together for the backend payload
+    const stitchedBody = (story.chapters || []).map((c: any) => c.text).join('\n\n');
+    
+    const payload = {
+      story_title: story.title,
+      story_body: stitchedBody,
+      edit_instructions: editRequest,
+    };
+
+    editMutation.mutate(
+      { storyId, data: payload },
+      {
+        onSuccess: () => {
+          setEditRequest('');
+          setRemainingEdits((prev) => Math.max(0, prev - 1));
+        },
+        onError: (e) => {
+          console.error('Failed to regenerate story', e);
+        }
+      }
+    );
   };
 
   return (
     <>
       <LoaderScreen
-        isVisible={isRegenerating}
+        isVisible={editMutation.isPending}
         mode="edit"
       />
 
@@ -91,13 +108,13 @@ export default function PreviewPage() {
 
             {isStoryExpanded && (
               <div className="p-[clamp(1rem,3dvh,1.5rem)] pt-0 flex flex-col gap-[clamp(1.25rem,3dvh,2rem)] border-t border-tzipur-border/30 flex-1 min-h-0 overflow-y-auto custom-scrollbar">
-                {story.chapters.map((chapter) => (
-                  <div key={chapter.id} className="flex flex-col gap-2 shrink-0">
+                {(story.chapters || []).map((chapter: any) => (
+                  <div key={chapter.chapter_num} className="flex flex-col gap-2 shrink-0">
                     <h4 className="text-xl font-bold text-tzipur-sky mb-1">
-                      {getCleanTitle(chapter.title)}
+                      {chapter.title || `Chapter ${chapter.chapter_num}`}
                     </h4>
                     <p className="text-tzipur-brown leading-loose whitespace-pre-wrap break-words text-[clamp(1rem,2.5dvh,1.125rem)] font-medium">
-                      {chapter.content}
+                      {chapter.text}
                     </p>
                   </div>
                 ))}
