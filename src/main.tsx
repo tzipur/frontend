@@ -8,6 +8,7 @@ import { router } from './router';
 import './index.css';
 import './i18n';
 import { AuthProvider } from './contexts/AuthContext';
+import { pingServer } from './api/api';
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -25,6 +26,10 @@ const queryClient = new QueryClient({
     },
   }),
 });
+
+// Ping the server to wake it up (useful for free tier hosting like Render)
+// Doing this here ensures it fires on explicit app initialization.
+pingServer();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
