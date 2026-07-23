@@ -7,7 +7,7 @@ import LoaderScreen from './components/LoaderScreen';
 import Disclaimer from '../../components/Disclaimer';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../contexts/AuthContext';
-import { mockChildProfiles } from '../../lib/mockData';
+import { useProfile, useGenerateStory } from '../../api';
 
 const fastTracks: { id: string; icon: LucideIcon; labelKey: string }[] = [
   { id: 'startle', icon: Zap, labelKey: 'creation.tracks.startle' },
@@ -34,14 +34,26 @@ export default function CreationPage() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const isGuest = user?.is_anonymous || !user?.email;
+  
+  const { data: profileData } = useProfile(!isGuest);
+  const children = profileData?.children || [];
+  
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
   const [freeText, setFreeText] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedChild, setSelectedChild] = useState<string>(mockChildProfiles[0]?.id || '');
+  const [selectedChild, setSelectedChild] = useState<string>('');
+  
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isChildDropdownOpen, setIsChildDropdownOpen] = useState(false);
   const childDropdownRef = useRef<HTMLDivElement>(null);
+
+  const generateMutation = useGenerateStory();
+
+  useEffect(() => {
+    if (children.length > 0 && !selectedChild) {
+      setSelectedChild(children[0].id);
+    }
+  }, [children, selectedChild]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -57,8 +69,6 @@ export default function CreationPage() {
   }, []);
 
   const handleCreate = async () => {
-    setIsLoading(true);
-
     if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
       try {
         await Notification.requestPermission();
@@ -67,26 +77,37 @@ export default function CreationPage() {
       }
     }
 
-    // Simulate generation time
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate('/preview/story-001');
-      
-      // Only send a push notification when generation is complete if the app is backgrounded
-      if ('Notification' in window && Notification.permission === 'granted' && document.visibilityState === 'hidden') {
-        const notif = new Notification(t('creation.loader.notificationBody') || t('creation.loader.notification'));
-        notif.onclick = () => {
-          window.focus();
-          notif.close();
-        };
+    const payload = {
+      user_id: localStorage.getItem('user_id') || '',
+      tags: selectedTrack ? [selectedTrack] : undefined,
+      user_input: freeText || undefined,
+      child_id: selectedChild || undefined,
+    };
+
+    generateMutation.mutate(payload, {
+      onSuccess: (data) => {
+        // Assume data returns the created story ID in `id` or `storyId`
+        const newStoryId = data?.id || data?.storyId || 'story-001';
+        navigate(`/preview/${newStoryId}`);
+        
+        if ('Notification' in window && Notification.permission === 'granted' && document.visibilityState === 'hidden') {
+          const notif = new Notification(t('creation.loader.notificationBody') || t('creation.loader.notification'));
+          notif.onclick = () => {
+            window.focus();
+            notif.close();
+          };
+        }
+      },
+      onError: (err) => {
+        console.error("Story generation failed", err);
       }
-    }, 4500);
+    });
   };
 
   return (
     <>
       <LoaderScreen 
-        isVisible={isLoading} 
+        isVisible={generateMutation.isPending} 
       />
 
       <motion.div
@@ -216,7 +237,7 @@ export default function CreationPage() {
         {/* Footer CTA */}
         <footer className="pt-[clamp(0.5rem,2dvh,1rem)] pb-[clamp(0.25rem,1dvh,1rem)] mt-auto space-y-[clamp(0.5rem,1.5dvh,0.75rem)] shrink-0">
           {/* Child Selection */}
-          {!isGuest && mockChildProfiles.length > 0 && (
+          {!isGuest && children.length > 0 && (
             <div className="mb-[clamp(0.5rem,1.5dvh,1rem)]">
               <label className="block font-bold text-tzipur-sky mb-2 text-base">
                 {t('creation.forWhom')}
@@ -227,7 +248,7 @@ export default function CreationPage() {
                   className="w-full bg-white border border-tzipur-border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] flex items-center justify-between focus:outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition text-tzipur-brown font-bold text-base shadow-sm"
                 >
                   <span>
-                    {mockChildProfiles.find(c => c.id === selectedChild)?.nickname || ''}
+                    {children.find(c => c.id === selectedChild)?.nickname || ''}
                   </span>
                   <ChevronDown 
                     size={20} 
@@ -245,14 +266,14 @@ export default function CreationPage() {
                       transition={{ duration: 0.2 }}
                       className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-tzipur-border rounded-2xl shadow-lg overflow-hidden flex flex-col z-30 max-h-[200px] overflow-y-auto custom-scrollbar"
                     >
-                      {mockChildProfiles.map((child) => (
+                      {children.map((child) => (
                         <button
                           key={child.id}
                           onClick={() => {
-                            setSelectedChild(child.id);
+                            setSelectedChild(child.id!);
                             setIsChildDropdownOpen(false);
                           }}
-                          className={`px-5 py-3 text-right transition-colors ${
+                          className={`px-5 py-3 text-right w-full transition-colors ${
                             selectedChild === child.id 
                               ? 'bg-tzipur-sky/10 text-tzipur-sky font-bold' 
                               : 'text-tzipur-brown hover:bg-tzipur-cream font-medium'
@@ -272,7 +293,7 @@ export default function CreationPage() {
             variant="primary"
             fullWidth
             onClick={handleCreate}
-            disabled={!selectedTrack && !freeText.trim()}
+            disabled={(!selectedTrack && !freeText.trim()) || generateMutation.isPending}
           >
             {t('creation.submit')}
           </Button>

@@ -9,14 +9,13 @@ export default function TopBar() {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const { user } = useAuth();
-  const isGuest = user?.is_anonymous === true || (user as any)?.role === 'anon';
+  const { isLoggedIn } = useAuth();
 
   // Hide back button on the root page
   const showBack = location.pathname !== '/';
   
-  // Show profile avatar (unless guest)
-  const showProfile = !isGuest;
+  // Show profile avatar if registered
+  const showProfile = isLoggedIn;
 
   return (
     <header className="w-full bg-tzipur-cream text-tzipur-brown h-14 sm:h-16 px-3 sm:px-4 flex items-center justify-between z-40 relative shadow-sm border-b border-tzipur-border shrink-0">

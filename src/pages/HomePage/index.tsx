@@ -85,8 +85,8 @@ export default function HomePage() {
 
           <button
             onClick={() => {
-              localStorage.removeItem('tzipur_pin');
-              window.dispatchEvent(new Event('tzipur_auth_changed'));
+              localStorage.setItem('user_id', 'null');
+              window.dispatchEvent(new Event('auth_changed'));
               navigate('/create');
             }}
             className="w-full bg-transparent text-tzipur-brown/70 py-[clamp(0.25rem,1dvh,0.5rem)] rounded-2xl text-[clamp(1.125rem,2.5dvh,1.25rem)] font-medium hover:text-tzipur-brown transition-colors"

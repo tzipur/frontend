@@ -1,23 +1,26 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Delete } from 'lucide-react';
+import { Delete, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '../../components/Button';
+import { useLogin, useRegister } from '../../api';
 
 export default function AuthPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [nickname, setNickname] = useState('');
   const [pin, setPin] = useState('');
-  const [hasSavedNickname, setHasSavedNickname] = useState(false);
+  const [hasSavedId, setHasSavedId] = useState(false);
   const [error, setError] = useState(false);
 
+  const loginMutation = useLogin();
+  const registerMutation = useRegister();
+
   useEffect(() => {
-    const savedNickname = localStorage.getItem('tzipur_nickname');
-    if (savedNickname) {
-      setNickname(savedNickname);
-      setHasSavedNickname(true);
+    const savedId = localStorage.getItem('user_id');
+    if (savedId && savedId !== 'null') {
+      setHasSavedId(true);
     }
   }, []);
 
@@ -32,24 +35,31 @@ export default function AuthPage() {
 
   const handleAuth = () => {
     if (pin.length === 4 && nickname) {
-      // Mock validation logic for offline mode
-      const savedPin = localStorage.getItem('tzipur_pin');
-      
-      if (hasSavedNickname && savedPin && savedPin !== pin) {
-        setError(true);
-        setPin(''); // Reset pin on error
-        return;
-      }
+      const payload = {
+        nickname,
+        code: pin,
+        user_id: localStorage.getItem('user_id') === 'null' ? null : localStorage.getItem('user_id'),
+      };
 
-      localStorage.setItem('tzipur_nickname', nickname);
-      if (!savedPin || !hasSavedNickname) {
-        localStorage.setItem('tzipur_pin', pin);
-      }
-      
-      window.dispatchEvent(new Event('tzipur_auth_changed'));
-      navigate('/library');
+      const mutation = hasSavedId ? loginMutation : registerMutation;
+
+      mutation.mutate(payload, {
+        onSuccess: (data) => {
+          if (data.user_id) {
+            localStorage.setItem('user_id', data.user_id);
+          }
+          window.dispatchEvent(new Event('auth_changed'));
+          navigate('/library');
+        },
+        onError: () => {
+          setError(true);
+          setPin('');
+        }
+      });
     }
   };
+
+  const isLoading = loginMutation.isPending || registerMutation.isPending;
 
   return (
     <div className="flex-1 w-full flex flex-col px-4 py-2 sm:p-4 bg-tzipur-cream text-tzipur-brown overflow-y-auto custom-scrollbar">
@@ -114,8 +124,8 @@ export default function AuthPage() {
         </div>
 
         <div className="w-full mt-auto pt-[clamp(0.5rem,2dvh,1.5rem)] shrink-0">
-          <Button variant="primary" fullWidth onClick={handleAuth} disabled={pin.length < 4 || !nickname}>
-            {t('auth.submit')}
+          <Button variant="primary" fullWidth onClick={handleAuth} disabled={pin.length < 4 || !nickname || isLoading}>
+            {isLoading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : t('auth.submit')}
           </Button>
         </div>
       </div>

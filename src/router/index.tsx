@@ -14,7 +14,7 @@ const HomePage = lazy(() => import('../pages/HomePage'));
 
 const getHasSeenOnboarding = () => {
   try {
-    return localStorage.getItem('tzipur_has_seen_onboarding') === 'true';
+    return localStorage.getItem('has_seen_onboarding') === 'true';
   } catch (error) {
     console.warn("Failed to read from localStorage", error);
     return false;

@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { User, Calendar, Smile, Star, Plus, Trash2, ChevronDown } from 'lucide-react';
-import { mockChildProfiles } from '../../lib/mockData';
+import { User, Calendar, Smile, Star, Plus, Trash2, ChevronDown, Loader2 } from 'lucide-react';
 import type { ChildProfile } from '../../types';
 import { Button } from '../../components/Button';
 import { ButtonGroup } from '../../components/ButtonGroup';
+import { useProfile, useUpdateProfile } from '../../api';
 
 const ages = [4, 5, 6, 7, 8];
 
@@ -36,18 +36,27 @@ export default function ProfileSetupPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   
-  const [childrenList, setChildrenList] = useState<ChildProfile[]>(mockChildProfiles);
+  const { data: profileData, isLoading: isLoadingProfile } = useProfile();
+  const updateMutation = useUpdateProfile();
+  
+  const [childrenList, setChildrenList] = useState<ChildProfile[]>([]);
   const [expandedChildId, setExpandedChildId] = useState<string | null>(null);
   const [childToDelete, setChildToDelete] = useState<string | null>(null);
   const [showDeleteProfileModal, setShowDeleteProfileModal] = useState(false);
-  const [savedChildIds, setSavedChildIds] = useState<Set<string>>(new Set(mockChildProfiles.map(c => c.id)));
+  const [savedChildIds, setSavedChildIds] = useState<Set<string>>(new Set());
   const [invalidFields, setInvalidFields] = useState<{id: string, fields: string[]} | null>(null);
 
   useEffect(() => {
-    if (childrenList.length === 0) {
+    if (profileData?.children) {
+      setChildrenList(profileData.children);
+      setSavedChildIds(new Set(profileData.children.map(c => c.id)));
+      if (profileData.children.length === 0) {
+        handleAddChild();
+      }
+    } else if (!isLoadingProfile && childrenList.length === 0) {
       handleAddChild();
     }
-  }, []);
+  }, [profileData, isLoadingProfile]);
 
   useEffect(() => {
     setChildrenList(prev => prev.filter(c => c.id === expandedChildId || c.nickname.trim() !== ''));
@@ -62,8 +71,7 @@ export default function ProfileSetupPage() {
       favoriteAnimal: 'dog',
       hobby: ''
     };
-    const newList = [...childrenList, newChild];
-    setChildrenList(newList);
+    setChildrenList(prev => [...prev, newChild]);
     setExpandedChildId(newId);
   };
 
@@ -72,18 +80,6 @@ export default function ProfileSetupPage() {
       c.id === id ? { ...c, [field]: value } : c
     );
     setChildrenList(newList);
-    
-    let mockChild = mockChildProfiles.find(c => c.id === id);
-    if (!mockChild) {
-      const updatedChild = newList.find(c => c.id === id);
-      if (updatedChild && updatedChild.nickname.trim() !== '') {
-        mockChildProfiles.push(updatedChild);
-        mockChild = updatedChild;
-      }
-    }
-    if (mockChild) {
-      (mockChild as any)[field] = value;
-    }
   };
 
   const handleDeleteChild = (id: string) => {
@@ -93,8 +89,6 @@ export default function ProfileSetupPage() {
   const confirmDeleteChild = (id: string) => {
     const newList = childrenList.filter(c => c.id !== id);
     setChildrenList(newList);
-    const index = mockChildProfiles.findIndex(c => c.id === id);
-    if (index > -1) mockChildProfiles.splice(index, 1);
     
     if (expandedChildId === id) {
       setExpandedChildId(null);
@@ -129,6 +123,17 @@ export default function ProfileSetupPage() {
   };
 
   const isAllValid = childrenList.length > 0 && childrenList.every(isFormValid);
+
+  const handleSaveAllAndNavigate = (path: string) => {
+    const payload = childrenList.map(c => ({
+      ...c,
+      id: c.id.startsWith('child-') ? null : c.id
+    }));
+    
+    updateMutation.mutate({ children: payload }, {
+      onSuccess: () => navigate(path),
+    });
+  };
 
   return (
     <motion.div
@@ -335,10 +340,10 @@ export default function ProfileSetupPage() {
       </main>
 
       <footer className="pt-[clamp(0.75rem,2dvh,1.5rem)] pb-2 mt-auto shrink-0 z-10 flex flex-col gap-[clamp(0.5rem,1.5dvh,0.75rem)]">
-        <Button variant="primary" fullWidth onClick={() => navigate('/create')} disabled={!isAllValid}>
-          {t('profile.startCreating')}
+        <Button variant="primary" fullWidth onClick={() => handleSaveAllAndNavigate('/create')} disabled={!isAllValid || updateMutation.isPending}>
+          {updateMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : t('profile.startCreating')}
         </Button>
-        <Button variant="secondary" fullWidth onClick={() => navigate('/library')}>
+        <Button variant="secondary" fullWidth onClick={() => handleSaveAllAndNavigate('/library')} disabled={updateMutation.isPending}>
           {t('profile.goToLibrary')}
         </Button>
       </footer>
@@ -367,8 +372,8 @@ export default function ProfileSetupPage() {
                   {t('profile.cancel')}
                 </Button>
                 <Button variant="destructive" onClick={() => {
-                  localStorage.removeItem('tzipur_pin');
-                  window.dispatchEvent(new Event('tzipur_auth_changed'));
+                  localStorage.setItem('user_id', 'null');
+                  window.dispatchEvent(new Event('auth_changed'));
                   navigate('/');
                 }}>
                   {t('profile.confirmDelete')}

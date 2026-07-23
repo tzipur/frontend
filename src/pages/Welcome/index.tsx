@@ -39,7 +39,7 @@ export default function Welcome() {
 
   const handleFinish = () => {
     try {
-      localStorage.setItem('tzipur_has_seen_onboarding', 'true');
+      localStorage.setItem('has_seen_onboarding', 'true');
     } catch (e) {
       console.warn('Failed to save onboarding state', e);
     }

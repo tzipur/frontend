@@ -7,6 +7,7 @@ type AuthContextType = {
   session: Session | null;
   user: User | null;
   isInitializing: boolean;
+  isLoggedIn: boolean;
   refreshMockSession: () => void;
 };
 
@@ -14,6 +15,7 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   user: null,
   isInitializing: true,
+  isLoggedIn: false,
   refreshMockSession: () => {},
 });
 
@@ -21,13 +23,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     let mounted = true;
 
+    // Initialize user_id and has_seen_onboarding on first load if they don't exist
+    if (localStorage.getItem('user_id') === null) {
+      localStorage.setItem('user_id', 'null');
+    }
+    if (localStorage.getItem('has_seen_onboarding') === null) {
+      localStorage.setItem('has_seen_onboarding', 'false');
+    }
+
     const setupMockSession = () => {
-      const pin = localStorage.getItem('tzipur_pin');
-      const isRegistered = !!pin;
+      const userId = localStorage.getItem('user_id');
+      const isRegistered = userId && userId !== 'null';
       const mockSessionUser = isRegistered 
         ? { id: 'offline-user', email: 'test@example.com', role: 'authenticated' }
         : { id: 'offline-user', role: 'anon' };
@@ -69,7 +80,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.error('Auth initialization error:', err);
       }
       
-      if (mounted) setIsInitializing(false);
+      if (mounted) {
+        const userId = localStorage.getItem('user_id');
+        setIsLoggedIn(!!(userId && userId !== 'null'));
+        setIsInitializing(false);
+      }
     }
 
     initAuth();
@@ -92,8 +107,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshMockSession = () => {
     if (isOffline) {
-      const pin = localStorage.getItem('tzipur_pin');
-      const isRegistered = !!pin;
+      const userId = localStorage.getItem('user_id');
+      const isRegistered = userId && userId !== 'null';
       const mockSessionUser = isRegistered 
         ? { id: 'offline-user', email: 'test@example.com', role: 'authenticated' }
         : { id: 'offline-user', role: 'anon' };
@@ -103,8 +118,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    window.addEventListener('tzipur_auth_changed', refreshMockSession);
-    return () => window.removeEventListener('tzipur_auth_changed', refreshMockSession);
+    const handleAuthChanged = () => {
+      const userId = localStorage.getItem('user_id');
+      setIsLoggedIn(!!(userId && userId !== 'null'));
+      refreshMockSession();
+    };
+
+    window.addEventListener('auth_changed', handleAuthChanged);
+    return () => window.removeEventListener('auth_changed', handleAuthChanged);
   }, []);
 
   if (isInitializing) {
@@ -112,7 +133,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ session, user, isInitializing, refreshMockSession }}>
+    <AuthContext.Provider value={{ session, user, isInitializing, isLoggedIn, refreshMockSession }}>
       {children}
     </AuthContext.Provider>
   );
