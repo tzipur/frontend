@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLogin, useRegister } from '../../../api';
 import { useAuth } from '../../../contexts/AuthContext';
 
 export function useAuthPage() {
   const navigate = useNavigate();
-  const { userId, hasSavedId } = useAuth();
+  const { hasSavedId } = useAuth();
   
   const [nickname, setNickname] = useState(localStorage.getItem('nickname') || '');
   const [pin, setPin] = useState('');

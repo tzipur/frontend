@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useProfile, useUpdateProfile } from '../../../api';
-import type { ChildProfile } from '../../../types';
 
 export const childProfileSchema = z.object({
   id: z.string(),
@@ -22,7 +21,7 @@ export const profileSetupSchema = z.object({
 }).superRefine((data, ctx) => {
   const nicknames = data.children.map(c => c.nickname.trim().toLowerCase());
   const seen = new Set<string>();
-  
+
   nicknames.forEach((nickname, index) => {
     if (nickname && seen.has(nickname)) {
       ctx.addIssue({
@@ -41,7 +40,7 @@ export function useProfileSetup() {
   const navigate = useNavigate();
   const { data: profileData, isLoading: isLoadingProfile } = useProfile();
   const updateMutation = useUpdateProfile();
-  
+
   const [expandedChildId, setExpandedChildId] = useState<string | null>(null);
   const [childToDelete, setChildToDelete] = useState<string | null>(null);
   const [showDeleteProfileModal, setShowDeleteProfileModal] = useState(false);
@@ -64,7 +63,7 @@ export function useProfileSetup() {
   // Hydrate form from backend
   useEffect(() => {
     if (profileData?.children) {
-      const validChildren = profileData.children as ChildProfile[];
+      const validChildren = profileData.children as ProfileSetupFormValues['children'];
       replace(validChildren);
       setSavedChildIds(new Set(validChildren.map(c => c.id)));
     }
@@ -113,7 +112,7 @@ export function useProfileSetup() {
       setChildToDelete(null);
       return;
     }
-    
+
     const values = form.getValues();
     const payload = values.children
       .filter(c => savedChildIds.has(c.id) && c.id !== childId)
@@ -121,7 +120,7 @@ export function useProfileSetup() {
         ...c,
         id: c.id.startsWith('child-') ? null : c.id
       }));
-    
+
     updateMutation.mutate({ children: payload }, {
       onSuccess: () => {
         remove(index);
