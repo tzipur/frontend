@@ -4,7 +4,7 @@ import TopBar from '../components/TopBar';
 import SplashScreen from '../components/SplashScreen';
 import IosInstallBanner from '../components/IosInstallBanner';
 import { Toaster } from 'react-hot-toast';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import { useTranslation } from 'react-i18next';
 

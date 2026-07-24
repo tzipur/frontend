@@ -1,5 +1,5 @@
 import type { Story } from '../types';
-import type { StoryLibraryItem, StoryChapter } from '../api/stories';
+import type { StoryLibraryItem } from '../api/stories';
 import type { ProfileData } from '../api/profile';
 import { mockStories, mockParentProfile } from './mockData';
 
@@ -12,11 +12,11 @@ export const toStoryLibraryItem = (story: Story): StoryLibraryItem => {
     id: story.id,
     status: 'completed',
     title: story.title,
-    image_url: story.image_url || '',
-    created_for: story.created_for,
-    created_at: story.created_at,
-    coaching_tip: story.coaching_tip,
-    chapters: story.chapters as StoryChapter[],
+    image_url: story.coverImageUrl || '',
+    created_for: story.childProfileId,
+    created_at: story.createdAt,
+    coaching_tip: story.coachingTip,
+    chapters: story.chapters.map(ch => ({ chapter_num: ch.order, title: ch.title, text: ch.content, image_url: ch.illustrationUrl })),
   };
 };
 
@@ -55,15 +55,20 @@ class MockState {
     const newStory: Story = {
       id: `mock-${generateId()}`,
       title: `הסיפור של ${brief.created_for || 'ילד'} (Mock)`,
-      created_for: brief.created_for || 'ילד',
-      created_at: new Date().toISOString(),
-      coaching_tip: 'טיפ: דברו על הרגשות שעלו בסיפור.',
+      subtitle: 'סיפור חדש שנוצר אופליין',
+      coverImageUrl: '',
+      childProfileId: brief.created_for === 'נועם' ? 'child-001' : 'child-002',
+      createdAt: new Date().toISOString(),
+      inputMethod: 'write',
+      parentInput: brief.incident_description || '',
+      coachingTip: 'טיפ: דברו על הרגשות שעלו בסיפור.',
       chapters: [
         {
-          chapter_num: 1,
+          id: 'mock-ch1',
+          order: 1,
           title: 'ההתחלה',
-          text: `זהו סיפור שנוצר במצב לא מקוון. ${brief.incident_description || 'משהו מעניין קרה.'}`,
-          image_url: ''
+          content: `זהו סיפור שנוצר במצב לא מקוון. ${brief.incident_description || 'משהו מעניין קרה.'}`,
+          illustrationUrl: ''
         }
       ]
     };
@@ -95,7 +100,7 @@ class MockState {
     // Simplistic mock edit
     list[index].title = updates.story_title;
     if (list[index].chapters && list[index].chapters.length > 0) {
-      list[index].chapters[0].text = updates.story_body;
+      list[index].chapters[0].content = updates.story_body;
     }
     
     return toStoryLibraryItem(list[index]);
