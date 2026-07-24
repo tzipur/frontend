@@ -1,5 +1,5 @@
 # Fix the Story Generation Ready Notification
 
-- [ ] Reproduce the story-generation-ready notification issue.
-- [ ] Fix the notification trigger and displayed state.
-- [ ] Verify the notification for successful and delayed generation.
+- `[x]` Reproduce the story-generation-ready notification issue.
+- `[x]` Fix the notification trigger and displayed state.
+- `[x]` Verify the notification for successful and delayed generation.
