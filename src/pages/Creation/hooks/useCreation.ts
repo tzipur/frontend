@@ -47,15 +47,17 @@ export function useCreation() {
     }
 
     const payload = {
-      user_id: userId || '',
-      tags: selectedTrack ? [selectedTrack] : undefined,
-      user_input: freeText || undefined,
-      child_id: selectedChild ? selectedChild : null,
+      user_id: userId || null,
+      story_brief: {
+        selected_tags: selectedTrack ? [selectedTrack] : [],
+        incident_description: freeText || null,
+        created_for: selectedChild || null,
+      }
     };
 
     generateMutation.mutate(payload, {
       onSuccess: (data) => {
-        const newStoryId = data?.id || data?.storyId || 'story-001';
+        const newStoryId = data?.story?.story_id || 'story-001';
         navigate(`/preview/${newStoryId}`);
         
         if ('Notification' in window && Notification.permission === 'granted' && document.visibilityState === 'hidden') {

@@ -40,7 +40,7 @@ export default function ReadingPage() {
       animate={{ opacity: 1 }}
       className="absolute inset-0 flex flex-col overflow-hidden bg-tzipur-cream [perspective:1000px]"
     >
-      <ReadingHero title={story.title} />
+      <ReadingHero title={story.title} imageUrl={story.image_url} />
       <ReadingPanel 
         currentPageIndex={currentPageIndex}
         direction={direction}

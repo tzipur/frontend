@@ -45,6 +45,18 @@ export const useEditStory = () => {
   });
 };
 
+export const useSaveStory = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (storyId: string) => storyRequests.saveStory(storyId),
+    meta: { errorMessage: 'reading.saveError' },
+    onSuccess: () => {
+      // Invalidate library queries to fetch the saved story
+      queryClient.invalidateQueries({ queryKey: ['libraryStories'] });
+    },
+  });
+};
+
 export const useDeleteStory = () => {
   const queryClient = useQueryClient();
   return useMutation({
