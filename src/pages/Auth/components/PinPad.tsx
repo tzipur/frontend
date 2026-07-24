@@ -23,18 +23,18 @@ export default function PinPad({ pin, error, onKeyPress, onDelete, title }: PinP
         transition={{ duration: 0.4 }}
       >
         {[0, 1, 2, 3].map(i => (
-          <div key={i} className={`w-[clamp(2rem,6dvh,3.5rem)] h-[clamp(2rem,6dvh,3.5rem)] rounded-full border-[3px] transition-colors ${error ? 'border-tzipur-error bg-tzipur-error-bg' : pin.length > i ? 'bg-tzipur-sky border-tzipur-sky' : 'border-tzipur-border bg-white'}`} />
+          <div key={i} className={`w-[clamp(2rem,6dvh,3.5rem)] h-[clamp(2rem,6dvh,3.5rem)] rounded-full border-[3px] transition-colors ${error ? 'border-tzipur-error bg-tzipur-error-bg' : pin.length > i ? 'bg-tzipur-sky border-tzipur-sky' : 'border-tzipur-border bg-tzipur-surface'}`} />
         ))}
       </motion.div>
 
       <div className="grid grid-cols-3 place-items-center gap-y-[clamp(0.25rem,1.5dvh,1.25rem)] gap-x-[clamp(1rem,4vw,2.5rem)] w-full text-lg sm:text-2xl font-medium" dir="ltr">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
-          <button key={num} onClick={() => onKeyPress(num.toString())} className="w-[clamp(3rem,8.5dvh,4.5rem)] h-[clamp(3rem,8.5dvh,4.5rem)] rounded-full bg-white shadow-sm border border-tzipur-border flex items-center justify-center active:scale-95 transition-transform text-tzipur-sky hover:bg-tzipur-sand">
+          <button key={num} onClick={() => onKeyPress(num.toString())} className="w-[clamp(3rem,8.5dvh,4.5rem)] h-[clamp(3rem,8.5dvh,4.5rem)] rounded-full bg-tzipur-surface shadow-sm border border-tzipur-border flex items-center justify-center active:scale-95 transition-transform text-tzipur-sky hover:bg-tzipur-sand">
             {num}
           </button>
         ))}
         <div />
-        <button onClick={() => onKeyPress('0')} className="w-[clamp(3rem,8.5dvh,4.5rem)] h-[clamp(3rem,8.5dvh,4.5rem)] rounded-full bg-white shadow-sm border border-tzipur-border flex items-center justify-center active:scale-95 transition-transform text-tzipur-sky hover:bg-tzipur-sand">
+        <button onClick={() => onKeyPress('0')} className="w-[clamp(3rem,8.5dvh,4.5rem)] h-[clamp(3rem,8.5dvh,4.5rem)] rounded-full bg-tzipur-surface shadow-sm border border-tzipur-border flex items-center justify-center active:scale-95 transition-transform text-tzipur-sky hover:bg-tzipur-sand">
           0
         </button>
         <button onClick={onDelete} className="w-[clamp(3rem,8.5dvh,4.5rem)] h-[clamp(3rem,8.5dvh,4.5rem)] rounded-full bg-transparent flex items-center justify-center active:scale-95 transition-transform text-tzipur-brown/70 hover:bg-tzipur-sand">

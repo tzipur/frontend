@@ -59,7 +59,7 @@ export default function CreationPage() {
               value={state.freeText}
               onChange={(e) => actions.setFreeText(e.target.value)}
               disabled={!!state.selectedTrack}
-              className="absolute inset-0 w-full h-full bg-white border border-tzipur-border rounded-2xl p-4 focus:outline-none focus:border-tzipur-sky focus:ring-1 focus:ring-tzipur-sky transition resize-none text-tzipur-brown placeholder:text-tzipur-brown/70/60 disabled:bg-tzipur-cream disabled:opacity-60 disabled:cursor-not-allowed"
+              className="absolute inset-0 w-full h-full bg-tzipur-surface border border-tzipur-border rounded-2xl p-4 focus:outline-none focus:border-tzipur-sky focus:ring-1 focus:ring-tzipur-sky transition resize-none text-tzipur-brown placeholder:text-tzipur-brown/70/60 disabled:bg-tzipur-cream disabled:opacity-60 disabled:cursor-not-allowed"
             />
           </div>
         </main>

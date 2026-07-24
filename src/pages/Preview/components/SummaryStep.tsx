@@ -36,7 +36,7 @@ export default function SummaryStep({ chapters, edits, onEditChange }: SummarySt
       {chapters.map((chapter, index) => {
         const isExpanded = expandedIndex === index;
         return (
-          <div key={chapter.id} className="bg-white rounded-2xl py-6 shadow-sm border border-tzipur-border shrink-0 flex flex-col">
+          <div key={chapter.id} className="bg-tzipur-surface rounded-2xl py-6 shadow-sm border border-tzipur-border shrink-0 flex flex-col">
             
             {/* Accordion Header */}
             <div 

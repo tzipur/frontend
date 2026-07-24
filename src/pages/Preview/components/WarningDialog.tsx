@@ -26,7 +26,7 @@ export default function WarningDialog({ isVisible, onConfirm, onCancel }: Warnin
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 20 }}
-            className="bg-white rounded-[32px] p-6 shadow-xl max-w-sm w-full flex flex-col items-center text-center"
+            className="bg-tzipur-surface rounded-[32px] p-6 shadow-xl max-w-sm w-full flex flex-col items-center text-center"
           >
             <div className="w-12 h-12 bg-tzipur-error-bg text-tzipur-error rounded-full flex items-center justify-center mb-4">
               <AlertCircle size={24} />

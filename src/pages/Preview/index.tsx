@@ -63,7 +63,7 @@ export default function PreviewPage() {
         <Disclaimer />
 
         {/* Footer Actions */}
-        <footer className="shrink-0 w-full bg-white/80 backdrop-blur-md border-t border-tzipur-border p-[clamp(0.5rem,2dvh,1rem)] shadow-footer-lift z-20">
+        <footer className="shrink-0 w-full bg-tzipur-surface/80 backdrop-blur-md border-t border-tzipur-border p-[clamp(0.5rem,2dvh,1rem)] shadow-footer-lift z-20">
           <ButtonGroup>
             <Button
               variant="secondary"

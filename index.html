@@ -9,9 +9,14 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="apple-touch-icon" href="src/assets/tzipur_logo.png" />
+    <script>
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
     <title>ציפור — סיפורים שמרפאים</title>
   </head>
-  <body>
+  <body class="bg-tzipur-cream text-tzipur-brown antialiased transition-colors duration-300 min-h-screen">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

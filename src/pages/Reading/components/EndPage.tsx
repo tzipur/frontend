@@ -44,7 +44,7 @@ export default function EndPage({ goPrev, coachingTip }: EndPageProps) {
       {coachingTip && (
         <div className="w-full bg-tzipur-sand/40 rounded-2xl p-3 sm:p-4 border border-tzipur-border/50 shadow-sm relative overflow-hidden mb-[clamp(1rem,3dvh,2.5rem)] shrink-0 mt-auto">
           <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
-            <div className="bg-white p-1 sm:p-1.5 rounded-full text-tzipur-sky shadow-sm border border-tzipur-sky/10">
+            <div className="bg-tzipur-surface p-1 sm:p-1.5 rounded-full text-tzipur-sky shadow-sm border border-tzipur-sky/10">
               <Lightbulb strokeWidth={2.5} className="w-[clamp(1.25rem,3dvh,1.75rem)] h-[clamp(1.25rem,3dvh,1.75rem)]" />
             </div>
             <h3 className="font-bold text-tzipur-sky text-[clamp(1rem,3dvh,1.5rem)]">

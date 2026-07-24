@@ -23,9 +23,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // destructive: Red
     const variantClasses = {
       primary: "bg-[#5B93B5] text-white shadow-md hover:shadow-lg hover:bg-[#4A7A9A] border border-transparent",
-      secondary: "bg-white text-[#5B93B5] border-2 border-[#5B93B5]/20 hover:bg-[#5B93B5]/5 shadow-sm",
+      secondary: "bg-tzipur-surface text-[#5B93B5] border-2 border-[#5B93B5]/20 hover:bg-[#5B93B5]/5 shadow-sm",
       ghost: "bg-transparent text-[#5B93B5] hover:bg-[#5B93B5]/10 border border-transparent",
-      destructive: "bg-red-500 text-white shadow-md hover:shadow-lg hover:bg-red-600 border border-transparent",
+      destructive: "bg-tzipur-error text-white shadow-md hover:shadow-lg hover:bg-tzipur-error/80 border border-transparent",
     }[variant];
     
     const widthClass = fullWidth ? "w-full" : "";

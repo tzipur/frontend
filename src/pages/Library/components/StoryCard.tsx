@@ -55,6 +55,8 @@ export function StoryCard({ story, onClick, variants, createdForOnText }: StoryC
             src={story.image_url} 
             alt={story.title} 
             className="w-full h-full object-cover" 
+            loading="lazy"
+            decoding="async"
             onError={(e) => {
               e.currentTarget.src = fallbackImage;
             }}

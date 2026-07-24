@@ -22,6 +22,8 @@ export default function ReadingHero({ title, imageUrl }: ReadingHeroProps) {
           src={displayUrl} 
           className="w-full h-full object-cover" 
           alt="Story Illustration" 
+          loading="lazy"
+          decoding="async"
           onError={() => setImgError(true)}
         />
       </div>

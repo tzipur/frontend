@@ -11,7 +11,7 @@ export default function Welcome() {
   const { setSwiper, setActiveIndex, handleNext } = actions;
 
   return (
-    <div className="flex-1 flex flex-col relative bg-white text-tzipur-brown overflow-hidden w-full h-full">
+    <div className="flex-1 flex flex-col relative bg-tzipur-cream text-tzipur-brown overflow-hidden w-full h-full">
       <main className="flex-1 relative flex flex-col mt-2 sm:mt-6 mb-2 overflow-hidden">
         <Swiper
           className="w-full h-full flex"

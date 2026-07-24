@@ -28,7 +28,7 @@ export function GuestWarningModal({ isVisible, onClose, onRegister }: GuestWarni
             initial={{ opacity: 0, x: "-50%", y: "20%", scale: 0.9 }}
             animate={{ opacity: 1, x: "-50%", y: "30%", scale: 1 }}
             exit={{ opacity: 0, x: "-50%", y: "30%", scale: 0.9 }}
-            className="fixed top-1/2 left-1/2 w-[calc(100%-2rem)] max-w-md bg-white rounded-3xl shadow-2xl z-50 p-6 border border-tzipur-border flex flex-col gap-4"
+            className="fixed top-1/2 left-1/2 w-[calc(100%-2rem)] max-w-md bg-tzipur-surface rounded-3xl shadow-2xl z-50 p-6 border border-tzipur-border flex flex-col gap-4"
           >
             <div className="flex justify-between items-start">
               <div className="flex items-center justify-center text-yellow-500 shrink-0 mt-1">

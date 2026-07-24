@@ -32,7 +32,7 @@ export default function GlobalError() {
         
         <button
           onClick={() => navigate('/')}
-          className="flex items-center justify-center gap-2 w-full bg-white text-tzipur-sky border-2 border-tzipur-sky py-4 rounded-2xl font-medium text-base shadow-sm hover:bg-tzipur-sand transition"
+          className="flex items-center justify-center gap-2 w-full bg-tzipur-surface text-tzipur-sky border-2 border-tzipur-sky py-4 rounded-2xl font-medium text-base shadow-sm hover:bg-tzipur-sand transition"
         >
           <Home size={20} />
           <span>{t('components.error.home')}</span>

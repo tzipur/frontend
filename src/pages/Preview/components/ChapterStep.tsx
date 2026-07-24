@@ -28,7 +28,7 @@ export default function ChapterStep({ currentStep, totalChapters, chapter, editV
       transition={{ duration: 0.3 }}
       className="flex flex-col gap-6"
     >
-      <div className="bg-white rounded-2xl py-6 shadow-sm border border-tzipur-border flex flex-col">
+      <div className="bg-tzipur-surface rounded-2xl py-6 shadow-sm border border-tzipur-border flex flex-col">
         <h2 className="font-serif text-2xl font-bold text-tzipur-sky mb-4 shrink-0 px-6">
           {t('preview.chapterCount', { current: currentStep + 1, total: totalChapters })}: {getCleanTitle(chapter.title)}
         </h2>
@@ -46,7 +46,7 @@ export default function ChapterStep({ currentStep, totalChapters, chapter, editV
         <label className="block text-base font-medium text-tzipur-brown mb-2 px-2">
           {t('preview.editLabel')}
         </label>
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-tzipur-border">
+        <div className="bg-tzipur-surface rounded-2xl p-4 shadow-sm border border-tzipur-border">
           <textarea
             value={editValue}
             onChange={(e) => onEditChange(e.target.value)}

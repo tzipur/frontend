@@ -64,7 +64,7 @@ export default function ProfileSetupPage() {
             onClick={actions.handleAddChild}
             className="w-full bg-transparent border-2 border-dashed border-tzipur-border hover:border-tzipur-sky/50 hover:bg-tzipur-sky/5 rounded-[32px] p-[clamp(1rem,3dvh,1.5rem)] flex flex-col items-center justify-center gap-[clamp(0.5rem,1.5dvh,0.75rem)] text-tzipur-brown/60 hover:text-tzipur-sky font-bold transition-all mt-[clamp(0.75rem,2dvh,1.5rem)]"
           >
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-tzipur-border/50">
+            <div className="w-12 h-12 bg-tzipur-surface rounded-full flex items-center justify-center shadow-sm border border-tzipur-border/50">
               <Plus size={24} strokeWidth={3} />
             </div>
             {t('profile.addChild')}

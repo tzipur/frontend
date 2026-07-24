@@ -12,10 +12,10 @@ export function StoryViewer({ story, isExpanded, onToggle }: StoryViewerProps) {
   const { t } = useTranslation();
 
   return (
-    <div className={`bg-white rounded-[24px] shadow-sm border ${isExpanded ? 'border-tzipur-sky/40' : 'border-tzipur-border'} flex flex-col ${isExpanded ? 'flex-1 min-h-0' : 'shrink-0'} overflow-hidden transition-colors`}>
+    <div className={`bg-tzipur-surface rounded-[24px] shadow-sm border ${isExpanded ? 'border-tzipur-sky/40' : 'border-tzipur-border'} flex flex-col ${isExpanded ? 'flex-1 min-h-0' : 'shrink-0'} overflow-hidden transition-colors`}>
       <button
         onClick={onToggle}
-        className="w-full shrink-0 flex items-center justify-between p-[clamp(1rem,2dvh,1.5rem)] bg-white text-tzipur-sky font-bold text-lg"
+        className="w-full shrink-0 flex items-center justify-between p-[clamp(1rem,2dvh,1.5rem)] bg-tzipur-surface text-tzipur-sky font-bold text-lg"
       >
         <div className="flex items-center gap-3">
           <BookOpen size={22} strokeWidth={2.5} />

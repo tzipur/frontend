@@ -26,7 +26,7 @@ export function FastTrackSelector({
       <div className="block sm:hidden [@media(min-height:800px)]:hidden relative z-20" ref={dropdownRef}>
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="w-full bg-white border-2 border-tzipur-border rounded-2xl px-5 py-[clamp(0.75rem,2dvh,1rem)] flex items-center justify-between text-tzipur-brown font-bold text-sm shadow-sm"
+          className="w-full bg-tzipur-surface border-2 border-tzipur-border rounded-2xl px-5 py-[clamp(0.75rem,2dvh,1rem)] flex items-center justify-between text-tzipur-brown font-bold text-sm shadow-sm"
         >
           <div className="flex items-center gap-3">
              {selectedTrack ? (
@@ -52,7 +52,7 @@ export function FastTrackSelector({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-full left-0 right-0 mt-2 bg-white border border-tzipur-border rounded-2xl shadow-lg overflow-hidden flex flex-col z-30 max-h-[300px] overflow-y-auto custom-scrollbar"
+              className="absolute top-full left-0 right-0 mt-2 bg-tzipur-surface border border-tzipur-border rounded-2xl shadow-lg overflow-hidden flex flex-col z-30 max-h-[300px] overflow-y-auto custom-scrollbar"
             >
               {fastTracks.map((track) => {
                  const Icon = track.icon;
@@ -92,7 +92,7 @@ export function FastTrackSelector({
               className={`rounded-2xl p-[clamp(0.5rem,1.5dvh,0.75rem)] text-right flex items-center gap-[clamp(0.25rem,1dvh,0.75rem)] transition-all border-2 ${
                 selectedTrack === track.id
                   ? 'bg-tzipur-sky/20 border-tzipur-sky text-tzipur-sky'
-                  : 'bg-white border-tzipur-border text-tzipur-brown hover:border-tzipur-sky'
+                  : 'bg-tzipur-surface border-tzipur-border text-tzipur-brown hover:border-tzipur-sky'
               }`}
             >
               <Icon size={20} className="shrink-0" />

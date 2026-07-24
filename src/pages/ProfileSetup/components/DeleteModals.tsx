@@ -34,10 +34,10 @@ export function DeleteModals({
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white w-full max-w-sm rounded-[32px] p-6 shadow-xl space-y-6"
+              className="bg-tzipur-surface w-full max-w-sm rounded-[32px] p-6 shadow-xl space-y-6"
             >
               <div className="text-center space-y-2">
-                <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+                <div className="w-16 h-16 bg-tzipur-error-bg rounded-full flex items-center justify-center mx-auto mb-4 text-tzipur-error">
                   <Trash2 size={28} strokeWidth={2.5} />
                 </div>
                 <h3 className="font-bold text-xl text-tzipur-brown">{t('profile.deleteProfileConfirmTitle', 'מחיקת פרופיל')}</h3>
@@ -66,10 +66,10 @@ export function DeleteModals({
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white w-full max-w-sm rounded-[32px] p-6 shadow-xl space-y-6"
+              className="bg-tzipur-surface w-full max-w-sm rounded-[32px] p-6 shadow-xl space-y-6"
             >
               <div className="text-center space-y-2">
-                <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+                <div className="w-16 h-16 bg-tzipur-error-bg rounded-full flex items-center justify-center mx-auto mb-4 text-tzipur-error">
                   <Trash2 size={28} strokeWidth={2.5} />
                 </div>
                 <h3 className="font-bold text-xl text-tzipur-brown">{t('profile.deleteConfirmTitle')}</h3>

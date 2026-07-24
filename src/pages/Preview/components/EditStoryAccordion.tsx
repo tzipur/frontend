@@ -20,10 +20,10 @@ export function EditStoryAccordion({
   const { t } = useTranslation();
 
   return (
-    <div className={`bg-white rounded-[24px] shadow-sm border ${isExpanded ? 'border-tzipur-sky/40' : 'border-tzipur-border'} flex flex-col shrink-0 overflow-hidden transition-colors`}>
+    <div className={`bg-tzipur-surface rounded-[24px] shadow-sm border ${isExpanded ? 'border-tzipur-sky/40' : 'border-tzipur-border'} flex flex-col shrink-0 overflow-hidden transition-colors`}>
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between p-[clamp(1rem,2dvh,1.5rem)] bg-white text-tzipur-sky font-bold text-lg"
+        className="w-full flex items-center justify-between p-[clamp(1rem,2dvh,1.5rem)] bg-tzipur-surface text-tzipur-sky font-bold text-lg"
       >
         <div className="flex items-center gap-3">
           <Edit3 size={22} strokeWidth={2.5} />
@@ -46,7 +46,7 @@ export function EditStoryAccordion({
             className="overflow-hidden"
           >
             <div className="px-[clamp(1rem,2dvh,1.5rem)] pb-[clamp(1rem,2dvh,1.5rem)] pt-3 border-t border-tzipur-border/30">
-              <div className="relative bg-white rounded-2xl p-[clamp(0.75rem,2dvh,1rem)] border-2 border-tzipur-sky/20 focus-within:border-tzipur-sky/60 transition-colors shadow-sm">
+              <div className="relative bg-tzipur-surface rounded-2xl p-[clamp(0.75rem,2dvh,1rem)] border-2 border-tzipur-sky/20 focus-within:border-tzipur-sky/60 transition-colors shadow-sm">
                 <textarea
                   id="edit-request"
                   value={editRequest}
@@ -55,7 +55,7 @@ export function EditStoryAccordion({
                   placeholder={t('preview.editPlaceholder')}
                   className="peer w-full h-[clamp(5rem,12dvh,6rem)] resize-none bg-transparent focus:outline-none focus:ring-0 text-tzipur-brown text-[clamp(1rem,2.5dvh,1.125rem)] font-medium placeholder:text-tzipur-brown/40 custom-scrollbar"
                 />
-                <label htmlFor="edit-request" className="absolute -top-[0.85rem] right-4 bg-white px-2 text-[clamp(0.75rem,1.5dvh,0.875rem)] font-medium text-tzipur-brown/70 cursor-pointer transition-colors peer-focus:text-tzipur-sky peer-focus:font-bold">
+                <label htmlFor="edit-request" className="absolute -top-[0.85rem] right-4 bg-tzipur-surface px-2 text-[clamp(0.75rem,1.5dvh,0.875rem)] font-medium text-tzipur-brown/70 cursor-pointer transition-colors peer-focus:text-tzipur-sky peer-focus:font-bold">
                   {t('preview.editLabel')}
                 </label>
               </div>

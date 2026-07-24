@@ -59,7 +59,7 @@ export function ChildFormAccordion({
   const ageError = childrenErrors?.[index]?.age;
 
   return (
-    <div className={`bg-white rounded-[32px] shadow-sm border ${isExpanded ? 'border-tzipur-sky/40' : 'border-tzipur-border/60'} overflow-hidden transition-colors`}>
+    <div className={`bg-tzipur-surface rounded-[32px] shadow-sm border ${isExpanded ? 'border-tzipur-sky/40' : 'border-tzipur-border/60'} overflow-hidden transition-colors`}>
       {/* Accordion Header */}
       <button 
         type="button"

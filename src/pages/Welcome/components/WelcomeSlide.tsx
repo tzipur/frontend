@@ -7,7 +7,7 @@ interface WelcomeSlideProps {
 export default function WelcomeSlide({ image, title, text }: WelcomeSlideProps) {
   return (
     <div className="h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center animate-fade-in overflow-y-auto overflow-x-hidden custom-scrollbar">
-      <div className="w-[clamp(12rem,40dvh,21rem)] aspect-square mb-[clamp(1rem,4dvh,3.5rem)] rounded-[32px] shadow-xl shadow-tzipur-sky/10 border-4 border-white bg-white p-2 flex items-center justify-center overflow-hidden shrink-0 mx-auto">
+      <div className="w-[clamp(12rem,40dvh,21rem)] aspect-square mb-[clamp(1rem,4dvh,3.5rem)] rounded-[32px] shadow-xl shadow-tzipur-sky/10 border-4 border-tzipur-surface bg-tzipur-surface p-2 flex items-center justify-center overflow-hidden shrink-0 mx-auto">
         <img src={image} alt={title} className="w-full h-full object-cover rounded-[24px]" />
       </div>
       

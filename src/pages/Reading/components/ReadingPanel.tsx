@@ -69,7 +69,7 @@ export default function ReadingPanel({
           if (offset.x < -30 || velocity.x < -400) setTimeout(goPrev, 50);
           else if (offset.x > 30 || velocity.x > 400) setTimeout(goNext, 50);
         }}
-        className="flex-1 min-h-0 overflow-hidden bg-white rounded-t-[36px] mb-2 mx-2 shadow-raised-panel z-20 relative px-2 py-4 flex flex-col justify-between border border-tzipur-border touch-pan-y"
+        className="flex-1 min-h-0 overflow-hidden bg-tzipur-cream rounded-t-[36px] mb-2 mx-2 shadow-raised-panel z-20 relative px-2 py-4 flex flex-col justify-between border border-tzipur-border touch-pan-y"
       >
         {/* Navigation + Text Container (For Normal Pages) */}
         {!currentPage?.isEndPage ? (
