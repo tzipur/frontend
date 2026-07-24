@@ -5,21 +5,14 @@ import { useAuth } from '../../../contexts/AuthContext';
 
 export function useAuthPage() {
   const navigate = useNavigate();
-  const { userId, isLoggedIn } = useAuth();
+  const { userId, hasSavedId } = useAuth();
   
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useState(localStorage.getItem('nickname') || '');
   const [pin, setPin] = useState('');
-  const [hasSavedId, setHasSavedId] = useState(false);
   const [error, setError] = useState(false);
 
   const loginMutation = useLogin();
   const registerMutation = useRegister();
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      setHasSavedId(true);
-    }
-  }, [isLoggedIn]);
 
   const handleKeyPress = (num: string) => {
     if (error) setError(false);
@@ -36,7 +29,9 @@ export function useAuthPage() {
       const payload = {
         nickname,
         code: pin,
-        user_id: userId,
+        // When logging in, we pass the saved user_id so backend knows who it is.
+        // If registering, this is null.
+        user_id: hasSavedId ? localStorage.getItem('user_id') : null,
       };
 
       const mutation = hasSavedId ? loginMutation : registerMutation;
@@ -45,6 +40,8 @@ export function useAuthPage() {
         onSuccess: (data) => {
           if (data.user_id) {
             localStorage.setItem('user_id', data.user_id);
+            localStorage.setItem('nickname', nickname);
+            sessionStorage.setItem('active_user_id', data.user_id);
           }
           window.dispatchEvent(new Event('auth_changed'));
           navigate('/library');
@@ -60,7 +57,7 @@ export function useAuthPage() {
   const isLoading = loginMutation.isPending || registerMutation.isPending;
 
   return {
-    state: { nickname, pin, error, isLoading },
+    state: { nickname, pin, error, isLoading, hasSavedId },
     actions: { setNickname, handleKeyPress, handleDelete, handleAuth }
   };
 }

@@ -28,14 +28,23 @@ export default function ProfileSetupPage() {
 
   const isFormValid = form.formState.isValid;
 
+  const handleLogOut = () => {
+    sessionStorage.removeItem('active_user_id');
+    window.dispatchEvent(new Event('auth_changed'));
+    actions.navigate('/auth');
+  };
+
   return (
     <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="h-full flex flex-col p-6 bg-tzipur-cream/30"
+      className="h-full flex flex-col p-6"
     >
-      <ProfileHeader onDeleteProfileClick={() => actions.setShowDeleteProfileModal(true)} />
+      <ProfileHeader 
+        onDeleteProfileClick={() => actions.setShowDeleteProfileModal(true)} 
+        onLogOutClick={handleLogOut}
+      />
 
       <main className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4">
         <div className="space-y-[clamp(0.5rem,2dvh,1rem)]">
@@ -44,7 +53,7 @@ export default function ProfileSetupPage() {
               key={field._internalId}
               index={index}
               childId={field.id}
-              isExpanded={state.expandedChildId === field.id}
+              isExpanded={!state.savedChildIds.has(field.id) || state.expandedChildId === field.id}
               isSaved={state.savedChildIds.has(field.id)}
               form={form}
               onToggleExpand={() => actions.setExpandedChildId(state.expandedChildId === field.id ? null : field.id)}
@@ -62,11 +71,9 @@ export default function ProfileSetupPage() {
 
           <button
             onClick={actions.handleAddChild}
-            className="w-full bg-transparent border-2 border-dashed border-tzipur-border hover:border-tzipur-sky/50 hover:bg-tzipur-sky/5 rounded-[32px] p-[clamp(1rem,3dvh,1.5rem)] flex flex-col items-center justify-center gap-[clamp(0.5rem,1.5dvh,0.75rem)] text-tzipur-brown/60 hover:text-tzipur-sky font-bold transition-all mt-[clamp(0.75rem,2dvh,1.5rem)]"
+            className="w-full bg-transparent border-2 border-dashed border-tzipur-sky/30 hover:border-tzipur-sky/60 hover:bg-tzipur-sky/5 rounded-[32px] p-[clamp(1rem,3dvh,1.5rem)] flex flex-col items-center justify-center gap-[clamp(0.5rem,1.5dvh,0.75rem)] text-tzipur-sky font-bold transition-all duration-300 mt-[clamp(0.75rem,2dvh,1.5rem)]"
           >
-            <div className="w-12 h-12 bg-tzipur-surface rounded-full flex items-center justify-center shadow-sm border border-tzipur-border/50">
-              <Plus size={24} strokeWidth={3} />
-            </div>
+            <Plus size={32} strokeWidth={2} className="transition-colors duration-300" />
             {t('profile.addChild')}
           </button>
         </div>

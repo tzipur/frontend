@@ -10,7 +10,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', fullWidth, className = '', children, ...props }, ref) => {
-    const baseClasses = "transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-center";
+    const baseClasses = "transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-center";
     
     const sizeClasses = {
       sm: "py-[clamp(0.5rem,1.5dvh,0.75rem)] px-4 rounded-xl font-bold text-[clamp(0.875rem,2dvh,1rem)]",
@@ -22,9 +22,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // secondary: White with sky blue text/border or transparent bg
     // destructive: Red
     const variantClasses = {
-      primary: "bg-[#5B93B5] text-white shadow-md hover:shadow-lg hover:bg-[#4A7A9A] border border-transparent",
-      secondary: "bg-tzipur-surface text-[#5B93B5] border-2 border-[#5B93B5]/20 hover:bg-[#5B93B5]/5 shadow-sm",
-      ghost: "bg-transparent text-[#5B93B5] hover:bg-[#5B93B5]/10 border border-transparent",
+      primary: "bg-tzipur-sky text-white shadow-md hover:shadow-lg hover:bg-tzipur-sky-dark border border-transparent",
+      secondary: "bg-transparent text-tzipur-sky border-2 border-tzipur-sky/30 hover:bg-tzipur-sky/10 shadow-sm",
+      ghost: "bg-transparent text-tzipur-sky hover:bg-tzipur-sky/10 border border-transparent",
       destructive: "bg-tzipur-error text-white shadow-md hover:shadow-lg hover:bg-tzipur-error/80 border border-transparent",
     }[variant];
     

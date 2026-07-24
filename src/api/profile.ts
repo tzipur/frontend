@@ -2,6 +2,7 @@ import { api } from './api';
 import type { ChildProfile } from '../types';
 import { isOffline } from '../lib/supabase';
 import { mockState } from '../lib/mockState';
+import { getUserId } from '../contexts/AuthContext';
 
 export interface ChildProfilePayload extends Omit<ChildProfile, 'id'> {
   id: string | null;
@@ -21,7 +22,23 @@ export const profileRequests = {
 
   updateProfile: async (data: ProfileData): Promise<ProfileData> => {
     if (isOffline) return mockState.updateProfile(data);
-    const response = await api.put<ProfileData>('/users/me/profile', data);
-    return response.data;
+    
+    const userId = getUserId() || 'guest';
+    
+    const backendPayload = {
+      user_id: userId,
+      children: data.children.map(c => ({
+        child_nickname: c.nickname,
+        child_user_id: c.id,
+        age: c.age,
+        gender: c.gender,
+        favorite_animal: c.favoriteAnimal,
+        interests: c.hobby ? [c.hobby] : [],
+        action: "save"
+      }))
+    };
+
+    await api.post('/users/profile', backendPayload);
+    return data;
   },
 };

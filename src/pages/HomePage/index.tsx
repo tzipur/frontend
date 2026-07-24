@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useHomePage } from './hooks/useHomePage';
 import HeroSection from './components/HeroSection';
 import FooterActions from './components/FooterActions';
+import IosInstallBanner from '../../components/IosInstallBanner';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -24,6 +25,7 @@ export default function HomePage() {
       animate="visible"
       className="flex flex-col fixed inset-0 h-[100svh] max-h-[100svh] overflow-hidden bg-tzipur-cream"
     >
+      <IosInstallBanner />
       <HeroSection />
       <FooterActions onAuth={handleAuth} onGuest={handleGuestLogin} />
     </motion.div>

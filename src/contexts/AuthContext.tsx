@@ -3,12 +3,24 @@ import type { Session, User } from '@supabase/supabase-js';
 import { supabase, isOffline } from '../lib/supabase';
 import SplashScreen from '../components/SplashScreen';
 
+/**
+ * Resolves the effective user_id:
+ * - Registered users: stored in localStorage (persists across sessions)
+ * - Guests: stored in sessionStorage (cleared when tab closes)
+ */
+export function getUserId(): string | null {
+  const activeSession = sessionStorage.getItem('active_user_id');
+  if (activeSession && activeSession !== 'null') return activeSession;
+  return sessionStorage.getItem('guest_user_id');
+}
+
 type AuthContextType = {
   session: Session | null;
   user: User | null;
   userId: string | null;
   isInitializing: boolean;
   isLoggedIn: boolean;
+  hasSavedId: boolean;
   refreshMockSession: () => void;
 };
 
@@ -18,6 +30,7 @@ const AuthContext = createContext<AuthContextType>({
   userId: null,
   isInitializing: true,
   isLoggedIn: false,
+  hasSavedId: false,
   refreshMockSession: () => {},
 });
 
@@ -27,21 +40,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hasSavedId, setHasSavedId] = useState(false);
 
   useEffect(() => {
     let mounted = true;
 
-    // Initialize user_id and has_seen_onboarding on first load if they don't exist
-    if (localStorage.getItem('user_id') === null) {
-      localStorage.setItem('user_id', 'null');
-    }
     if (localStorage.getItem('has_seen_onboarding') === null) {
       localStorage.setItem('has_seen_onboarding', 'false');
     }
 
     const setupMockSession = () => {
-      const storedId = localStorage.getItem('user_id');
-      const validId = storedId === 'null' ? null : storedId;
+      const validId = getUserId();
       const isRegistered = !!validId;
       const mockSessionUser = isRegistered 
         ? { id: 'offline-user', email: 'test@example.com', role: 'authenticated' }
@@ -85,10 +94,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       if (mounted) {
-        const storedId = localStorage.getItem('user_id');
-        const validId = storedId === 'null' ? null : storedId;
+        const validId = getUserId();
         setUserId(validId);
-        setIsLoggedIn(!!validId);
+        setIsLoggedIn(!!sessionStorage.getItem('active_user_id') && sessionStorage.getItem('active_user_id') !== 'null');
+        setHasSavedId(!!localStorage.getItem('user_id') && localStorage.getItem('user_id') !== 'null');
         setIsInitializing(false);
       }
     }
@@ -113,8 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshMockSession = () => {
     if (isOffline) {
-      const storedId = localStorage.getItem('user_id');
-      const validId = storedId === 'null' ? null : storedId;
+      const validId = getUserId();
       const isRegistered = !!validId;
       const mockSessionUser = isRegistered 
         ? { id: 'offline-user', email: 'test@example.com', role: 'authenticated' }
@@ -126,10 +134,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const handleAuthChanged = () => {
-      const storedId = localStorage.getItem('user_id');
-      const validId = storedId === 'null' ? null : storedId;
+      const validId = getUserId();
       setUserId(validId);
-      setIsLoggedIn(!!validId);
+      setIsLoggedIn(!!sessionStorage.getItem('active_user_id') && sessionStorage.getItem('active_user_id') !== 'null');
+      setHasSavedId(!!localStorage.getItem('user_id') && localStorage.getItem('user_id') !== 'null');
       refreshMockSession();
     };
 
@@ -142,10 +150,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ session, user, userId, isInitializing, isLoggedIn, refreshMockSession }}>
+    <AuthContext.Provider value={{ session, user, userId, isInitializing, isLoggedIn, hasSavedId, refreshMockSession }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => useContext(AuthContext);
+

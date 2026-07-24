@@ -1,6 +1,7 @@
 import { api } from './api';
 import { isOffline } from '../lib/supabase';
 import { mockState } from '../lib/mockState';
+import { getUserId } from '../contexts/AuthContext';
 
 export interface StoryChapter {
   chapter_num: number;
@@ -66,8 +67,8 @@ export const storyRequests = {
 
   saveStory: async (storyId: string): Promise<void> => {
     if (isOffline) return mockState.saveStory(storyId);
-    // Real implementation would go here when backend is ready
-    // e.g. await api.put(`/users/me/story/${storyId}/save`);
+    const userId = getUserId();
+    await api.post(`/users/me/stories/save/${storyId}`, { user_id: userId });
   },
 
   deleteStory: async (storyId: string): Promise<void> => {

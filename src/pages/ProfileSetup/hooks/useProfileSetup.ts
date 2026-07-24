@@ -12,6 +12,7 @@ export const childProfileSchema = z.object({
     .min(1, 'profile.nickname.required')
     .regex(/^[a-zA-Zא-ת\s]+$/, 'profile.nickname.invalid'),
   age: z.number().optional(),
+  gender: z.enum(['boy', 'girl', 'other']).optional(),
   favoriteAnimal: z.string().optional(),
   hobby: z.string().regex(/^[a-zA-Zא-ת\s]*$/, 'profile.hobby.invalid').optional(),
 });
@@ -76,6 +77,7 @@ export function useProfileSetup() {
       id: newId,
       nickname: '',
       age: 4,
+      gender: 'boy',
       favoriteAnimal: 'dog',
       hobby: ''
     });
@@ -135,7 +137,8 @@ export function useProfileSetup() {
   };
 
   const handleDeleteProfile = () => {
-    localStorage.setItem('user_id', 'null');
+    localStorage.removeItem('user_id');
+    sessionStorage.removeItem('guest_user_id');
     window.dispatchEvent(new Event('auth_changed'));
     navigate('/');
   };

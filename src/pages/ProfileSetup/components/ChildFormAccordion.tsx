@@ -49,6 +49,7 @@ export function ChildFormAccordion({
   // Watch values for immediate UI updates (emoji, title, etc)
   const currentNickname = watch(`children.${index}.nickname`);
   const currentAge = watch(`children.${index}.age`);
+  const currentGender = watch(`children.${index}.gender`);
   const currentHobby = watch(`children.${index}.hobby`);
   const currentAnimalId = watch(`children.${index}.favoriteAnimal`);
 
@@ -63,8 +64,8 @@ export function ChildFormAccordion({
       {/* Accordion Header */}
       <button 
         type="button"
-        onClick={onToggleExpand}
-        className="w-full p-[clamp(0.75rem,2dvh,1.25rem)] flex items-center justify-between text-start"
+        onClick={() => { if (isSaved) onToggleExpand(); }}
+        className={`w-full p-[clamp(0.75rem,2dvh,1.25rem)] flex items-center justify-between text-start ${!isSaved ? 'cursor-default' : ''}`}
       >
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 bg-tzipur-sky/5 rounded-2xl flex items-center justify-center shrink-0 border border-tzipur-sky/10">
@@ -74,16 +75,18 @@ export function ChildFormAccordion({
             <h3 className={`font-bold text-lg mb-0.5 ${currentNickname ? 'text-tzipur-brown' : 'text-tzipur-brown/50'}`}>
               {currentNickname || t('profile.newChild', 'ילד חדש')}
             </h3>
-            {!isExpanded && (
+            {!isExpanded && isSaved && (
               <p className="text-tzipur-brown/60 text-sm font-medium">
                 {t('profile.age.shortLabel', 'גיל')}: {currentAge}{currentHobby ? ` ${t('profile.hobby.shortLabel', 'תחביב')}: ${currentHobby}` : ''}
               </p>
             )}
           </div>
         </div>
-        <div className="flex items-center gap-2 pr-2">
-          <ChevronDown className={`text-tzipur-brown/40 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
-        </div>
+        {isSaved && (
+          <div className="flex items-center gap-2 pr-2">
+            <ChevronDown className={`text-tzipur-brown/40 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+          </div>
+        )}
       </button>
 
       {/* Accordion Body (Form) */}
@@ -110,6 +113,7 @@ export function ChildFormAccordion({
                   type="text"
                   placeholder={t('profile.nickname.placeholder')}
                   {...register(`children.${index}.nickname`)}
+                  autoFocus={!isSaved}
                   className={`w-full bg-tzipur-cream/50 border rounded-2xl px-5 py-[clamp(0.5rem,1.5dvh,1rem)] focus:outline-none focus:ring-2 transition text-tzipur-brown font-medium placeholder:text-tzipur-brown/50 placeholder:font-normal ${
                     nicknameError 
                       ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
@@ -124,6 +128,30 @@ export function ChildFormAccordion({
                   </p>
                 )}
               </motion.div>
+
+              {/* Gender Selector */}
+              <div className="space-y-3">
+                <label className="flex items-center gap-2 text-base font-bold text-tzipur-sky">
+                  <User size={18} strokeWidth={2.5} />
+                  <span>{t('profile.gender.label', 'מגדר')}</span>
+                </label>
+                <div className="flex gap-3">
+                  {['boy', 'girl', 'other'].map((gender) => (
+                    <button
+                      key={gender}
+                      type="button"
+                      onClick={() => setValue(`children.${index}.gender`, gender, { shouldValidate: true, shouldDirty: true })}
+                      className={`flex-1 py-2 rounded-2xl border-2 font-bold flex items-center justify-center transition-all ${
+                        currentGender === gender
+                          ? 'border-tzipur-sky bg-tzipur-sky text-white shadow-md shadow-tzipur-sky/20 scale-105'
+                          : 'border-tzipur-border bg-tzipur-cream/50 text-tzipur-brown hover:border-tzipur-sky hover:bg-tzipur-cream'
+                      }`}
+                    >
+                      {t(`profile.gender.${gender}`)}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               {/* Age Selector */}
               <motion.div 

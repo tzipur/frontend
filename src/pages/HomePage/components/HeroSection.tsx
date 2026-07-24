@@ -31,7 +31,7 @@ export default function HeroSection() {
         transition={{ y: { duration: 3, repeat: Infinity, ease: 'easeInOut' } }}
         className="w-[clamp(7rem,22dvh,16rem)] h-[clamp(7rem,22dvh,16rem)] sm:w-80 sm:h-80 mb-[clamp(0.5rem,3dvh,2.5rem)] flex items-center justify-center shrink-0 drop-shadow-xl"
       >
-        <img src={logoSrc} alt="Tzipur Logo" className="w-full h-full object-contain" />
+        <img src={logoSrc} alt="Tzipur Logo" className="w-full h-full object-contain" fetchPriority="high" loading="eager" decoding="async" />
       </motion.div>
 
       {/* Subtitle */}

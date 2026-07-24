@@ -7,30 +7,33 @@ interface NicknameInputProps {
 
 export default function NicknameInput({ nickname, onChange }: NicknameInputProps) {
   const { t } = useTranslation();
+  const bullets = t('auth.explainerBullets', { returnObjects: true }) as string[];
 
   return (
-    <div className="shrink-0 mb-1 sm:mb-4">
-      <label className="block text-[clamp(0.85rem,2.5dvh,0.95rem)] mb-[clamp(0.25rem,1dvh,0.5rem)] font-medium text-tzipur-brown/80">
-        {t('auth.nicknameLabel')}
-      </label>
-      <input 
-        type="text" 
-        value={nickname}
-        onChange={(e) => {
-          const val = e.target.value;
-          if (val === '' || /^[a-zA-Zא-ת\s]+$/.test(val)) {
-            onChange(val);
-          }
-        }}
-        className="w-full bg-tzipur-surface border border-tzipur-border shadow-sm rounded-xl px-4 py-[clamp(0.5rem,1.5dvh,0.75rem)] outline-none focus:border-tzipur-sky focus:ring-4 focus:ring-tzipur-sky/10 transition-all text-[clamp(0.95rem,2.5dvh,1.05rem)] font-medium placeholder:text-tzipur-brown/40 placeholder:font-normal text-tzipur-brown"
-        placeholder={t('auth.nicknamePlaceholder')}
-      />
-      <div className="text-[clamp(0.8rem,2dvh,0.95rem)] text-tzipur-brown/70 mt-[clamp(0.75rem,2dvh,1rem)] space-y-[clamp(0.25rem,1dvh,0.5rem)]">
-        <p className="font-bold text-tzipur-brown text-[clamp(0.85rem,2dvh,1rem)]">{t('auth.explainerTitle')}</p>
-        <ul className="space-y-[clamp(0.25rem,1dvh,0.5rem)] leading-snug sm:leading-relaxed">
-          {(t('auth.explainerBullets', { returnObjects: true }) as string[]).map((bullet, idx) => (
-            <li key={idx} className="flex items-start gap-2">
-              <span className="text-tzipur-sky mt-0.5">•</span>
+    <div className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-tzipur-brown/80 mb-2">
+          {t('auth.nicknameLabel')}
+        </label>
+        <input
+          type="text"
+          value={nickname}
+          autoFocus
+          onChange={(e) => {
+            const val = e.target.value;
+            if (/^[a-zA-Zא-ת\s]*$/.test(val)) onChange(val);
+          }}
+          placeholder={t('auth.nicknamePlaceholder')}
+          className="w-full bg-tzipur-surface/50 border border-tzipur-border shadow-sm rounded-xl px-4 py-3 outline-none focus:border-tzipur-sky focus:ring-2 focus:ring-tzipur-sky/20 transition-all duration-200 text-base font-medium placeholder:text-tzipur-brown/40 text-tzipur-brown"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <p className="text-sm font-bold text-tzipur-brown">{t('auth.explainerTitle')}</p>
+        <ul className="space-y-1">
+          {bullets.map((bullet, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-tzipur-brown/70">
+              <span className="text-tzipur-sky mt-0.5 shrink-0">•</span>
               <span>{bullet}</span>
             </li>
           ))}

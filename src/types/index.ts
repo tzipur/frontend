@@ -23,6 +23,7 @@ export interface ChildProfile {
   id: string;
   nickname: string;
   age?: number;
+  gender?: string;
   hobby?: string;
   favoriteAnimal?: string;
 }

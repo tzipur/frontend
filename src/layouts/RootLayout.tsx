@@ -2,11 +2,12 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Suspense, useEffect } from 'react';
 import TopBar from '../components/TopBar';
 import SplashScreen from '../components/SplashScreen';
-import IosInstallBanner from '../components/IosInstallBanner';
+
 import { Toaster } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../contexts/AuthContext';
 
 /**
  * RootLayout — Mobile-first app shell.
@@ -16,9 +17,13 @@ export default function RootLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { isLoggedIn, hasSavedId } = useAuth();
+
   useEffect(() => {
     const handleAuthError = () => {
-      localStorage.setItem('user_id', 'null');
+      localStorage.removeItem('user_id');
+      sessionStorage.removeItem('guest_user_id');
+      sessionStorage.removeItem('active_user_id');
       window.dispatchEvent(new Event('auth_changed'));
       navigate('/auth');
     };
@@ -26,13 +31,20 @@ export default function RootLayout() {
     return () => window.removeEventListener('auth_error', handleAuthError);
   }, [navigate]);
 
+  // Protect routes for locked users
+  useEffect(() => {
+    if (!isLoggedIn && hasSavedId && location.pathname !== '/auth' && location.pathname !== '/welcome') {
+      navigate('/');
+    }
+  }, [isLoggedIn, hasSavedId, location.pathname, navigate]);
+
   // Hide TopBar on homepage ('/') and welcome ('/welcome')
   const hideTopBar = location.pathname === '/' || location.pathname === '/welcome';
 
   return (
     <div
       dir={i18n.dir()}
-      className="max-w-md mx-auto min-h-[100dvh] flex flex-col overflow-x-hidden relative shadow-2xl bg-tzipur-cream"
+      className="max-w-md mx-auto h-[100dvh] max-h-[100dvh] flex flex-col overflow-hidden relative shadow-2xl bg-tzipur-cream"
     >
       <Toaster 
         position="top-left" 
@@ -40,7 +52,7 @@ export default function RootLayout() {
         containerStyle={{ top: 72 }} 
       />
       {!hideTopBar && <TopBar />}
-      <IosInstallBanner />
+
       <div className="flex-1 flex flex-col relative overflow-hidden">
         <Suspense fallback={<SplashScreen />}>
           <motion.div

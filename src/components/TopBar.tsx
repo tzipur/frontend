@@ -1,9 +1,10 @@
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { ChevronRight, ChevronLeft, User, Download } from 'lucide-react';
+import { ChevronRight, ChevronLeft, User, Download, Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import logoSrc from '../assets/tzipur_logo.png';
 import { useAuth } from '../contexts/AuthContext';
 import { usePWAInstall } from '../hooks/usePWAInstall';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 export default function TopBar() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function TopBar() {
 
   const { isLoggedIn } = useAuth();
   const { isInstallable, isInstalled, promptInstall } = usePWAInstall();
+  const { isDark, toggle } = useDarkMode();
 
   // Hide back button on the root page
   const showBack = location.pathname !== '/';
@@ -39,7 +41,7 @@ export default function TopBar() {
       {/* Center */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <Link 
-          to="/" 
+          to={showProfile ? "/library" : "/"} 
           className="flex items-center gap-2 pointer-events-auto"
           aria-label={t('components.topBar.home')}
           title={t('components.topBar.home')}
@@ -61,7 +63,16 @@ export default function TopBar() {
           </button>
         )}
         
-        {showProfile && (
+        {!showProfile ? (
+          <button
+            type="button"
+            onClick={toggle}
+            className="p-2 -m-2 text-tzipur-sky hover:text-tzipur-sky-dark transition-colors ml-2"
+            aria-label="Toggle dark mode"
+          >
+            {isDark ? <Sun className="w-6 h-6 sm:w-7 sm:h-7" /> : <Moon className="w-6 h-6 sm:w-7 sm:h-7" />}
+          </button>
+        ) : (
           <Link
             to="/profile"
             className="p-2 -m-2 text-tzipur-sky hover:text-tzipur-sky-dark transition-colors ml-2"

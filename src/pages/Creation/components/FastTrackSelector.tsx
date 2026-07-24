@@ -25,6 +25,7 @@ export function FastTrackSelector({
       {/* Fast Tracks Select (Small Screens / Short Screens) */}
       <div className="block sm:hidden [@media(min-height:800px)]:hidden relative z-20" ref={dropdownRef}>
         <button
+          autoFocus
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           className="w-full bg-tzipur-surface border-2 border-tzipur-border rounded-2xl px-5 py-[clamp(0.75rem,2dvh,1rem)] flex items-center justify-between text-tzipur-brown font-bold text-sm shadow-sm"
         >
