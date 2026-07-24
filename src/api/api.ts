@@ -32,3 +32,13 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      window.dispatchEvent(new Event('auth_error'));
+    }
+    return Promise.reject(error);
+  }
+);
