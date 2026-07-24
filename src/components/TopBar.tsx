@@ -2,7 +2,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { ChevronRight, ChevronLeft, User, Download, Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import logoSrc from '../assets/tzipur_logo.png';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import { useDarkMode } from '../hooks/useDarkMode';
 

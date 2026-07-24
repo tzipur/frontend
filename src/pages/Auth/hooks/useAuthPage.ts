@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLogin, useRegister } from '../../../api';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '../../../hooks/useAuth';
 
 export function useAuthPage() {
   const navigate = useNavigate();
-  const { hasSavedId } = useAuth();
+  const { hasSavedId, login } = useAuth();
   
   const [nickname, setNickname] = useState(localStorage.getItem('nickname') || '');
   const [pin, setPin] = useState('');
@@ -39,11 +39,10 @@ export function useAuthPage() {
       mutation.mutate(payload, {
         onSuccess: (data) => {
           if (data.user_id) {
-            localStorage.setItem('user_id', data.user_id);
-            localStorage.setItem('nickname', nickname);
-            sessionStorage.setItem('active_user_id', data.user_id);
+            login(data.user_id, nickname);
+          } else {
+            window.dispatchEvent(new Event('auth_changed'));
           }
-          window.dispatchEvent(new Event('auth_changed'));
           navigate('/library');
         },
         onError: () => {

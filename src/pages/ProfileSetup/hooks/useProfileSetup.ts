@@ -5,6 +5,8 @@ import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useProfile, useUpdateProfile } from '../../../api';
 
+import { useAuth } from '../../../hooks/useAuth';
+
 export const childProfileSchema = z.object({
   id: z.string(),
   nickname: z.string()
@@ -38,9 +40,10 @@ export type ProfileSetupFormValues = z.infer<typeof profileSetupSchema>;
 
 export function useProfileSetup() {
   const navigate = useNavigate();
-  const { data: profileData, isLoading: isLoadingProfile } = useProfile();
+  const { logout, userId } = useAuth();
+  const { data: profileData, isLoading: isLoadingProfile } = useProfile(userId);
   const updateMutation = useUpdateProfile();
-
+  
   const [expandedChildId, setExpandedChildId] = useState<string | null>(null);
   const [childToDelete, setChildToDelete] = useState<string | null>(null);
   const [showDeleteProfileModal, setShowDeleteProfileModal] = useState(false);
@@ -136,9 +139,7 @@ export function useProfileSetup() {
   };
 
   const handleDeleteProfile = () => {
-    localStorage.removeItem('user_id');
-    sessionStorage.removeItem('guest_user_id');
-    window.dispatchEvent(new Event('auth_changed'));
+    logout();
     navigate('/');
   };
 

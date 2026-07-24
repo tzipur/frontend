@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 /**
  * RootLayout — Mobile-first app shell.

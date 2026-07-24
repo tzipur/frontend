@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { supabase, isOffline } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import logoSrc from '../assets/tzipur_logo.png';
 
 export function useStorySubscription() {

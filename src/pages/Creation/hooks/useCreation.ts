@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '../../../hooks/useAuth';
 import { useProfile, useGenerateStory } from '../../../api';
 
 export function useCreation() {
@@ -9,7 +9,7 @@ export function useCreation() {
     const { t } = useTranslation();
     const { isLoggedIn, userId } = useAuth();
 
-    const { data: profileData } = useProfile(isLoggedIn);
+    const { data: profileData } = useProfile(userId, isLoggedIn);
     const children = profileData?.children || [];
 
     const [selectedTrack, setSelectedTrack] = useState<string | null>(null);

@@ -22,11 +22,11 @@ export const useStory = (storyId: string | null) => {
 };
 
 // Profile Queries
-export const useProfile = (enabled: boolean = true) => {
+export const useProfile = (userId: string | null, enabled: boolean = true) => {
   return useQuery({
-    queryKey: ['profile'],
+    queryKey: ['profile', userId],
     queryFn: profileRequests.getProfile,
-    enabled,
+    enabled: enabled && !!userId,
     meta: { errorMessage: 'profile.fetchError' },
   });
 };

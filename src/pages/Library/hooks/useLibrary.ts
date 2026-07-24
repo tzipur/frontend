@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '../../../hooks/useAuth';
 import { useLibraryStories, useProfile } from '../../../api';
 
 export function useLibrary() {
@@ -12,7 +12,7 @@ export function useLibrary() {
   const { data: stories = [], isLoading } = useLibraryStories(userId);
   const safeStories: any[] = Array.isArray(stories) ? stories : ((stories as any)?.stories || (stories as any)?.data || []);
   
-  const { data: profileData } = useProfile(isLoggedIn);
+  const { data: profileData } = useProfile(userId, isLoggedIn);
   const children = profileData?.children || [];
 
   const [showGuestWarning, setShowGuestWarning] = useState(!isLoggedIn);

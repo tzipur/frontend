@@ -16,7 +16,10 @@ export interface ProfileData {
 export const profileRequests = {
   getProfile: async (): Promise<ProfileData> => {
     if (isOffline) return mockState.getProfile();
-    const response = await api.get<ProfileData>('/users/profile');
+    const userId = getUserId() || 'guest';
+    const response = await api.get<ProfileData>('/users/profile', {
+      params: { user_id: userId }
+    });
     return response.data;
   },
 
