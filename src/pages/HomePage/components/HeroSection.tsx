@@ -15,7 +15,7 @@ export default function HeroSection() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex-1 flex flex-col justify-start items-center w-full overflow-y-auto overflow-x-hidden custom-scrollbar p-4 sm:p-6 text-center pb-2 sm:pb-4 pt-[clamp(1.5rem,4dvh,3rem)]">
+    <div className="flex flex-col justify-start items-center w-full p-4 sm:p-6 text-center pb-2 sm:pb-4 pt-[clamp(1.5rem,4dvh,3rem)] shrink-0">
       {/* Title */}
       <motion.h1
         variants={itemVariants}

@@ -16,8 +16,7 @@ export default function RootLayout() {
   const { i18n } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-
-  const { isLoggedIn, hasSavedId, exitGuestMode } = useAuth();
+  const { isLoggedIn, isGuest, hasSavedId, exitGuestMode } = useAuth();
 
   useEffect(() => {
     const handleAuthError = () => {
@@ -33,10 +32,10 @@ export default function RootLayout() {
 
   // Protect routes for locked users
   useEffect(() => {
-    if (!isLoggedIn && hasSavedId && location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/welcome') {
+    if (!isLoggedIn && !isGuest && hasSavedId && location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/welcome') {
       navigate('/');
     }
-  }, [isLoggedIn, hasSavedId, location.pathname, navigate]);
+  }, [isLoggedIn, isGuest, hasSavedId, location.pathname, navigate]);
 
   // Hide TopBar on homepage ('/') and welcome ('/welcome')
   const hideTopBar = location.pathname === '/' || location.pathname === '/welcome';
