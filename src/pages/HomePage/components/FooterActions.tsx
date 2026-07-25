@@ -2,18 +2,23 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../../../components/Button';
 
 interface FooterActionsProps {
-  onAuth: () => void;
+  onLogin: () => void;
+  onRegister: () => void;
   onGuest: () => void;
 }
 
-export default function FooterActions({ onAuth, onGuest }: FooterActionsProps) {
+export default function FooterActions({ onLogin, onRegister, onGuest }: FooterActionsProps) {
   const { t } = useTranslation();
 
   return (
     <footer className="w-full shrink-0 px-6 pb-[clamp(0.5rem,2dvh,1.5rem)] flex flex-col items-center bg-gradient-to-t from-tzipur-cream via-tzipur-cream to-transparent z-10">
       <div className="w-full max-w-sm space-y-[clamp(0.5rem,2dvh,1rem)]">
-        <Button onClick={onAuth} variant="primary" fullWidth>
-          {t('welcome.landing.auth')}
+        <Button onClick={onLogin} variant="primary" fullWidth>
+          {t('welcome.landing.login')}
+        </Button>
+
+        <Button onClick={onRegister} variant="secondary" fullWidth className="bg-transparent border-2 border-tzipur-sky text-tzipur-sky hover:bg-tzipur-sky/10">
+          {t('welcome.landing.register')}
         </Button>
 
         <button

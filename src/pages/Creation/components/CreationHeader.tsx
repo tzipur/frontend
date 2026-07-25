@@ -18,7 +18,7 @@ export function CreationHeader({ isLoggedIn }: CreationHeaderProps) {
         <div className="mt-3 bg-tzipur-cream/80 border border-tzipur-sky/20 rounded-xl p-3 shadow-sm text-center">
           <p className="text-sm text-tzipur-brown/90 leading-relaxed">
             {t('creation.signupHintPrefix')}
-            <Link to="/auth" className="text-tzipur-sky font-bold hover:underline">
+            <Link to="/register" className="text-tzipur-sky font-bold hover:underline">
               {t('creation.signupHintAction')}
             </Link>
           </p>

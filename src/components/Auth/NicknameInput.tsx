@@ -2,10 +2,11 @@ import { useTranslation } from 'react-i18next';
 
 interface NicknameInputProps {
   nickname: string;
+  label?: string;
   onChange: (val: string) => void;
 }
 
-export default function NicknameInput({ nickname, onChange }: NicknameInputProps) {
+export default function NicknameInput({ nickname, label, onChange }: NicknameInputProps) {
   const { t } = useTranslation();
   const bullets = t('auth.explainerBullets', { returnObjects: true }) as string[];
 
@@ -13,7 +14,7 @@ export default function NicknameInput({ nickname, onChange }: NicknameInputProps
     <div className="space-y-4">
       <div>
         <label className="block text-sm font-medium text-tzipur-brown/80 mb-2">
-          {t('auth.nicknameLabel')}
+          {label || t('auth.nicknameLabel')}
         </label>
         <input
           type="text"

@@ -17,15 +17,15 @@ export default function RootLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { isLoggedIn, hasSavedId } = useAuth();
+  const { isLoggedIn, hasSavedId, exitGuestMode } = useAuth();
 
   useEffect(() => {
     const handleAuthError = () => {
       localStorage.removeItem('user_id');
-      sessionStorage.removeItem('guest_user_id');
       sessionStorage.removeItem('active_user_id');
+      exitGuestMode();
       window.dispatchEvent(new Event('auth_changed'));
-      navigate('/auth');
+      navigate('/login');
     };
     window.addEventListener('auth_error', handleAuthError);
     return () => window.removeEventListener('auth_error', handleAuthError);
@@ -33,7 +33,7 @@ export default function RootLayout() {
 
   // Protect routes for locked users
   useEffect(() => {
-    if (!isLoggedIn && hasSavedId && location.pathname !== '/auth' && location.pathname !== '/welcome') {
+    if (!isLoggedIn && hasSavedId && location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/welcome') {
       navigate('/');
     }
   }, [isLoggedIn, hasSavedId, location.pathname, navigate]);

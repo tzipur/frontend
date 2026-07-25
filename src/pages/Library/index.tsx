@@ -85,7 +85,7 @@ export default function LibraryPage() {
       <GuestWarningModal
         isVisible={state.showGuestWarning}
         onClose={() => actions.setShowGuestWarning(false)}
-        onRegister={() => actions.navigate('/auth')}
+        onRegister={() => actions.navigate('/register')}
       />
     </div>
   );

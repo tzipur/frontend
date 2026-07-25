@@ -137,7 +137,6 @@ export function useProfileSetup() {
 
   const handleDeleteProfile = () => {
     localStorage.removeItem('user_id');
-    sessionStorage.removeItem('guest_user_id');
     window.dispatchEvent(new Event('auth_changed'));
     navigate('/');
   };

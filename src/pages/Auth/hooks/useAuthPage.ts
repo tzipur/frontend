@@ -5,9 +5,14 @@ import { useAuth } from '../../../contexts/AuthContext';
 
 export function useAuthPage() {
   const navigate = useNavigate();
-  const { hasSavedId } = useAuth();
-  
-  const [nickname, setNickname] = useState(localStorage.getItem('nickname') || '');
+  const { hasSavedId, exitGuestMode } = useAuth();
+
+  // Explicit mode: initialized from hasSavedId (the only reliable signal)
+  const [isLoginMode, setIsLoginMode] = useState(hasSavedId);
+
+  const [nickname, setNickname] = useState(
+    hasSavedId ? (localStorage.getItem('nickname') || '') : ''
+  );
   const [pin, setPin] = useState('');
   const [error, setError] = useState(false);
 
@@ -24,17 +29,32 @@ export function useAuthPage() {
     setPin(p => p.slice(0, -1));
   };
 
+  const switchToRegister = () => {
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('nickname');
+    window.dispatchEvent(new Event('auth_changed'));
+    setIsLoginMode(false);
+    setNickname('');
+    setPin('');
+    setError(false);
+  };
+
+  const switchToLogin = () => {
+    setIsLoginMode(true);
+    setNickname('');
+    setPin('');
+    setError(false);
+  };
+
   const handleAuth = () => {
     if (pin.length === 4 && nickname) {
       const payload = {
         nickname,
         code: pin,
-        // When logging in, we pass the saved user_id so backend knows who it is.
-        // If registering, this is null.
-        user_id: hasSavedId ? localStorage.getItem('user_id') : null,
+        user_id: isLoginMode ? localStorage.getItem('user_id') : null,
       };
 
-      const mutation = hasSavedId ? loginMutation : registerMutation;
+      const mutation = isLoginMode ? loginMutation : registerMutation;
 
       mutation.mutate(payload, {
         onSuccess: (data) => {
@@ -43,6 +63,8 @@ export function useAuthPage() {
             localStorage.setItem('nickname', nickname);
             sessionStorage.setItem('active_user_id', data.user_id);
           }
+          // Clear guest session — user is now registered
+          exitGuestMode();
           window.dispatchEvent(new Event('auth_changed'));
           navigate('/library');
         },
@@ -57,7 +79,7 @@ export function useAuthPage() {
   const isLoading = loginMutation.isPending || registerMutation.isPending;
 
   return {
-    state: { nickname, pin, error, isLoading, hasSavedId },
-    actions: { setNickname, handleKeyPress, handleDelete, handleAuth }
+    state: { nickname, pin, error, isLoading, isLoginMode },
+    actions: { setNickname, handleKeyPress, handleDelete, handleAuth, switchToRegister, switchToLogin }
   };
 }

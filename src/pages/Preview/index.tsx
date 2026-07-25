@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 import LoaderScreen from '../Creation/components/LoaderScreen';
 import Disclaimer from '../../components/Disclaimer';
@@ -15,7 +16,9 @@ export default function PreviewPage() {
 
   if (state.isLoading) {
     return (
-      <LoaderScreen isVisible={true} mode="edit" />
+      <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-tzipur-cream">
+        <Loader2 className="w-8 h-8 animate-spin text-tzipur-sky" />
+      </div>
     );
   }
 

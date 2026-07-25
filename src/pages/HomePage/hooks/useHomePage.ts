@@ -1,20 +1,22 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export function useHomePage() {
   const navigate = useNavigate();
+  const { enterGuestMode } = useAuth();
 
   const handleGuestLogin = () => {
-    // Generate a temporary session-scoped guest ID
-    if (!sessionStorage.getItem('guest_user_id')) {
-      sessionStorage.setItem('guest_user_id', crypto.randomUUID());
-    }
-    window.dispatchEvent(new Event('auth_changed'));
+    enterGuestMode();
     navigate('/create');
   };
 
-  const handleAuth = () => {
-    navigate('/auth');
+  const handleLogin = () => {
+    navigate('/login');
   };
 
-  return { handleGuestLogin, handleAuth };
+  const handleRegister = () => {
+    navigate('/register');
+  };
+
+  return { handleGuestLogin, handleLogin, handleRegister };
 }

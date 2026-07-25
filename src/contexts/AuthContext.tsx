@@ -1,17 +1,34 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase, isOffline } from '../lib/supabase';
 import SplashScreen from '../components/SplashScreen';
 
 /**
  * Resolves the effective user_id:
- * - Registered users: stored in localStorage (persists across sessions)
- * - Guests: stored in sessionStorage (cleared when tab closes)
+ * - Registered users: active_user_id in sessionStorage (set after login/register)
+ * - Guests: guest_user_id in sessionStorage (only if backend returned one)
+ * - No user: null
  */
 export function getUserId(): string | null {
   const activeSession = sessionStorage.getItem('active_user_id');
   if (activeSession && activeSession !== 'null') return activeSession;
-  return sessionStorage.getItem('guest_user_id');
+  
+  // For guests, only return a user_id if the backend provided one
+  const guestUserId = sessionStorage.getItem('guest_user_id');
+  if (guestUserId && guestUserId !== 'null') return guestUserId;
+  
+  return null;
+}
+
+/**
+ * Stores a backend-provided user_id for the current guest session.
+ * Called when the backend returns a user_id (e.g., during story generation).
+ */
+export function setGuestUserId(userId: string) {
+  if (sessionStorage.getItem('guest_mode') === 'true') {
+    sessionStorage.setItem('guest_user_id', userId);
+    window.dispatchEvent(new Event('auth_changed'));
+  }
 }
 
 type AuthContextType = {
@@ -20,7 +37,10 @@ type AuthContextType = {
   userId: string | null;
   isInitializing: boolean;
   isLoggedIn: boolean;
+  isGuest: boolean;
   hasSavedId: boolean;
+  enterGuestMode: () => void;
+  exitGuestMode: () => void;
   refreshMockSession: () => void;
 };
 
@@ -30,7 +50,10 @@ const AuthContext = createContext<AuthContextType>({
   userId: null,
   isInitializing: true,
   isLoggedIn: false,
+  isGuest: false,
   hasSavedId: false,
+  enterGuestMode: () => {},
+  exitGuestMode: () => {},
   refreshMockSession: () => {},
 });
 
@@ -40,7 +63,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
   const [hasSavedId, setHasSavedId] = useState(false);
+
+  const syncAuthState = useCallback(() => {
+    const validId = getUserId();
+    setUserId(validId);
+    setIsLoggedIn(!!sessionStorage.getItem('active_user_id') && sessionStorage.getItem('active_user_id') !== 'null');
+    setIsGuest(sessionStorage.getItem('guest_mode') === 'true');
+    setHasSavedId(!!localStorage.getItem('user_id') && localStorage.getItem('user_id') !== 'null');
+  }, []);
+
+  /** Enter guest mode — sets the flag and syncs state */
+  const enterGuestMode = useCallback(() => {
+    sessionStorage.setItem('guest_mode', 'true');
+    syncAuthState();
+  }, [syncAuthState]);
+
+  /** Exit guest mode — clears guest flags and syncs state */
+  const exitGuestMode = useCallback(() => {
+    sessionStorage.removeItem('guest_mode');
+    sessionStorage.removeItem('guest_user_id');
+    syncAuthState();
+  }, [syncAuthState]);
 
   useEffect(() => {
     let mounted = true;
@@ -66,6 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setTimeout(() => {
           if (mounted) {
             setupMockSession();
+            syncAuthState();
             setIsInitializing(false);
           }
         }, 1000); // 1s splash screen for offline demo
@@ -94,10 +140,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       if (mounted) {
-        const validId = getUserId();
-        setUserId(validId);
-        setIsLoggedIn(!!sessionStorage.getItem('active_user_id') && sessionStorage.getItem('active_user_id') !== 'null');
-        setHasSavedId(!!localStorage.getItem('user_id') && localStorage.getItem('user_id') !== 'null');
+        syncAuthState();
         setIsInitializing(false);
       }
     }
@@ -118,9 +161,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } else {
       return () => { mounted = false; };
     }
-  }, []);
+  }, [syncAuthState]);
 
-  const refreshMockSession = () => {
+  const refreshMockSession = useCallback(() => {
     if (isOffline) {
       const validId = getUserId();
       const isRegistered = !!validId;
@@ -130,31 +173,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession({ access_token: 'mock-offline-token', user: mockSessionUser } as any);
       setUser(mockSessionUser as any);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const handleAuthChanged = () => {
-      const validId = getUserId();
-      setUserId(validId);
-      setIsLoggedIn(!!sessionStorage.getItem('active_user_id') && sessionStorage.getItem('active_user_id') !== 'null');
-      setHasSavedId(!!localStorage.getItem('user_id') && localStorage.getItem('user_id') !== 'null');
+      syncAuthState();
       refreshMockSession();
     };
 
     window.addEventListener('auth_changed', handleAuthChanged);
     return () => window.removeEventListener('auth_changed', handleAuthChanged);
-  }, []);
+  }, [syncAuthState, refreshMockSession]);
 
   if (isInitializing) {
     return <SplashScreen />;
   }
 
   return (
-    <AuthContext.Provider value={{ session, user, userId, isInitializing, isLoggedIn, hasSavedId, refreshMockSession }}>
+    <AuthContext.Provider value={{ session, user, userId, isInitializing, isLoggedIn, isGuest, hasSavedId, enterGuestMode, exitGuestMode, refreshMockSession }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => useContext(AuthContext);
-

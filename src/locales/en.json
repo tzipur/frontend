@@ -34,7 +34,9 @@
     "nicknamePlaceholder": "e.g., The Cohens",
     "pinLabel": "Secret PIN (4 digits)",
     "error": "Incorrect code, please try again",
-    "submit": "Continue"
+    "submit": "Continue",
+    "notYou": "Not you? Switch account",
+    "haveAccount": "Already have an account? Login"
   },
   "profile": {
     "title": "Family Profile",

@@ -16,7 +16,7 @@ const containerVariants = {
 };
 
 export default function HomePage() {
-  const { handleAuth, handleGuestLogin } = useHomePage();
+  const { handleLogin, handleRegister, handleGuestLogin } = useHomePage();
 
   return (
     <motion.div
@@ -27,7 +27,7 @@ export default function HomePage() {
     >
       <IosInstallBanner />
       <HeroSection />
-      <FooterActions onAuth={handleAuth} onGuest={handleGuestLogin} />
+      <FooterActions onLogin={handleLogin} onRegister={handleRegister} onGuest={handleGuestLogin} />
     </motion.div>
   );
 }
