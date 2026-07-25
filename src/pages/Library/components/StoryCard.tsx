@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { BookOpen, Sparkles } from 'lucide-react';
-import fallbackImage from '../../../assets/bears-story-hero.jpeg';
+import fallbackImage from '../../../assets/bears-story-hero.webp';
 import type { StoryLibraryItem } from '../../../api/stories';
 
 const getSeededRandom = (seed: number) => {
