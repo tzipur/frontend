@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, DEMO_MODE } from '../contexts/AuthContext';
 
 /**
  * RootLayout — Mobile-first app shell.
@@ -24,7 +24,7 @@ export default function RootLayout() {
       sessionStorage.removeItem('active_user_id');
       exitGuestMode();
       window.dispatchEvent(new Event('auth_changed'));
-      navigate('/login');
+      navigate(DEMO_MODE ? '/' : '/login');
     };
     window.addEventListener('auth_error', handleAuthError);
     return () => window.removeEventListener('auth_error', handleAuthError);

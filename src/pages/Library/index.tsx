@@ -7,6 +7,7 @@ import { CreateBanner } from './components/CreateBanner';
 import { EmptyState } from './components/EmptyState';
 import { StoryCard } from './components/StoryCard';
 import { GuestWarningModal } from './components/GuestWarningModal';
+import { DEMO_MODE } from '../../contexts/AuthContext';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -82,11 +83,13 @@ export default function LibraryPage() {
         </div>
       </motion.main>
 
-      <GuestWarningModal
-        isVisible={state.showGuestWarning}
-        onClose={() => actions.setShowGuestWarning(false)}
-        onRegister={() => actions.navigate('/register')}
-      />
+      {!DEMO_MODE && (
+        <GuestWarningModal
+          isVisible={state.showGuestWarning}
+          onClose={() => actions.setShowGuestWarning(false)}
+          onRegister={() => actions.navigate('/register')}
+        />
+      )}
     </div>
   );
 }

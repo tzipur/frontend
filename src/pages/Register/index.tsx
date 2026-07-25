@@ -1,7 +1,8 @@
 import { Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { DEMO_MODE } from '../../contexts/AuthContext';
 import { Button } from '../../components/Button';
 import { useRegisterScreen } from './hooks/useRegisterScreen';
 import NicknameInput from '../../components/Auth/NicknameInput';
@@ -12,6 +13,8 @@ export default function RegisterScreen() {
   const { state, actions } = useRegisterScreen();
   const { nickname, pin, error, isLoading } = state;
   const { setNickname, handleKeyPress, handleDelete, handleAuth } = actions;
+
+  if (DEMO_MODE) return <Navigate to="/" replace />;
 
   const pinTitle = error ? t('auth.registerError') : t('auth.pinLabel');
 

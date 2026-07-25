@@ -3,6 +3,8 @@ import type { Session, User } from '@supabase/supabase-js';
 import { supabase, isOffline } from '../lib/supabase';
 import SplashScreen from '../components/SplashScreen';
 
+export const DEMO_MODE = true;
+
 /**
  * Resolves the effective user_id:
  * - Registered users: active_user_id in sessionStorage (set after login/register)
