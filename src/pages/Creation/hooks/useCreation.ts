@@ -57,8 +57,20 @@ export function useCreation() {
 
         generateMutation.mutate(payload, {
             onSuccess: (data) => {
-                const newStoryId = data?.story?.story_id || 'story-001';
-                navigate(`/preview/${newStoryId}`);
+                if (!userId && data?.user?.user_id) {
+                    const newUserId = data.user.user_id;
+                    localStorage.setItem('user_id', newUserId);
+                    if (sessionStorage.getItem('guest_mode') === 'true') {
+                        sessionStorage.setItem('guest_user_id', newUserId);
+                    } else {
+                        sessionStorage.setItem('active_user_id', newUserId);
+                    }
+                    window.dispatchEvent(new Event('auth_changed'));
+                }
+
+                const story = data?.story || data;
+                const newStoryId = story?.id || story?.story_id || 'story-001';
+                navigate(`/preview/${newStoryId}`, { state: { story } });
 
                 if ('Notification' in window && Notification.permission === 'granted' && document.visibilityState === 'hidden') {
                     const notif = new Notification(t('creation.loader.notificationBody') || t('creation.loader.notification'));

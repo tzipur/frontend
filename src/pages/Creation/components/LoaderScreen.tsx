@@ -45,7 +45,7 @@ export default function LoaderScreen({ isVisible, isReady, onContinue, mode = 'g
                   className="absolute top-0 bottom-0 left-0 bg-gradient-to-r from-tzipur-sky/40 to-tzipur-sky rounded-full"
                   initial={{ width: "0%" }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 4.5, ease: "linear" }}
+                  transition={{ duration: 4.5, ease: "linear", repeat: Infinity }}
                 />
                 {/* The flying bird */}
                 <motion.div
@@ -57,7 +57,7 @@ export default function LoaderScreen({ isVisible, isReady, onContinue, mode = 'g
                     rotate: [0, -15, 0, 15, 0]
                   }}
                   transition={{ 
-                    left: { duration: 4.5, ease: "linear" },
+                    left: { duration: 4.5, ease: "linear", repeat: Infinity },
                     y: { duration: 1.2, repeat: Infinity, ease: "easeInOut" },
                     rotate: { duration: 1.2, repeat: Infinity, ease: "easeInOut" }
                   }}
