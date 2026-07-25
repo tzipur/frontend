@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import heroSrc from '../../../assets/bears-story-hero.jpeg';
+import heroSrc from '../../../assets/bears-story-hero.webp';
 
 interface ReadingHeroProps {
   title: string;

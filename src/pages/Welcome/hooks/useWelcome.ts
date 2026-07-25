@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import type { Swiper as SwiperType } from 'swiper';
 import { useTranslation } from 'react-i18next';
 
-import img1 from '../../../assets/onboarding/1.jpeg';
-import img2 from '../../../assets/onboarding/2.jpeg';
-import img3 from '../../../assets/onboarding/3.jpeg';
+import img1 from '../../../assets/onboarding/1.webp';
+import img2 from '../../../assets/onboarding/2.webp';
+import img3 from '../../../assets/onboarding/3.webp';
 
 const AUTOPLAY_DELAY_MS = 10000;
 const slideImages = [img1, img2, img3];
 
 export function useWelcome() {
   const { t, i18n } = useTranslation();
-  const tSlides = t('welcome.slides', { returnObjects: true }) as Array<{title: string, text: string}>;
+  const tSlides = t('welcome.slides', { returnObjects: true }) as Array<{ title: string, text: string }>;
   const slides = tSlides.map((slide, i) => ({ ...slide, image: slideImages[i] }));
 
   const navigate = useNavigate();
