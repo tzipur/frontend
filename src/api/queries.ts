@@ -17,7 +17,7 @@ export const useStory = (storyId: string | null) => {
     queryKey: ['story', storyId],
     queryFn: () => storyRequests.getStory(storyId!),
     enabled: !!storyId,
-    meta: { errorMessage: 'reading.fetchError' },
+    meta: { errorMessage: 'reading.fetchError', suppressErrorToast: true },
   });
 };
 

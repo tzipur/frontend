@@ -40,7 +40,7 @@ export type ProfileSetupFormValues = z.infer<typeof profileSetupSchema>;
 
 export function useProfileSetup() {
   const navigate = useNavigate();
-  const { logout, userId } = useAuth();
+  const { userId } = useAuth();
   const { data: profileData, isLoading: isLoadingProfile } = useProfile(userId);
   const updateMutation = useUpdateProfile();
 

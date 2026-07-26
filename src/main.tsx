@@ -15,6 +15,7 @@ const queryClient = new QueryClient({
     onError: (error: any, query) => {
       console.error('Query failed:', error);
       if (error?.response?.data?.status === 'blocked') return;
+      if (query.meta?.suppressErrorToast) return;
       
       const msgKey = (query.meta?.errorMessage as string) || 'common.error';
       toast.error(i18next.t(msgKey, 'אופס, משהו השתבש'), { id: msgKey });
@@ -24,6 +25,7 @@ const queryClient = new QueryClient({
     onError: (error: any, _variables, _context, mutation) => {
       console.error('Mutation failed:', error);
       if (error?.response?.data?.status === 'blocked') return;
+      if (mutation.meta?.suppressErrorToast) return;
       
       const msgKey = (mutation.meta?.errorMessage as string) || 'common.error';
       toast.error(i18next.t(msgKey, 'אופס, משהו השתבש'), { id: msgKey });

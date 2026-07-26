@@ -89,7 +89,8 @@ export default function SummaryStep({ chapters, edits, onEditChange }: SummarySt
               <textarea
                 value={edits[index] || ''}
                 onChange={(e) => onEditChange(index, e.target.value)}
-                className="w-full resize-none bg-tzipur-cream rounded-xl p-3 border border-tzipur-border focus:outline-none focus:border-tzipur-sky text-tzipur-brown custom-scrollbar"
+                placeholder={t('preview.editPlaceholder')}
+                className="w-full resize-none bg-tzipur-cream rounded-xl p-3 border border-tzipur-border focus:outline-none focus:border-tzipur-sky text-tzipur-brown placeholder:text-tzipur-brown/60 custom-scrollbar"
                 style={{ height: EDIT_BOX_HEIGHT }}
               />
             </div>

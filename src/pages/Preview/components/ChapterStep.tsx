@@ -51,7 +51,7 @@ export default function ChapterStep({ currentStep, totalChapters, chapter, editV
             value={editValue}
             onChange={(e) => onEditChange(e.target.value)}
             placeholder={t('preview.editPlaceholder')}
-            className="w-full resize-none bg-transparent focus:outline-none focus:ring-0 text-tzipur-brown placeholder:text-tzipur-brown/70/50 custom-scrollbar"
+            className="w-full resize-none bg-transparent focus:outline-none focus:ring-0 text-tzipur-brown placeholder:text-tzipur-brown/60 custom-scrollbar"
             style={{ height: EDIT_BOX_HEIGHT }}
           />
         </div>

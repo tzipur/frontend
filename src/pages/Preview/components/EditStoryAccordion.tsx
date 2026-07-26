@@ -53,7 +53,7 @@ export function EditStoryAccordion({
                   onChange={(e) => setEditRequest(e.target.value)}
                   onFocus={() => !isExpanded && onToggle()}
                   placeholder={t('preview.editPlaceholder')}
-                  className="peer w-full h-[clamp(5rem,12dvh,6rem)] resize-none bg-transparent focus:outline-none focus:ring-0 text-tzipur-brown text-[clamp(1rem,2.5dvh,1.125rem)] font-medium placeholder:text-tzipur-brown/40 custom-scrollbar"
+                  className="peer w-full h-[clamp(5rem,12dvh,6rem)] resize-none bg-transparent focus:outline-none focus:ring-0 text-tzipur-brown text-[clamp(1rem,2.5dvh,1.125rem)] font-medium placeholder:text-tzipur-brown/60 custom-scrollbar"
                 />
                 <label htmlFor="edit-request" className="absolute -top-[0.85rem] right-4 bg-tzipur-surface px-2 text-[clamp(0.75rem,1.5dvh,0.875rem)] font-medium text-tzipur-brown/70 cursor-pointer transition-colors peer-focus:text-tzipur-sky peer-focus:font-bold">
                   {t('preview.editLabel')}
