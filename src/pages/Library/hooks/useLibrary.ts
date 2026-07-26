@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../hooks/useAuth';
+import { DEMO_MODE } from '../../../contexts/AuthContext';
 import { useLibraryStories, useProfile } from '../../../api';
 
 export function useLibrary() {
@@ -10,7 +11,18 @@ export function useLibrary() {
   const { isLoggedIn, userId } = useAuth();
   
   const { data: stories = [], isLoading } = useLibraryStories(userId);
-  const safeStories: any[] = Array.isArray(stories) ? stories : ((stories as any)?.stories || (stories as any)?.data || []);
+  const safeStories: any[] = Array.isArray(stories) ? [...stories] : [...((stories as any)?.stories || (stories as any)?.data || [])];
+  
+  if (DEMO_MODE && safeStories.length === 0 && !isLoading) {
+    safeStories.push({
+      story_id: 'demo-mock-1',
+      status: 'completed',
+      title: 'רובי ובטריית השקט של אבא',
+      cover_image: '',
+      created_for: 'child-1',
+      created_at: new Date().toISOString(),
+    });
+  }
   
   const { data: profileData } = useProfile(userId, isLoggedIn);
   const children = profileData?.children || [];

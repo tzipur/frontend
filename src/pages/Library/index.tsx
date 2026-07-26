@@ -7,6 +7,7 @@ import { CreateBanner } from './components/CreateBanner';
 import { EmptyState } from './components/EmptyState';
 import { StoryCard } from './components/StoryCard';
 import { GuestWarningModal } from './components/GuestWarningModal';
+import { DemoThankYouModal } from './components/DemoThankYouModal';
 import { DEMO_MODE } from '../../contexts/AuthContext';
 
 const containerVariants = {
@@ -96,6 +97,8 @@ export default function LibraryPage() {
           onRegister={() => actions.navigate('/register')}
         />
       )}
+
+      {DEMO_MODE && <DemoThankYouModal />}
     </div>
   );
 }
