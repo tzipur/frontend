@@ -8,6 +8,9 @@ export function PreviewHeader() {
       <h1 className="font-serif text-2xl font-bold text-tzipur-sky">
         {t('preview.title')}
       </h1>
+      <p className="text-tzipur-brown/80 mt-1 max-w-[320px] text-[clamp(0.875rem,1.5dvh,1rem)] leading-snug">
+        {t('preview.instruction')}
+      </p>
     </header>
   );
 }

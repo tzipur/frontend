@@ -27,7 +27,7 @@ export function FastTrackSelector({
         <button
           autoFocus
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="w-full bg-tzipur-surface border-2 border-tzipur-border rounded-2xl px-5 py-[clamp(0.75rem,2dvh,1rem)] flex items-center justify-between text-tzipur-brown font-bold text-sm shadow-sm"
+          className="w-full bg-transparent border-2 border-tzipur-sky/20 rounded-2xl px-5 py-[clamp(0.75rem,2dvh,1rem)] flex items-center justify-between text-tzipur-brown font-bold text-sm shadow-sm"
         >
           <div className="flex items-center gap-3">
              {selectedTrack ? (
@@ -93,7 +93,7 @@ export function FastTrackSelector({
               className={`rounded-2xl p-[clamp(0.5rem,1.5dvh,0.75rem)] text-right flex items-center gap-[clamp(0.25rem,1dvh,0.75rem)] transition-all border-2 ${
                 selectedTrack === track.id
                   ? 'bg-tzipur-sky/20 border-tzipur-sky text-tzipur-sky'
-                  : 'bg-tzipur-surface border-tzipur-border text-tzipur-brown hover:border-tzipur-sky'
+                  : 'bg-transparent border-tzipur-sky/20 text-tzipur-brown hover:border-tzipur-sky'
               }`}
             >
               <Icon size={20} className="shrink-0" />

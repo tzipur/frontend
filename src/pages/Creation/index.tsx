@@ -8,6 +8,7 @@ import { useCreation } from './hooks/useCreation';
 import { CreationHeader } from './components/CreationHeader';
 import { FastTrackSelector } from './components/FastTrackSelector';
 import { ChildSelectorDropdown } from './components/ChildSelectorDropdown';
+import { SafetyAlertModal } from './components/SafetyAlertModal';
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -59,7 +60,7 @@ export default function CreationPage() {
               value={state.freeText}
               onChange={(e) => actions.setFreeText(e.target.value)}
               disabled={!!state.selectedTrack}
-              className="absolute inset-0 w-full h-full bg-tzipur-surface border border-tzipur-border rounded-2xl p-4 focus:outline-none focus:border-tzipur-sky focus:ring-1 focus:ring-tzipur-sky resize-none text-tzipur-brown placeholder:text-tzipur-brown/70/60 disabled:bg-tzipur-cream disabled:opacity-60 disabled:cursor-not-allowed"
+              className="absolute inset-0 w-full h-full bg-transparent border border-tzipur-border rounded-2xl p-4 focus:outline-none focus:border-tzipur-sky focus:ring-1 focus:ring-tzipur-sky resize-none text-tzipur-brown placeholder:text-tzipur-brown/40 disabled:bg-transparent disabled:opacity-60 disabled:cursor-not-allowed"
             />
           </div>
         </main>
@@ -90,6 +91,12 @@ export default function CreationPage() {
           <Disclaimer />
         </footer>
       </motion.div>
+
+      <SafetyAlertModal 
+        isOpen={!!state.safetyAlertData}
+        onClose={() => actions.setSafetyAlertData(null)}
+        validationData={state.safetyAlertData}
+      />
     </>
   );
 }

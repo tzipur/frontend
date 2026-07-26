@@ -33,8 +33,10 @@
     "nicknameLabel": "Choose a family name or nickname (used for connecting to Tzipur)",
     "nicknamePlaceholder": "e.g., The Cohens",
     "pinLabel": "Secret PIN (4 digits)",
-    "error": "Incorrect code, please try again",
+    "error": "Incorrect code",
     "submit": "Continue",
+    "loginError": "Login error.",
+    "registerError": "Registration error.",
     "notYou": "Not you? Switch account",
     "haveAccount": "Already have an account? Login"
   },
@@ -79,8 +81,8 @@
     "turtle": "Turtle"
   },
   "creation": {
-    "title": "What happened today?",
-    "subtitle": "Choose a topic or share in your own words.",
+    "title": "What would you like to share?",
+    "subtitle": "This is the place to share today's events freely and securely. We are here without judgment.",
     "tracks": {
       "startle": "Startle",
       "anger": "Anger",
@@ -117,9 +119,9 @@
     }
   },
   "preview": {
-    "title": "Review Before Reading",
+    "title": "Preview and Editing",
     "summaryTitle": "Review All Edit Requests",
-    "instruction": "Your story is ready to read!",
+    "instruction": "The story is ready, you can request editing before reading",
     "chapterCount": "Chapter {{current}}/{{total}}",
     "chapter": "Chapter",
     "showChapter": "Show content",
@@ -131,6 +133,7 @@
     "reviewAll": "Review all edit requests",
     "sendEdits": "Send edit requests",
     "generate": "Start reading",
+    "generateError": "Error generating story.",
     "editBoxNotEmpty": "Send edit requests or clear the text box before continuing",
     "remainingEdits": "{{count}} edits left",
     "noEdits": "No edit requests were made.",

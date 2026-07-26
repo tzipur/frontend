@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useProfile, useGenerateStory } from '../../../api';
+import type { ValidationAlert } from '../components/SafetyAlertModal';
 
 export function useCreation() {
     const navigate = useNavigate();
@@ -21,6 +22,8 @@ export function useCreation() {
 
     const [isChildDropdownOpen, setIsChildDropdownOpen] = useState(false);
     const childDropdownRef = useRef<HTMLDivElement>(null);
+
+    const [safetyAlertData, setSafetyAlertData] = useState<ValidationAlert | null>(null);
 
     const generateMutation = useGenerateStory();
 
@@ -57,6 +60,11 @@ export function useCreation() {
 
         generateMutation.mutate(payload, {
             onSuccess: (data) => {
+                if (data?.status === 'blocked' && data?.safety_alert) {
+                    setSafetyAlertData(data.validation);
+                    return;
+                }
+
                 if (!userId && data?.user?.user_id) {
                     const newUserId = data.user.user_id;
                     localStorage.setItem('user_id', newUserId);
@@ -80,8 +88,12 @@ export function useCreation() {
                     };
                 }
             },
-            onError: (err) => {
+            onError: (err: any) => {
                 console.error("Story generation failed", err);
+                const errorData = err?.response?.data;
+                if (errorData?.status === 'blocked' && errorData?.safety_alert) {
+                    setSafetyAlertData(errorData.validation);
+                }
             }
         });
     };
@@ -95,7 +107,8 @@ export function useCreation() {
             selectedChild,
             isDropdownOpen,
             isChildDropdownOpen,
-            isPending: generateMutation.isPending
+            isPending: generateMutation.isPending,
+            safetyAlertData
         },
         refs: {
             dropdownRef,
@@ -108,7 +121,8 @@ export function useCreation() {
             setSelectedChild,
             setIsDropdownOpen,
             setIsChildDropdownOpen,
-            handleCreate
+            handleCreate,
+            setSafetyAlertData
         }
     };
 }

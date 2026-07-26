@@ -70,9 +70,9 @@ export default function LibraryPage() {
         <div className="grid grid-cols-2 gap-4">
           {state.safeStories.map((story) => (
             <StoryCard
-              key={story.id}
+              key={story.story_id}
               story={story}
-              onClick={() => actions.navigate(`/read/${story.id}`)}
+              onClick={() => actions.navigate(`/read/${story.story_id}`)}
               variants={cardVariants}
               createdForOnText={t('library.meta.createdForOn', {
                 child: actions.getChildNickname(story.created_for),

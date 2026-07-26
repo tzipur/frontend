@@ -9,10 +9,10 @@ const generateId = () => Math.random().toString(36).substring(2, 9);
 // Convert a Story to StoryLibraryItem
 export const toStoryLibraryItem = (story: Story): StoryLibraryItem => {
   return {
-    id: story.id,
+    story_id: story.id,
     status: 'completed',
     title: story.title,
-    image_url: story.coverImageUrl || '',
+    cover_image: story.coverImageUrl || '',
     created_for: story.childProfileId,
     created_at: story.createdAt,
     coaching_tip: story.coachingTip,

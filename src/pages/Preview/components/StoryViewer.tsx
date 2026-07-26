@@ -29,7 +29,7 @@ export function StoryViewer({ story, isExpanded, onToggle }: StoryViewerProps) {
           {(story.chapters || []).map((chapter: any) => (
             <div key={chapter.chapter_num} className="flex flex-col gap-2 shrink-0">
               <h4 className="text-xl font-bold text-tzipur-sky mb-1">
-                {chapter.title || `Chapter ${chapter.chapter_num}`}
+                {chapter.title || `${t('preview.chapter')} ${chapter.chapter_num}`}
               </h4>
               <p className="text-tzipur-brown leading-loose whitespace-pre-wrap break-words text-[clamp(1rem,2.5dvh,1.125rem)] font-medium">
                 {chapter.text}

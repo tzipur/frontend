@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronRight, Lightbulb } from 'lucide-react';
+import { ChevronRight, ChevronDown, Lightbulb } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../../components/Button';
 import { useSaveStory } from '../../../api/mutations';
@@ -14,6 +15,7 @@ export default function EndPage({ goPrev, coachingTip }: EndPageProps) {
   const navigate = useNavigate();
   const { storyId } = useParams<{ storyId: string }>();
   const saveMutation = useSaveStory();
+  const [isTipExpanded, setIsTipExpanded] = useState(false);
 
   const handleSave = () => {
     if (storyId) {
@@ -28,7 +30,7 @@ export default function EndPage({ goPrev, coachingTip }: EndPageProps) {
   return (
     <div className="flex-1 w-full flex flex-col px-2 sm:px-4 pt-2 sm:pt-4 pb-4 sm:pb-6 overflow-hidden">
       {/* Top Section - Title and Back Button */}
-      <div className="flex flex-row items-center justify-center gap-3 shrink-0">
+      <div className="flex flex-row items-center justify-center gap-3 shrink-0 mb-6">
         <button
           onClick={goPrev}
           className="p-1 sm:p-1.5 text-tzipur-brown/70 hover:bg-tzipur-sand hover:text-tzipur-brown rounded-full transition-colors"
@@ -42,18 +44,35 @@ export default function EndPage({ goPrev, coachingTip }: EndPageProps) {
 
       {/* Middle Section - Coaching Tip */}
       {coachingTip && (
-        <div className="w-full bg-tzipur-sand/40 rounded-2xl p-3 sm:p-4 border border-tzipur-border/50 shadow-sm relative overflow-hidden mb-[clamp(1rem,3dvh,2.5rem)] shrink-0 mt-auto">
-          <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
-            <div className="bg-tzipur-surface p-1 sm:p-1.5 rounded-full text-tzipur-sky shadow-sm border border-tzipur-sky/10">
-              <Lightbulb strokeWidth={2.5} className="w-[clamp(1.25rem,3dvh,1.75rem)] h-[clamp(1.25rem,3dvh,1.75rem)]" />
+        <div className="w-full bg-tzipur-sand/40 rounded-2xl p-3 sm:p-4 border border-tzipur-border/50 shadow-sm relative overflow-hidden mb-[clamp(1rem,3dvh,2.5rem)] shrink-0">
+          <button 
+            onClick={() => setIsTipExpanded(!isTipExpanded)}
+            className="flex items-center justify-between w-full text-left focus:outline-none"
+          >
+            <div className="flex items-center gap-2">
+              <div className="bg-tzipur-surface p-1 sm:p-1.5 rounded-full text-tzipur-sky shadow-sm border border-tzipur-sky/10">
+                <Lightbulb strokeWidth={2.5} className="w-[clamp(1.25rem,3dvh,1.75rem)] h-[clamp(1.25rem,3dvh,1.75rem)]" />
+              </div>
+              <h3 className="font-bold text-tzipur-sky text-[clamp(1rem,3dvh,1.5rem)]">
+                {t('reading.end.coachingTitle')}
+              </h3>
             </div>
-            <h3 className="font-bold text-tzipur-sky text-[clamp(1rem,3dvh,1.5rem)]">
-              {t('reading.end.coachingTitle')}
-            </h3>
+            <ChevronDown 
+              className={`w-6 h-6 text-tzipur-sky transition-transform duration-300 ${isTipExpanded ? 'rotate-180' : ''}`} 
+            />
+          </button>
+          
+          <div 
+            className={`grid transition-all duration-300 ease-in-out ${
+              isTipExpanded ? 'grid-rows-[1fr] mt-3 opacity-100' : 'grid-rows-[0fr] mt-0 opacity-0'
+            }`}
+          >
+            <div className="overflow-hidden">
+              <p className="text-tzipur-brown/90 font-medium leading-[1.6] text-[clamp(0.875rem,2.5dvh,1.25rem)]">
+                {coachingTip}
+              </p>
+            </div>
           </div>
-          <p className="text-tzipur-brown/90 font-medium leading-[1.6] text-[clamp(0.875rem,2.5dvh,1.25rem)]">
-            {coachingTip}
-          </p>
         </div>
       )}
 

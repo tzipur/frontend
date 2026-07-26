@@ -12,15 +12,19 @@ import { pingServer } from './api/api';
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: (error, query) => {
+    onError: (error: any, query) => {
       console.error('Query failed:', error);
+      if (error?.response?.data?.status === 'blocked') return;
+      
       const msgKey = (query.meta?.errorMessage as string) || 'common.error';
       toast.error(i18next.t(msgKey, 'אופס, משהו השתבש'), { id: msgKey });
     },
   }),
   mutationCache: new MutationCache({
-    onError: (error, _variables, _context, mutation) => {
+    onError: (error: any, _variables, _context, mutation) => {
       console.error('Mutation failed:', error);
+      if (error?.response?.data?.status === 'blocked') return;
+      
       const msgKey = (mutation.meta?.errorMessage as string) || 'common.error';
       toast.error(i18next.t(msgKey, 'אופס, משהו השתבש'), { id: msgKey });
     },
