@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { BookOpen, Sparkles } from 'lucide-react';
-import fallbackImage from '../../../assets/bears-story-hero.jpeg';
+import fallbackImage from '../../../assets/bears-story-hero.webp';
 import type { StoryLibraryItem } from '../../../api/stories';
 
 const getSeededRandom = (seed: number) => {
@@ -50,9 +50,9 @@ export function StoryCard({ story, onClick, variants, createdForOnText }: StoryC
       <div
         className="aspect-[3/4] rounded-2xl shadow-md border border-tzipur-border overflow-hidden relative group-hover:shadow-lg transition-shadow bg-tzipur-sand"
       >
-        {story.image_url ? (
+        {story.cover_image ? (
           <img 
-            src={story.image_url} 
+            src={story.cover_image} 
             alt={story.title} 
             className="w-full h-full object-cover" 
             loading="lazy"
@@ -64,7 +64,7 @@ export function StoryCard({ story, onClick, variants, createdForOnText }: StoryC
         ) : (
           <div 
             className="w-full h-full flex flex-col items-center justify-center p-4 text-center"
-            style={{ backgroundImage: generateUniqueGradient(story.id) }}
+            style={{ backgroundImage: generateUniqueGradient(story.story_id) }}
           >
             <Sparkles size={36} className="text-white/80 mb-2 drop-shadow-sm" />
             <BookOpen size={48} className="text-white/60 drop-shadow-sm" />

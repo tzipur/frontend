@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../hooks/useAuth';
 import { useProfile, useGenerateStory } from '../../../api';
+import type { ValidationAlert } from '../components/SafetyAlertModal';
 
 export function useCreation() {
     const navigate = useNavigate();
@@ -21,6 +22,8 @@ export function useCreation() {
 
     const [isChildDropdownOpen, setIsChildDropdownOpen] = useState(false);
     const childDropdownRef = useRef<HTMLDivElement>(null);
+
+    const [safetyAlertData, setSafetyAlertData] = useState<ValidationAlert | null>(null);
 
     const generateMutation = useGenerateStory();
 
@@ -57,8 +60,25 @@ export function useCreation() {
 
         generateMutation.mutate(payload, {
             onSuccess: (data) => {
-                const newStoryId = data?.story?.story_id || 'story-001';
-                navigate(`/preview/${newStoryId}`);
+                if (data?.status === 'blocked' && data?.safety_alert) {
+                    setSafetyAlertData(data.validation);
+                    return;
+                }
+
+                if (!userId && data?.user?.user_id) {
+                    const newUserId = data.user.user_id;
+                    localStorage.setItem('user_id', newUserId);
+                    if (sessionStorage.getItem('guest_mode') === 'true') {
+                        sessionStorage.setItem('guest_user_id', newUserId);
+                    } else {
+                        sessionStorage.setItem('active_user_id', newUserId);
+                    }
+                    window.dispatchEvent(new Event('auth_changed'));
+                }
+
+                const story = data?.story || data;
+                const newStoryId = story?.id || story?.story_id || 'story-001';
+                navigate(`/preview/${newStoryId}`, { state: { story } });
 
                 if ('Notification' in window && Notification.permission === 'granted' && document.visibilityState === 'hidden') {
                     const notif = new Notification(t('creation.loader.notificationBody') || t('creation.loader.notification'));
@@ -68,8 +88,12 @@ export function useCreation() {
                     };
                 }
             },
-            onError: (err) => {
+            onError: (err: any) => {
                 console.error("Story generation failed", err);
+                const errorData = err?.response?.data;
+                if (errorData?.status === 'blocked' && errorData?.safety_alert) {
+                    setSafetyAlertData(errorData.validation);
+                }
             }
         });
     };
@@ -83,7 +107,8 @@ export function useCreation() {
             selectedChild,
             isDropdownOpen,
             isChildDropdownOpen,
-            isPending: generateMutation.isPending
+            isPending: generateMutation.isPending,
+            safetyAlertData
         },
         refs: {
             dropdownRef,
@@ -96,7 +121,8 @@ export function useCreation() {
             setSelectedChild,
             setIsDropdownOpen,
             setIsChildDropdownOpen,
-            handleCreate
+            handleCreate,
+            setSafetyAlertData
         }
     };
 }

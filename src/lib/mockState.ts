@@ -9,10 +9,10 @@ const generateId = () => Math.random().toString(36).substring(2, 9);
 // Convert a Story to StoryLibraryItem
 export const toStoryLibraryItem = (story: Story): StoryLibraryItem => {
   return {
-    id: story.id,
+    story_id: story.id,
     status: 'completed',
     title: story.title,
-    image_url: story.coverImageUrl || '',
+    cover_image: story.coverImageUrl || '',
     created_for: story.childProfileId,
     created_at: story.createdAt,
     coaching_tip: story.coachingTip,
@@ -85,7 +85,7 @@ class MockState {
     }
   }
 
-  async editStory(id: string, updates: { story_title: string; story_body: string }): Promise<StoryLibraryItem> {
+  async editStory(id: string, updates: { edit_request: string }): Promise<StoryLibraryItem> {
     await this.delay(1000);
     let index = this.stories.findIndex(s => s.id === id);
     let list = this.stories;
@@ -98,9 +98,8 @@ class MockState {
     if (index === -1) throw new Error(`Story ${id} not found`);
     
     // Simplistic mock edit
-    list[index].title = updates.story_title;
     if (list[index].chapters && list[index].chapters.length > 0) {
-      list[index].chapters[0].content = updates.story_body;
+      list[index].chapters[0].content = updates.edit_request;
     }
     
     return toStoryLibraryItem(list[index]);

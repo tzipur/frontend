@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { DEMO_MODE } from '../../../contexts/AuthContext';
 
 interface CreationHeaderProps {
   isLoggedIn: boolean;
@@ -14,11 +15,11 @@ export function CreationHeader({ isLoggedIn }: CreationHeaderProps) {
       <p className="text-tzipur-brown/70 mt-1 text-base">
         {t('creation.subtitle')}
       </p>
-      {!isLoggedIn && (
+      {!isLoggedIn && !DEMO_MODE && (
         <div className="mt-3 bg-tzipur-cream/80 border border-tzipur-sky/20 rounded-xl p-3 shadow-sm text-center">
           <p className="text-sm text-tzipur-brown/90 leading-relaxed">
             {t('creation.signupHintPrefix')}
-            <Link to="/auth" className="text-tzipur-sky font-bold hover:underline">
+            <Link to="/register" className="text-tzipur-sky font-bold hover:underline">
               {t('creation.signupHintAction')}
             </Link>
           </p>

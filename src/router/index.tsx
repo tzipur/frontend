@@ -6,7 +6,8 @@ import { lazy } from 'react';
 const WelcomePage = lazy(() => import('../pages/Welcome'));
 const ProfileSetupPage = lazy(() => import('../pages/ProfileSetup'));
 const CreationPage = lazy(() => import('../pages/Creation'));
-const AuthPage = lazy(() => import('../pages/Auth'));
+const LoginPage = lazy(() => import('../pages/Login'));
+const RegisterPage = lazy(() => import('../pages/Register'));
 const ReadingPage = lazy(() => import('../pages/Reading'));
 const PreviewPage = lazy(() => import('../pages/Preview'));
 const LibraryPage = lazy(() => import('../pages/Library'));
@@ -42,8 +43,12 @@ export const router = createBrowserRouter([
         element: <WelcomePage />,
       },
       {
-        path: 'auth',
-        element: <AuthPage />,
+        path: 'login',
+        element: <LoginPage />,
+      },
+      {
+        path: 'register',
+        element: <RegisterPage />,
       },
       {
         path: 'profile',

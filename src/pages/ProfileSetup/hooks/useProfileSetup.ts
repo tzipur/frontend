@@ -43,7 +43,7 @@ export function useProfileSetup() {
   const { logout, userId } = useAuth();
   const { data: profileData, isLoading: isLoadingProfile } = useProfile(userId);
   const updateMutation = useUpdateProfile();
-  
+
   const [expandedChildId, setExpandedChildId] = useState<string | null>(null);
   const [childToDelete, setChildToDelete] = useState<string | null>(null);
   const [showDeleteProfileModal, setShowDeleteProfileModal] = useState(false);
@@ -139,7 +139,8 @@ export function useProfileSetup() {
   };
 
   const handleDeleteProfile = () => {
-    logout();
+    localStorage.removeItem('user_id');
+    window.dispatchEvent(new Event('auth_changed'));
     navigate('/');
   };
 

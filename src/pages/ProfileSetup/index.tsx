@@ -31,7 +31,7 @@ export default function ProfileSetupPage() {
   const handleLogOut = () => {
     sessionStorage.removeItem('active_user_id');
     window.dispatchEvent(new Event('auth_changed'));
-    actions.navigate('/auth');
+    actions.navigate('/login');
   };
 
   return (

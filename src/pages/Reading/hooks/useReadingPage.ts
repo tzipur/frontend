@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { paginateChapterText } from '../../../lib/paginateChapterText';
 import { useStory } from '../../../api';
 import type { StoryLibraryItem } from '../../../api/stories';
@@ -32,17 +32,22 @@ const wordsPerPage: number = 20;
 export function useReadingPage(): UseReadingPageResult {
   const { storyId } = useParams<{ storyId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const stateStory = location.state?.story;
+
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 = going back, 1 = going forward
 
-  const { data: story, isLoading } = useStory(storyId || null);
+  const { data: fetchedStory, isLoading: isFetching } = useStory(stateStory ? null : (storyId || null));
+  const story = stateStory || fetchedStory;
+  const isLoading = stateStory ? false : isFetching;
 
   // Flatten all chapters into a single array of pages
   const pages: PageInfo[] = useMemo(() => {
     if (!story) return [];
     const result: PageInfo[] = [];
     for (const chapter of (story.chapters || [])) {
-      const chapterTitle = chapter.title || `Chapter ${chapter.chapter_num}`;
+      const chapterTitle = chapter.chapter_name || chapter.title || `פרק מספר ${chapter.chapter_num}`;
       result.push({
         text: chapterTitle,
         chapterTitle: chapterTitle,

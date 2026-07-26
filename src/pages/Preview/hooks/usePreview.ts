@@ -1,14 +1,20 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useStory, useEditStory } from '../../../api';
+import { getUserId } from '../../../contexts/AuthContext';
 
 export function usePreview() {
   const { storyId } = useParams<{ storyId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
 
-  const { data: story, isLoading } = useStory(storyId || null);
+  const stateStory = location.state?.story;
+
+  const { data: fetchedStory, isLoading: isFetching } = useStory(stateStory ? null : (storyId || null));
+  const story = stateStory || fetchedStory;
+  const isLoading = stateStory ? false : isFetching;
   const editMutation = useEditStory();
 
   const [editRequest, setEditRequest] = useState('');
@@ -19,18 +25,16 @@ export function usePreview() {
   const hasEdits = editRequest.trim().length > 0;
 
   const handleGenerateStory = () => {
-    navigate(`/read/${storyId}`);
+    navigate(`/read/${storyId}`, { state: { story } });
   };
 
   const handleSendEdits = () => {
     if (!storyId || !editRequest.trim() || !story) return;
     
-    const stitchedBody = (story.chapters || []).map((c: any) => c.text).join('\n\n');
-    
     const payload = {
-      story_title: story.title,
-      story_body: stitchedBody,
-      edit_instructions: editRequest,
+      story_id: storyId,
+      edit_request: editRequest,
+      user_id: getUserId(),
     };
 
     editMutation.mutate(

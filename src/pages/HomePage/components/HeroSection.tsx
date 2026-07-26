@@ -15,11 +15,11 @@ export default function HeroSection() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex-1 flex flex-col justify-start items-center w-full overflow-y-auto overflow-x-hidden custom-scrollbar p-4 sm:p-6 text-center pb-2 sm:pb-4 pt-[clamp(1.5rem,4dvh,3rem)]">
+    <div className="flex flex-col justify-start items-center w-full p-4 sm:p-6 text-center pb-2 sm:pb-4 pt-[clamp(1.5rem,4dvh,3rem)] shrink-0">
       {/* Title */}
       <motion.h1
         variants={itemVariants}
-        className="text-[clamp(3.25rem,10dvh,6rem)] font-black mb-[clamp(0.5rem,2dvh,1.5rem)] text-[#5B93B5] tracking-tight drop-shadow-sm leading-tight shrink-0"
+        className="text-[clamp(3.25rem,10dvh,6rem)] font-black mb-[clamp(0.5rem,2dvh,1.5rem)] text-tzipur-sky tracking-tight drop-shadow-sm leading-tight shrink-0"
       >
         {t('welcome.landing.title')}
       </motion.h1>

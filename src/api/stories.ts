@@ -5,16 +5,17 @@ import { getUserId } from '../contexts/AuthContext';
 
 export interface StoryChapter {
   chapter_num: number;
-  title: string;
+  title?: string;
+  chapter_name?: string;
   text: string;
   image_url: string;
 }
 
 export interface StoryLibraryItem {
-  id: string; // Used to be storyId
+  story_id: string; // Used to be storyId
   status: string;
   title: string;
-  image_url: string; // Used to be coverImageLink
+  cover_image: string; // Used to be coverImageLink
   created_for: string; // Used to be createdFor
   created_at: string; // Used to be createdAt
   coaching_tip?: string;
@@ -31,11 +32,9 @@ export interface GenerateStoryPayload {
 }
 
 export interface EditStoryPayload {
-  story_title: string;
-  story_body: string;
-  edit_instructions: string;
-  selected_animal?: string;
-  animal_emoji?: string;
+  story_id: string;
+  edit_request: string;
+  user_id: string | null;
 }
 
 export const storyRequests = {
@@ -60,8 +59,8 @@ export const storyRequests = {
   },
 
   editStory: async ({ storyId, data }: { storyId: string; data: EditStoryPayload }): Promise<any> => {
-    if (isOffline) return mockState.editStory(storyId, data);
-    const response = await api.put(`/users/me/story/${storyId}`, data);
+    if (isOffline) return mockState.editStory(storyId, data as any);
+    const response = await api.put(`/users/me/story`, data);
     return response.data;
   },
 

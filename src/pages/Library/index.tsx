@@ -7,6 +7,7 @@ import { CreateBanner } from './components/CreateBanner';
 import { EmptyState } from './components/EmptyState';
 import { StoryCard } from './components/StoryCard';
 import { GuestWarningModal } from './components/GuestWarningModal';
+import { DEMO_MODE } from '../../contexts/AuthContext';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -69,24 +70,32 @@ export default function LibraryPage() {
         <div className="grid grid-cols-2 gap-4">
           {state.safeStories.map((story) => (
             <StoryCard
-              key={story.id}
+              key={story.story_id}
               story={story}
-              onClick={() => actions.navigate(`/read/${story.id}`)}
+              onClick={() => actions.navigate(`/read/${story.story_id}`)}
               variants={cardVariants}
-              createdForOnText={t('library.meta.createdForOn', {
-                child: actions.getChildNickname(story.created_for),
-                date: actions.formatDate(story.created_at)
-              })}
+              createdForOnText={
+                actions.getChildNickname(story.created_for) === t('library.defaultChild')
+                  ? t('library.meta.createdOn', {
+                      date: actions.formatDate(story.created_at)
+                    })
+                  : t('library.meta.createdForOn', {
+                      child: actions.getChildNickname(story.created_for),
+                      date: actions.formatDate(story.created_at)
+                    })
+              }
             />
           ))}
         </div>
       </motion.main>
 
-      <GuestWarningModal
-        isVisible={state.showGuestWarning}
-        onClose={() => actions.setShowGuestWarning(false)}
-        onRegister={() => actions.navigate('/auth')}
-      />
+      {!DEMO_MODE && (
+        <GuestWarningModal
+          isVisible={state.showGuestWarning}
+          onClose={() => actions.setShowGuestWarning(false)}
+          onRegister={() => actions.navigate('/register')}
+        />
+      )}
     </div>
   );
 }

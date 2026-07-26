@@ -1,18 +1,22 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export function useHomePage() {
   const navigate = useNavigate();
-  const { loginAsGuest } = useAuth();
+  const { enterGuestMode } = useAuth();
 
   const handleGuestLogin = () => {
-    loginAsGuest();
+    enterGuestMode();
     navigate('/create');
   };
 
-  const handleAuth = () => {
-    navigate('/auth');
+  const handleLogin = () => {
+    navigate('/login');
   };
 
-  return { handleGuestLogin, handleAuth };
+  const handleRegister = () => {
+    navigate('/register');
+  };
+
+  return { handleGuestLogin, handleLogin, handleRegister };
 }

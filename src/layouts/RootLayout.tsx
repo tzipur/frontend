@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth, DEMO_MODE } from '../contexts/AuthContext';
 
 /**
  * RootLayout — Mobile-first app shell.
@@ -16,16 +16,15 @@ export default function RootLayout() {
   const { i18n } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-
-  const { isLoggedIn, hasSavedId } = useAuth();
+  const { isLoggedIn, isGuest, hasSavedId, exitGuestMode } = useAuth();
 
   useEffect(() => {
     const handleAuthError = () => {
       localStorage.removeItem('user_id');
-      sessionStorage.removeItem('guest_user_id');
       sessionStorage.removeItem('active_user_id');
+      exitGuestMode();
       window.dispatchEvent(new Event('auth_changed'));
-      navigate('/auth');
+      navigate(DEMO_MODE ? '/' : '/login');
     };
     window.addEventListener('auth_error', handleAuthError);
     return () => window.removeEventListener('auth_error', handleAuthError);
@@ -33,10 +32,10 @@ export default function RootLayout() {
 
   // Protect routes for locked users
   useEffect(() => {
-    if (!isLoggedIn && hasSavedId && location.pathname !== '/auth' && location.pathname !== '/welcome') {
+    if (!isLoggedIn && !isGuest && hasSavedId && location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/welcome') {
       navigate('/');
     }
-  }, [isLoggedIn, hasSavedId, location.pathname, navigate]);
+  }, [isLoggedIn, isGuest, hasSavedId, location.pathname, navigate]);
 
   // Hide TopBar on homepage ('/') and welcome ('/welcome')
   const hideTopBar = location.pathname === '/' || location.pathname === '/welcome';
