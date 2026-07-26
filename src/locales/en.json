@@ -168,14 +168,14 @@
       "title": "Share Tzipur with other families"
     },
     "createBanner": {
-      "title": "Create a new story",
-      "subtitle": "To help with a challenging moment"
+      "title": "Create a new story"
     },
     "meta": {
       "for": "For",
       "speak": "Speaking",
       "write": "Writing",
-      "createdForOn": "Created for {{child}} on {{date}}"
+      "createdForOn": "Created for {{child}} on {{date}}",
+      "createdOn": "Created {{date}}"
     },
     "dates": {
       "today": "Today",

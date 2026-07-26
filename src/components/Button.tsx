@@ -22,7 +22,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // secondary: White with sky blue text/border or transparent bg
     // destructive: Red
     const variantClasses = {
-      primary: "bg-tzipur-sky text-white shadow-md hover:shadow-lg hover:bg-tzipur-sky-dark border border-transparent",
+      primary: "bg-tzipur-sky text-white shadow-md hover:shadow-lg hover:bg-tzipur-sky-dark border border-transparent dark:text-white/80",
       secondary: "bg-transparent text-tzipur-sky border-2 border-tzipur-sky/30 hover:bg-tzipur-sky/10 shadow-sm",
       ghost: "bg-transparent text-tzipur-sky hover:bg-tzipur-sky/10 border border-transparent",
       destructive: "bg-tzipur-error text-white shadow-md hover:shadow-lg hover:bg-tzipur-error/80 border border-transparent",

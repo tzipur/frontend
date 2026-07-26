@@ -74,10 +74,16 @@ export default function LibraryPage() {
               story={story}
               onClick={() => actions.navigate(`/read/${story.story_id}`)}
               variants={cardVariants}
-              createdForOnText={t('library.meta.createdForOn', {
-                child: actions.getChildNickname(story.created_for),
-                date: actions.formatDate(story.created_at)
-              })}
+              createdForOnText={
+                actions.getChildNickname(story.created_for) === t('library.defaultChild')
+                  ? t('library.meta.createdOn', {
+                      date: actions.formatDate(story.created_at)
+                    })
+                  : t('library.meta.createdForOn', {
+                      child: actions.getChildNickname(story.created_for),
+                      date: actions.formatDate(story.created_at)
+                    })
+              }
             />
           ))}
         </div>

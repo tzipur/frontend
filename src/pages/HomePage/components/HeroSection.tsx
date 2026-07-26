@@ -19,7 +19,7 @@ export default function HeroSection() {
       {/* Title */}
       <motion.h1
         variants={itemVariants}
-        className="text-[clamp(3.25rem,10dvh,6rem)] font-black mb-[clamp(0.5rem,2dvh,1.5rem)] text-[#5B93B5] tracking-tight drop-shadow-sm leading-tight shrink-0"
+        className="text-[clamp(3.25rem,10dvh,6rem)] font-black mb-[clamp(0.5rem,2dvh,1.5rem)] text-tzipur-sky tracking-tight drop-shadow-sm leading-tight shrink-0"
       >
         {t('welcome.landing.title')}
       </motion.h1>

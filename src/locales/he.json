@@ -185,14 +185,14 @@
       "title": "שתפו את ציפור עם משפחות אחרות"
     },
     "createBanner": {
-      "title": "יצירת סיפור חדש",
-      "subtitle": "כדי לעזור עם רגע מאתגר"
+      "title": "יצירת סיפור חדש"
     },
     "meta": {
       "for": "עבור",
       "speak": "דיבור",
       "write": "כתיבה",
-      "createdForOn": "נוצר עבור {{child}}, {{date}}"
+      "createdForOn": "נוצר עבור {{child}}, {{date}}",
+      "createdOn": "נוצר {{date}}"
     },
     "dates": {
       "today": "היום",
