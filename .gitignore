@@ -27,4 +27,4 @@ dist-ssr
 .vercel
 
 # Local assets folder
-assets/
+/assets/
