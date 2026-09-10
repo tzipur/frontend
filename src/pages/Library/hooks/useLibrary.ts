@@ -18,7 +18,7 @@ export function useLibrary() {
       story_id: 'demo-mock-1',
       status: 'completed',
       title: 'רובי ובטריית השקט של אבא',
-      cover_image: '',
+      cover_image_url: '',
       created_for: 'child-1',
       created_at: new Date().toISOString(),
     });

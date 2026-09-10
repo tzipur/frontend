@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import heroSrc from '../../../assets/bears-story-hero.webp';
+import { StoryCoverPlaceholder } from '../../../components/StoryCoverPlaceholder';
 
 interface ReadingHeroProps {
   title: string;
+  /** The story's cover_image_url, as served by the backend. */
   imageUrl?: string;
+  /** Seeds the placeholder gradient when there is no cover to show. */
+  seed?: string;
 }
 
-export default function ReadingHero({ title, imageUrl }: ReadingHeroProps) {
+export default function ReadingHero({ title, imageUrl, seed }: ReadingHeroProps) {
   const [imgError, setImgError] = useState(false);
-  const displayUrl = (imageUrl && !imgError) ? imageUrl : heroSrc;
+  const showCover = Boolean(imageUrl) && !imgError;
 
   return (
     <div className="bg-tzipur-sand rounded-b-2xl shadow-sm relative z-10 flex flex-col items-center pb-2 mb-2">
@@ -18,14 +21,18 @@ export default function ReadingHero({ title, imageUrl }: ReadingHeroProps) {
         </h1>
       </div>
       <div className="w-full h-[clamp(10rem,25dvh,16rem)] rounded-2xl overflow-hidden shadow-inner border border-tzipur-border shrink-0">
-        <img 
-          src={displayUrl} 
-          className="w-full h-full object-cover" 
-          alt="Story Illustration" 
-          loading="lazy"
-          decoding="async"
-          onError={() => setImgError(true)}
-        />
+        {showCover ? (
+          <img
+            src={imageUrl}
+            className="w-full h-full object-cover"
+            alt="Story Illustration"
+            loading="lazy"
+            decoding="async"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <StoryCoverPlaceholder seed={seed} iconSize={40} />
+        )}
       </div>
     </div>
   );

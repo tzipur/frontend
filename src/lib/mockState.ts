@@ -12,7 +12,7 @@ export const toStoryLibraryItem = (story: Story): StoryLibraryItem => {
     story_id: story.id,
     status: 'completed',
     title: story.title,
-    cover_image: story.coverImageUrl || '',
+    cover_image_url: story.coverImageUrl || '',
     created_for: story.childProfileId,
     created_at: story.createdAt,
     coaching_tip: story.coachingTip,
