@@ -22,7 +22,7 @@ export default function LoaderScreen({ isVisible, isReady, onContinue, mode = 'g
 
     const interval = setInterval(() => {
       setCurrentTextIndex((prev) => (prev + 1) % sentences.length);
-    }, 2000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [isVisible, isReady, sentences.length]);
