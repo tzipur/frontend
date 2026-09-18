@@ -20,6 +20,8 @@ export interface StoryLibraryItem {
   created_at: string; // Used to be createdAt
   coaching_tip?: string;
   chapters?: StoryChapter[];
+  // Edits the server will still accept. Sent only while the story is a draft.
+  edits_left?: number;
 }
 
 export interface GenerateStoryPayload {
@@ -32,7 +34,6 @@ export interface GenerateStoryPayload {
 }
 
 export interface EditStoryPayload {
-  story_id: string;
   edit_request: string;
   user_id: string | null;
 }
@@ -48,30 +49,30 @@ export const storyRequests = {
 
   getStory: async (storyId: string): Promise<any> => {
     if (isOffline) return mockState.getStory(storyId);
-    const response = await api.get(`/users/me/story/${storyId}`);
+    const response = await api.get(`/users/me/stories/${storyId}`);
     return response.data;
   },
 
   generateStory: async (data: GenerateStoryPayload): Promise<any> => {
     if (isOffline) return mockState.generateStory(data.story_brief);
-    const response = await api.post('/users/me/story', data);
+    const response = await api.post('/users/me/stories', data);
     return response.data;
   },
 
   editStory: async ({ storyId, data }: { storyId: string; data: EditStoryPayload }): Promise<any> => {
-    if (isOffline) return mockState.editStory(storyId, data as any);
-    const response = await api.put(`/users/me/story`, data);
+    if (isOffline) return mockState.editStory(storyId, data);
+    const response = await api.put(`/users/me/stories/${storyId}`, data);
     return response.data;
   },
 
   saveStory: async (storyId: string): Promise<void> => {
     if (isOffline) return mockState.saveStory(storyId);
     const userId = getUserId();
-    await api.post(`/users/me/stories/save/${storyId}`, { user_id: userId });
+    await api.post(`/users/me/stories/${storyId}/save`, { user_id: userId });
   },
 
   deleteStory: async (storyId: string): Promise<void> => {
     if (isOffline) return mockState.deleteStory(storyId);
-    await api.delete(`/users/me/story/${storyId}`);
+    await api.delete(`/users/me/stories/${storyId}`);
   },
 };

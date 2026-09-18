@@ -136,6 +136,7 @@
     "generateError": "Error generating story.",
     "editBoxNotEmpty": "Send edit requests or clear the text box before continuing",
     "remainingEdits": "{{count}} edits left",
+    "noEditsLeft": "No edits left",
     "noEdits": "No edit requests were made.",
     "warningTitle": "You have unsent notes",
     "warningMessage": "You have edit requests that haven't been sent. If you continue to reading, they won't be included.",

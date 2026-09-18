@@ -20,9 +20,13 @@ export const toStoryLibraryItem = (story: Story): StoryLibraryItem => {
   };
 };
 
+// Mirrors the server's edit budget (Config.MAX_EDITS).
+const MAX_EDITS = 3;
+
 class MockState {
   stories: Story[] = [...mockStories];
   drafts: Story[] = [];
+  editsLeft: Record<string, number> = {};
   profile: ProfileData = {
     children: mockParentProfile.children.map(child => ({
       id: child.id,
@@ -45,9 +49,11 @@ class MockState {
 
   async getStory(id: string): Promise<StoryLibraryItem> {
     await this.delay(300);
-    const story = this.stories.find(s => s.id === id) || this.drafts.find(s => s.id === id);
-    if (!story) throw new Error(`Story ${id} not found`);
-    return toStoryLibraryItem(story);
+    const approved = this.stories.find(s => s.id === id);
+    if (approved) return toStoryLibraryItem(approved);
+    const draft = this.drafts.find(s => s.id === id);
+    if (!draft) throw new Error(`Story ${id} not found`);
+    return { ...toStoryLibraryItem(draft), edits_left: this.editsLeft[id] ?? MAX_EDITS };
   }
 
   async generateStory(brief: any): Promise<StoryLibraryItem> {
@@ -73,7 +79,8 @@ class MockState {
       ]
     };
     this.drafts.unshift(newStory);
-    return toStoryLibraryItem(newStory);
+    this.editsLeft[newStory.id] = MAX_EDITS;
+    return { ...toStoryLibraryItem(newStory), edits_left: MAX_EDITS };
   }
 
   async saveStory(id: string): Promise<void> {
@@ -96,13 +103,22 @@ class MockState {
     }
     
     if (index === -1) throw new Error(`Story ${id} not found`);
-    
+
+    const editsLeft = this.editsLeft[id] ?? MAX_EDITS;
+    if (editsLeft <= 0) {
+      // Same shape as the server's 409, as axios would surface it.
+      throw Object.assign(new Error('no edits left'), {
+        response: { status: 409, data: { detail: 'no edits left', edits_left: 0 } },
+      });
+    }
+    this.editsLeft[id] = editsLeft - 1;
+
     // Simplistic mock edit
     if (list[index].chapters && list[index].chapters.length > 0) {
       list[index].chapters[0].content = updates.edit_request;
     }
-    
-    return toStoryLibraryItem(list[index]);
+
+    return { ...toStoryLibraryItem(list[index]), edits_left: this.editsLeft[id] };
   }
 
   async deleteStory(id: string): Promise<void> {

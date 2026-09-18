@@ -25,6 +25,8 @@ const queryClient = new QueryClient({
     onError: (error: any, _variables, _context, mutation) => {
       console.error('Mutation failed:', error);
       if (error?.response?.data?.status === 'blocked') return;
+      // Out of edits: the preview shows its own "no edits left" message instead.
+      if (error?.response?.status === 409 && error?.response?.data?.edits_left === 0) return;
       if (mutation.meta?.suppressErrorToast) return;
       
       const msgKey = (mutation.meta?.errorMessage as string) || 'common.error';

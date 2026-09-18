@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useStory, useEditStory } from '../../../api';
 import { getUserId } from '../../../contexts/AuthContext';
+import type { ValidationAlert } from '../../Creation/components/SafetyAlertModal';
 
 export function usePreview() {
   const { storyId } = useParams<{ storyId: string }>();
@@ -13,12 +14,22 @@ export function usePreview() {
   const stateStory = location.state?.story;
 
   const { data: fetchedStory, isLoading: isFetching } = useStory(stateStory ? null : (storyId || null));
-  const story = stateStory || fetchedStory;
+  // The latest edit response wins over the story we arrived with.
+  const [editedStory, setEditedStory] = useState<any>(null);
+  const story = editedStory || stateStory || fetchedStory;
   const isLoading = stateStory ? false : isFetching;
   const editMutation = useEditStory();
 
+  // The server owns the edit budget: it arrives on the story (generate, edit,
+  // GET) and on the edit refusals (safety block, no edits left).
+  const [refusedEditsLeft, setRefusedEditsLeft] = useState<number | null>(null);
+  const editsLeft: number = refusedEditsLeft ?? story?.edits_left ?? 0;
+  const canEdit = editsLeft > 0;
+
+  // A safety gate refused the edit: its crisis referral has to reach the parent.
+  const [safetyAlertData, setSafetyAlertData] = useState<ValidationAlert | null>(null);
+
   const [editRequest, setEditRequest] = useState('');
-  const [remainingEdits, setRemainingEdits] = useState(3);
   const [isStoryExpanded, setIsStoryExpanded] = useState(true);
   const [isEditExpanded, setIsEditExpanded] = useState(false);
 
@@ -29,10 +40,9 @@ export function usePreview() {
   };
 
   const handleSendEdits = () => {
-    if (!storyId || !editRequest.trim() || !story) return;
-    
+    if (!storyId || !editRequest.trim() || !story || !canEdit) return;
+
     const payload = {
-      story_id: storyId,
       edit_request: editRequest,
       user_id: getUserId(),
     };
@@ -40,12 +50,21 @@ export function usePreview() {
     editMutation.mutate(
       { storyId, data: payload },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           setEditRequest('');
-          setRemainingEdits((prev) => Math.max(0, prev - 1));
+          setEditedStory(data?.story || data);
+          setRefusedEditsLeft(null);
         },
-        onError: (e) => {
+        onError: (e: any) => {
           console.error('Failed to regenerate story', e);
+          const errorData = e?.response?.data;
+          if (errorData?.status === 'blocked' && errorData?.safety_alert) {
+            setSafetyAlertData(errorData.validation);
+          }
+          const editsLeftOnRefusal = errorData?.edits_left;
+          if (typeof editsLeftOnRefusal === 'number') {
+            setRefusedEditsLeft(editsLeftOnRefusal);
+          }
         }
       }
     );
@@ -56,15 +75,18 @@ export function usePreview() {
       story,
       isLoading,
       editRequest,
-      remainingEdits,
+      editsLeft,
+      canEdit,
       isStoryExpanded,
       isEditExpanded,
       hasEdits,
+      safetyAlertData,
       isPending: editMutation.isPending
     },
     actions: {
       t,
       setEditRequest,
+      setSafetyAlertData,
       setIsStoryExpanded,
       setIsEditExpanded,
       handleGenerateStory,

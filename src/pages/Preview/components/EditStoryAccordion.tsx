@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 interface EditStoryAccordionProps {
   editRequest: string;
   setEditRequest: (request: string) => void;
-  remainingEdits: number;
+  editsLeft: number;
   isExpanded: boolean;
   onToggle: () => void;
 }
@@ -13,11 +13,12 @@ interface EditStoryAccordionProps {
 export function EditStoryAccordion({
   editRequest,
   setEditRequest,
-  remainingEdits,
+  editsLeft,
   isExpanded,
   onToggle
 }: EditStoryAccordionProps) {
   const { t } = useTranslation();
+  const noEditsLeft = editsLeft <= 0;
 
   return (
     <div className={`bg-tzipur-surface rounded-[24px] shadow-sm border ${isExpanded ? 'border-tzipur-sky/40' : 'border-tzipur-border'} flex flex-col shrink-0 overflow-hidden transition-colors`}>
@@ -31,7 +32,7 @@ export function EditStoryAccordion({
         </div>
         <div className="flex items-center gap-3 pl-1 shrink-0">
           <span className="text-[clamp(0.75rem,1.5dvh,0.875rem)] font-bold text-tzipur-sky opacity-80 bg-tzipur-sky/10 px-2 py-0.5 rounded-xl shrink-0">
-              {t('preview.remainingEdits', { count: remainingEdits })}
+              {noEditsLeft ? t('preview.noEditsLeft') : t('preview.remainingEdits', { count: editsLeft })}
           </span>
           <ChevronDown className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
         </div>
@@ -52,6 +53,7 @@ export function EditStoryAccordion({
                   value={editRequest}
                   onChange={(e) => setEditRequest(e.target.value)}
                   onFocus={() => !isExpanded && onToggle()}
+                  disabled={noEditsLeft}
                   placeholder={t('preview.editPlaceholder')}
                   className="peer w-full h-[clamp(5rem,12dvh,6rem)] resize-none bg-transparent focus:outline-none focus:ring-0 text-tzipur-brown text-[clamp(1rem,2.5dvh,1.125rem)] font-medium placeholder:text-tzipur-brown/60 custom-scrollbar"
                 />

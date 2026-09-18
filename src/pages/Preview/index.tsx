@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 
 import LoaderScreen from '../Creation/components/LoaderScreen';
+import { SafetyAlertModal } from '../Creation/components/SafetyAlertModal';
 import Disclaimer from '../../components/Disclaimer';
 import { Button } from '../../components/Button';
 import { ButtonGroup } from '../../components/ButtonGroup';
@@ -38,6 +39,12 @@ export default function PreviewPage() {
         mode="edit"
       />
 
+      <SafetyAlertModal
+        isOpen={!!state.safetyAlertData}
+        onClose={() => actions.setSafetyAlertData(null)}
+        validationData={state.safetyAlertData}
+      />
+
       <div className="absolute inset-0 flex flex-col bg-tzipur-cream overflow-hidden">
         
         <PreviewHeader />
@@ -55,7 +62,7 @@ export default function PreviewPage() {
             <EditStoryAccordion
               editRequest={state.editRequest}
               setEditRequest={actions.setEditRequest}
-              remainingEdits={state.remainingEdits}
+              editsLeft={state.editsLeft}
               isExpanded={state.isEditExpanded}
               onToggle={() => actions.setIsEditExpanded(!state.isEditExpanded)}
             />
@@ -72,16 +79,17 @@ export default function PreviewPage() {
               variant="secondary"
               size="sm"
               onClick={actions.handleSendEdits}
-              disabled={!state.hasEdits}
+              disabled={!state.hasEdits || !state.canEdit}
             >
               {actions.t('preview.sendEdits')}
             </Button>
+            {/* Unsent text only blocks reading while it can still be sent. */}
             <Button
               variant="primary"
               size="sm"
               onClick={actions.handleGenerateStory}
-              disabled={state.hasEdits}
-              title={state.hasEdits ? actions.t('preview.editBoxNotEmpty') : undefined}
+              disabled={state.hasEdits && state.canEdit}
+              title={state.hasEdits && state.canEdit ? actions.t('preview.editBoxNotEmpty') : undefined}
             >
               {actions.t('preview.generate')}
             </Button>
