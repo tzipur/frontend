@@ -1,6 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
-export function PreviewHeader() {
+interface PreviewHeaderProps {
+  canEdit: boolean;
+}
+
+export function PreviewHeader({ canEdit }: PreviewHeaderProps) {
   const { t } = useTranslation();
 
   return (
@@ -9,7 +13,7 @@ export function PreviewHeader() {
         {t('preview.title')}
       </h1>
       <p className="text-tzipur-brown/80 mt-1 max-w-[320px] text-[clamp(0.875rem,1.5dvh,1rem)] leading-snug">
-        {t('preview.instruction')}
+        {t(canEdit ? 'preview.instruction' : 'preview.instructionNoEditsLeft')}
       </p>
     </header>
   );

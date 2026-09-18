@@ -138,6 +138,7 @@
     "title": "תצוגה מקדימה ועריכה",
     "summaryTitle": "סקירת כל בקשות העריכה",
     "instruction": "הסיפור מוכן, ניתן לבקש עריכה לפני ההקראה",
+    "instructionNoEditsLeft": "הסיפור מוכן ונערך לפי בקשתך",
     "chapterCount": "פרק {{current}}/{{total}}",
     "chapter": "פרק",
     "showChapter": "הצג תוכן",
@@ -157,7 +158,7 @@
     "warningMessage": "ישנן בקשות עריכה שעדיין לא נשלחו. במעבר לקריאה, ההערות לא ייכללו.",
     "warningCancel": "חזרה",
     "warningConfirm": "המשך לקריאה",
-    "editError": "שגיאה בעדכון הסיפור."
+    "editError": "שגיאה בעדכון הסיפור"
   },
   "reading": {
     "notFound": "הסיפור לא נמצא",

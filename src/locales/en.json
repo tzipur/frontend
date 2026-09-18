@@ -122,6 +122,7 @@
     "title": "Preview and Editing",
     "summaryTitle": "Review All Edit Requests",
     "instruction": "The story is ready, you can request editing before reading",
+    "instructionNoEditsLeft": "The story is ready and edited as you requested",
     "chapterCount": "Chapter {{current}}/{{total}}",
     "chapter": "Chapter",
     "showChapter": "Show content",

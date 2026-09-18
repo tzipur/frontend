@@ -47,7 +47,7 @@ export default function PreviewPage() {
 
       <div className="absolute inset-0 flex flex-col bg-tzipur-cream overflow-hidden">
         
-        <PreviewHeader />
+        <PreviewHeader canEdit={state.canEdit} />
 
         {/* Main Content Area */}
         <main className="flex-1 p-4 pb-2 relative z-0 flex flex-col min-h-0">
