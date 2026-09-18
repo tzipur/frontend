@@ -35,6 +35,23 @@ const queryClient = new QueryClient({
   }),
 });
 
+// After a deploy, a page still running the old build asks for page chunks that
+// no longer exist. Reload once to pick up the new build; the timestamp guard
+// stops a reload loop if the chunk is missing for another reason.
+const RELOAD_KEY = 'tzipur:chunk-reload-at';
+window.addEventListener('vite:preloadError', (event) => {
+  try {
+    const last = Number(sessionStorage.getItem(RELOAD_KEY) || 0);
+    if (Date.now() - last < 10_000) return;
+    sessionStorage.setItem(RELOAD_KEY, String(Date.now()));
+  } catch {
+    // No session storage means no loop guard: show the error screen instead.
+    return;
+  }
+  event.preventDefault();
+  window.location.reload();
+});
+
 // Ping the server to wake it up (useful for free tier hosting like Render)
 // Doing this here ensures it fires on explicit app initialization.
 pingServer();
