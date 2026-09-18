@@ -69,17 +69,17 @@ export default function EndPage({ goPrev, goFirst, coachingTip }: EndPageProps) 
 
       {/* Bottom Section - Read Again / Create Story.
           ButtonGroup makes each child flex-1, and in RTL the first child sits on
-          the right -- so "read again" is read first and the primary action lands
-          on the left, as everywhere else in the app. */}
+          the right -- so "read again" is read first, and it carries the filled
+          style: after a read, reading again is the offer, not creating. */}
       <ButtonGroup>
         <Button 
-          variant="secondary" 
+          variant="primary" 
           onClick={goFirst}
         >
           {t('reading.end.readAgain')}
         </Button>
         <Button 
-          variant="primary" 
+          variant="secondary" 
           onClick={handleCreateStory}
         >
           {t('reading.end.create')}
