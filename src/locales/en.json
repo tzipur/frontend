@@ -148,7 +148,8 @@
     "end": {
       "title": "The End...",
       "subtitle": "We hope this was a connecting read. We invite you to read the 'Tip for Parents' to continue the conversation.",
-      "save": "Add to library",
+      "create": "Create a story",
+      "readAgain": "Read again",
       "coachingTitle": "Tip for Parents"
     }
   },

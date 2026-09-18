@@ -24,6 +24,7 @@ interface UseReadingPageResult {
   wordsPerPage: number;
   goNext: () => void;
   goPrev: () => void;
+  goFirst: () => void;
   navigate: ReturnType<typeof useNavigate>;
 }
 
@@ -92,6 +93,13 @@ export function useReadingPage(): UseReadingPageResult {
     }
   };
 
+  // Back to page 1 -- the story as it opens on a first read (the end page's
+  // "read again"), so it's a backwards move however far away the reader is.
+  const goFirst = () => {
+    setDirection(-1);
+    setCurrentPageIndex(0);
+  };
+
   return {
     story,
     isLoading,
@@ -105,6 +113,7 @@ export function useReadingPage(): UseReadingPageResult {
     wordsPerPage,
     goNext,
     goPrev,
+    goFirst,
     navigate,
   };
 }

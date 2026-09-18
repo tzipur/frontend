@@ -12,6 +12,7 @@ interface ReadingPanelProps {
   isLastPage: boolean;
   goNext: () => void;
   goPrev: () => void;
+  goFirst: () => void;
   coachingTip?: string;
 }
 
@@ -50,6 +51,7 @@ export default function ReadingPanel({
   isLastPage,
   goNext,
   goPrev,
+  goFirst,
   coachingTip
 }: ReadingPanelProps) {
   return (
@@ -119,7 +121,7 @@ export default function ReadingPanel({
           </div>
         ) : (
           /* End Page Component */
-          <EndPage goPrev={goPrev} coachingTip={coachingTip} />
+          <EndPage goPrev={goPrev} goFirst={goFirst} coachingTip={coachingTip} />
         )}
       </motion.main>
     </AnimatePresence>

@@ -1,31 +1,22 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight, ChevronDown, Lightbulb } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/Button';
-import { useSaveStory } from '../../../api/mutations';
+import { ButtonGroup } from '../../../components/ButtonGroup';
 
 interface EndPageProps {
   goPrev: () => void;
+  goFirst: () => void;
   coachingTip?: string;
 }
 
-export default function EndPage({ goPrev, coachingTip }: EndPageProps) {
+export default function EndPage({ goPrev, goFirst, coachingTip }: EndPageProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { storyId } = useParams<{ storyId: string }>();
-  const saveMutation = useSaveStory();
   const [isTipExpanded, setIsTipExpanded] = useState(false);
 
-  const handleSave = () => {
-    if (storyId) {
-      saveMutation.mutate(storyId, {
-        onSuccess: () => navigate('/library'),
-      });
-    } else {
-      navigate('/library');
-    }
-  };
+  const handleCreateStory = () => navigate('/create');
 
   return (
     <div className="flex-1 w-full flex flex-col px-2 sm:px-4 pt-2 sm:pt-4 pb-4 sm:pb-6 overflow-hidden">
@@ -76,15 +67,24 @@ export default function EndPage({ goPrev, coachingTip }: EndPageProps) {
         </div>
       )}
 
-      {/* Bottom Section - Save Button */}
-      <Button 
-        variant="primary" 
-        fullWidth 
-        onClick={handleSave}
-        disabled={saveMutation.isPending}
-      >
-        {saveMutation.isPending ? t('common.loading') : t('reading.end.save')}
-      </Button>
+      {/* Bottom Section - Read Again / Create Story.
+          ButtonGroup makes each child flex-1, and in RTL the first child sits on
+          the right -- so "read again" is read first and the primary action lands
+          on the left, as everywhere else in the app. */}
+      <ButtonGroup>
+        <Button 
+          variant="secondary" 
+          onClick={goFirst}
+        >
+          {t('reading.end.readAgain')}
+        </Button>
+        <Button 
+          variant="primary" 
+          onClick={handleCreateStory}
+        >
+          {t('reading.end.create')}
+        </Button>
+      </ButtonGroup>
     </div>
   );
 }

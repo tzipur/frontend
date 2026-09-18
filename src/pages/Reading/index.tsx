@@ -15,6 +15,7 @@ export default function ReadingPage() {
     isLastPage,
     goNext,
     goPrev,
+    goFirst,
   } = useReadingPage();
   const { t } = useTranslation();
 
@@ -53,6 +54,7 @@ export default function ReadingPage() {
         isLastPage={isLastPage}
         goNext={goNext}
         goPrev={goPrev}
+        goFirst={goFirst}
         coachingTip={story.coaching_tip}
       />
     </motion.div>
